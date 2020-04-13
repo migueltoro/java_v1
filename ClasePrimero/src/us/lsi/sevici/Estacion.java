@@ -40,6 +40,36 @@ public class Estacion {
 		this.free_bikes = free_bikes;
 		this.coordenadas = coordenadas;
 	}
+	
+
+	public Integer getNumero() {
+		return numero;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public Integer getSlots() {
+		return slots;
+	}
+
+
+	public Integer getEmpty_slots() {
+		return empty_slots;
+	}
+
+
+	public Integer getFree_bikes() {
+		return free_bikes;
+	}
+	
+
+	public Coordenadas2D getCoordenadas() {
+		return coordenadas;
+	}
 
 
 	@Override
