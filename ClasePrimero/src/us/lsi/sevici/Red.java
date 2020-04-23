@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
@@ -13,10 +14,21 @@ import us.lsi.tools.FileTools;
 public class Red {
 	
 	public static Red parse(String fichero) {
-		List<Estacion> estaciones = FileTools.fromFile("ficheros/estaciones.csv")
+		List<Estacion> estaciones = FileTools.streamFromFile("ficheros/estaciones.csv")
 				.skip(1)
 				.map(linea->Estacion.parse(linea))
 				.collect(Collectors.toList());
+		return new Red(estaciones);
+	}
+	
+	public static Red parse2(String fichero) {
+		List<String> est = FileTools.lineasFromFile("ficheros/estaciones.csv");
+		List<Estacion> estaciones = new ArrayList<>();
+		List<String> est2 = est.subList(1, est.size());
+		for(String linea: est2) {
+			Estacion e = Estacion.parse(linea);
+			estaciones.add(e);
+		}		
 		return new Red(estaciones);
 	}
 	

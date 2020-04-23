@@ -12,7 +12,7 @@ public class Ruta {
 	private List<Marca> marcas;
 	
 	public static Ruta parse(String fichero) {
-		List<Marca> marcas = FileTools.fromFile("ficheros/ruta.csv").map(x->Marca.parse(x)).collect(Collectors.toList());
+		List<Marca> marcas = FileTools.streamFromFile("ficheros/ruta.csv").map(x->Marca.parse(x)).collect(Collectors.toList());
 		return new Ruta(marcas);
 	}
 
@@ -31,8 +31,19 @@ public class Ruta {
 		return IntStream.range(0,n-1).boxed().map(i->this.getIntervalo(i)).mapToDouble(x->x.getLongitud()).sum();
 	}
 	
+	public Double getLongitud2() {
+		Integer n = this.marcas.size();
+		Double a = 0.;
+		for(Integer i=0; i< n-1; i++) {
+			Intervalo it = this.getIntervalo(i);
+			Double ln = it.getLongitud();
+			a = a + ln;
+		}
+		return a;
+	}
+	
 	public Double VelocidadMedia() {
-		return null;
+		return this.getLongitud()/this.getTiempo();
 	}
 	
 	public Intervalo getIntervalo(Integer i) {
@@ -57,6 +68,19 @@ public class Ruta {
 				.sum();
 	}
 	
+	public Double getDesnivelCrecienteAcumulado2() {
+		Integer n = this.marcas.size();	
+		Double a = 0.;
+		for(Integer i = 0; i< n-1; i++) {
+			Intervalo it = this.getIntervalo(i);
+			if(it.getDesnivel()>0) {
+				Double ln = it.getLongitud();
+				a = a +ln;
+			}		
+		}
+		return a;
+	}
+	
 	public Double getDesnivelDecrecienteAcumulado() {
 		Integer n = this.marcas.size();		
 		return IntStream.range(0, n-1)
@@ -66,10 +90,38 @@ public class Ruta {
 				.mapToDouble(e->e.getLongitud())
 				.sum();
 	}
+	
+	public Double getDesnivelDecrecienteAcumulado2() {
+		Integer n = this.marcas.size();	
+		Double a = 0.;
+		for(Integer i = 0; i< n-1; i++) {
+			Intervalo it = this.getIntervalo(i);
+			if(it.getDesnivel()<0) {
+				Double ln = it.getLongitud();
+				a = a +ln;
+			}		
+		}
+		return a;
+	}
 
 	@Override
 	public String toString() {
 		return marcas.stream().map(m->m.toString()).collect(Collectors.joining("\n"));
+	}
+	
+	public String toString2() {
+		String a = "";
+		Boolean primero = true;
+		for (Marca e : marcas) {
+			String es = e.toString();
+			if (primero) {
+				a = a + es;
+				primero = false;
+			} else {
+				a = a + "\n" + es;
+			}
+		}
+		return a;
 	}
 
 }

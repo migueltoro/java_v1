@@ -2,6 +2,7 @@ package us.lsi.biblioteca;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import us.lsi.tools.Preconditions;
 
@@ -13,37 +14,41 @@ public class Biblioteca {
 
 
 	private String nombre;
-	private String codigPostal;
+	private String codigoPostal;
 	private String email; 
 	private List<Libro> libros;
 	
 	
-	private Biblioteca(String nombre, String codigPostal, String email) {
+	private Biblioteca(String nombre, String codigoPostal, String email) {
 		super();
 		Preconditions.checkNotNull(nombre);
-		Preconditions.checkArgument(compruebaCodigoPostal(codigPostal),String.format("El codigo postal debe contener 5 dígitos y es %s",codigPostal));
+		Preconditions.checkArgument(compruebaCodigoPostal(codigoPostal),String.format("El codigo postal debe contener 5 dígitos y es %s",codigoPostal));
 		Preconditions.checkArgument(compruebaEmail(email),String.format("El email debe tener un solo @ y un solo . y es %s",email));
 		this.nombre = nombre;
-		this.codigPostal = codigPostal;
+		this.codigoPostal = codigoPostal;
 		this.email = email;
 		this.libros = new ArrayList<>();
 	}
 
 	private Boolean compruebaEmail(String email) {
-		return true;
+		Boolean r1 = IntStream.range(0,email.length()).map(i->email.charAt(i)).filter(c->c == '@').count() == 1;
+		Boolean r2 = IntStream.range(0,email.length()).map(i->email.charAt(i)).filter(c->c == '.').count() == 1;
+		return r1 && r2;
 	}
 
 	private Boolean compruebaCodigoPostal(String codigoPostal) {
-		return true;
+		Boolean r1 = codigoPostal.length() == 5;
+		Boolean r2 = IntStream.range(0,codigoPostal.length()).map(i->codigoPostal.charAt(i)).allMatch(c->Character.isDigit(c));
+		return r1 && r2;
 	}
 
-	public String getCodigPostal() {
-		return codigPostal;
+	public String getCodigoPostal() {
+		return codigoPostal;
 	}
 
 
-	public void setCodigPostal(String codigPostal) {
-		this.codigPostal = codigPostal;
+	public void setCodigPostal(String codigoPostal) {
+		this.codigoPostal = codigoPostal;
 	}
 
 	public String getEmail() {
@@ -83,7 +88,7 @@ public class Biblioteca {
 	
 	@Override
 	public String toString() {
-		return String.format("%s (%s)",this.nombre,this.codigPostal);
+		return String.format("%s (%s)",this.nombre,this.codigoPostal);
 	}
 	
 	
