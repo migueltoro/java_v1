@@ -1,17 +1,16 @@
 package us.lsi.libro;
 
-import java.util.stream.Stream;
-
-import us.lsi.tools.Enumerate;
-import us.lsi.tools.FileTools;
-import us.lsi.tools.StreamTools;
+import java.util.Locale;
 
 public class Test {
 
 	public static void main(String[] args) {
-		Stream<String> lineas = FileTools.streamFromFile("ficheros/quijote.txt");
-		Stream<Enumerate<String>> enumerate = StreamTools.enumerate(lineas).limit(15);
-		enumerate.forEach(e->System.out.println(e));
+		Locale.setDefault(new Locale("en", "US"));
+		System.out.println(Libro.numeroDeLineas("ficheros/quijote.txt"));
+		System.out.println(Libro.numeroDePalabrasDistintas("ficheros/quijote.txt"));
+		System.out.println(Libro.numeroDePalabrasDistintasNoHuecas("ficheros/quijote.txt"));
+		System.out.println(Libro.numeroDeLineasVacias("ficheros/quijote.txt"));
+		System.out.println(String.format("%.2f",Libro.longitudMediaDeLineas("ficheros/quijote.txt")));
 	}
 
 }
