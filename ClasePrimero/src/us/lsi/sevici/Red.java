@@ -78,15 +78,15 @@ public class Red {
 		return this.estaciones.stream().collect(Collectors.groupingBy(e->e.getFree_bikes()));
 	}
 	
-	public Map<Integer,Long> getNumeroDeEstacionesPorBicisDisponibles() {
-		return this.estaciones.stream().collect(Collectors.groupingBy(e->e.getFree_bikes(),Collectors.counting()));
+	public Map<Integer,Integer> getNumeroDeEstacionesPorBicisDisponibles() {
+		return this.estaciones.stream()
+				.collect(Collectors.groupingBy(e->e.getFree_bikes(),
+						Collectors.collectingAndThen(Collectors.counting(),r->r.intValue())));
 	}
 
 	@Override
 	public String toString() {
 		return estaciones.stream().map(e->e.toString()).collect(Collectors.joining("\n"));
 	}
-	
-	
 	
 }
