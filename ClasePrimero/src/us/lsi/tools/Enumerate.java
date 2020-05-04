@@ -6,7 +6,7 @@ public class Enumerate<E> {
 		return new Enumerate<E>(num, element);
 	}
 
-	public final Integer counter;
+	public final Integer counter; 
 	public final E value;
 	
 	private Enumerate(Integer num, E element) {
