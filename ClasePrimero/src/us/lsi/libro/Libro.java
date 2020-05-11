@@ -1,6 +1,7 @@
 package us.lsi.libro;
 
 import java.util.function.Function;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.Arrays;
@@ -15,7 +16,9 @@ import us.lsi.tools.StreamTools;
 
 public class Libro {
 	
-	public static Function<String,Stream<String>> f = linea->Arrays.stream(linea.split("[ ,;.\n()?¿!¡:\"]"));
+	public static String separadores = "[- ,;.\n()?¿!¡:\"]";
+	
+	public static Function<String,Stream<String>> f = linea->Arrays.stream(linea.split(Libro.separadores));
 	
 	public static Integer numeroDeLineas(String fichero) {
 		return (int) FileTools.streamFromFile(fichero).count();
@@ -23,7 +26,7 @@ public class Libro {
 	
 	public static Integer numeroDePalabrasDistintas(String fichero) {
 		return (int) FileTools.streamFromFile(fichero)
-				.flatMap(linea->Arrays.stream(linea.split("[ ,;.\n()?¿!¡:\"]")))
+				.flatMap(linea->Arrays.stream(linea.split(Libro.separadores)))
 				.distinct()
 				.count();
 	}
@@ -33,7 +36,7 @@ public class Libro {
 	public static Integer numeroDePalabrasDistintasNoHuecas(String fichero) {
 		Set<String> palabrasHuecas = FileTools.streamFromFile("ficheros/palabras_huecas.txt").collect(Collectors.toSet());
 		return (int) FileTools.streamFromFile(fichero)
-				.flatMap(linea->Arrays.stream(linea.split("[ ,;.\n()?¿!¡:\"]")))
+				.flatMap(linea->Arrays.stream(linea.split(Libro.separadores)))
 				.distinct()
 				.filter(p->!palabrasHuecas.contains(p))
 				.count();
@@ -78,9 +81,13 @@ public class Libro {
 				.value;
 	}
 	
+	private static Stream<String> lineasAPalabras(String nl){
+		return Arrays.stream(nl.split(Libro.separadores));
+	}
+	
 	public static Map<String,Long> frecuenciasDePalabras1(String fichero) {
 		return FileTools.streamFromFile(fichero)
-				.flatMap(linea->Arrays.stream(linea.split("[ ,;.\n()?¿!¡:\"]")))
+				.flatMap(Libro::lineasAPalabras)
 				.collect(Collectors.groupingBy(
 						x->x,
 						Collectors.counting()));				
@@ -88,7 +95,7 @@ public class Libro {
 	
 	public static Map<String,Integer> frecuenciasDePalabras2(String fichero) {
 		return FileTools.streamFromFile(fichero)
-				.flatMap(linea->Arrays.stream(linea.split("[ ,;.\n()?¿!¡:\"]")))
+				.flatMap(Libro::lineasAPalabras)
 				.filter(p->p.length() >0)
 				.collect(Collectors.groupingBy(
 						x->x,
@@ -97,7 +104,7 @@ public class Libro {
 	
 	public static SortedMap<String,Integer> frecuenciasDePalabras3(String fichero) {
 		return FileTools.streamFromFile(fichero)
-				.flatMap(linea->Arrays.stream(linea.split("[ ,;.\n()?¿!¡:\"]")))
+				.flatMap(Libro::lineasAPalabras)
 				.filter(p->p.length() >0)
 				.collect(Collectors.groupingBy(
 						x->x,
@@ -114,17 +121,23 @@ public class Libro {
 						Collectors.toSet()));	
 	}
 	
+	private static Stream<Enumerate<String>> lineasAPalabras2(Enumerate<String> nl){
+		return Arrays.stream(nl.value.split(Libro.separadores))
+				.map(p->Enumerate.of(nl.counter,p));
+	}
+	
 	public static SortedMap<String,Set<Integer>> lineasDePalabra(String fichero) {
 		Stream<String> lineas = FileTools.streamFromFile(fichero);
 		Stream<Enumerate<String>> lineasNumeros = StreamTools.enumerate(lineas);
-		return lineasNumeros.
-				.flatMap(numeroLinea->Arrays.stream(numeroLinea.value.split("[ ,;.\n()?¿!¡:\"]"))
-						.map(p->Enumerate.of(numeroLinea.counter,p)))
-				.filter(p->p.length() >0)
+		return lineasNumeros
+				.flatMap(Libro::lineasAPalabras2)
+				.filter(np->np.value.length() >0)
 				.collect(Collectors.groupingBy(
-						x->x,
-						()->new TreeMap<>(),
-						Collectors.collectingAndThen(Collectors.counting(),x->x.intValue()))
+						np->np.value,
+						()->new TreeMap<String,Set<Integer>>(Comparator.reverseOrder()),
+						Collectors.mapping(np->np.counter,Collectors.toSet())));
 	}
+	
+	
 
 }

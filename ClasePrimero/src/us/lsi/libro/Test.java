@@ -4,7 +4,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
-import java.util.stream.Collectors;
+
+
+import us.lsi.tools.CollectionsTools;
 
 public class Test {
 
@@ -18,9 +20,12 @@ public class Test {
 //		System.out.println(String.format("%s",Libro.primeraLineaConPalabra("ficheros/quijote.txt","padre")));	
 //		System.out.println(String.format("%s",Libro.primeraNumeroLineaConPalabra("ficheros/quijote.txt","padre")));	
 //		System.out.println(String.format("%s",Libro.lineaNumero("ficheros/quijote.txt",300)));	
-		SortedMap<Integer, Set<String>> r = Libro.palabrasPorFrecuencias("ficheros/quijote.txt");
+//		SortedMap<Integer, Set<String>> r = Libro.palabrasPorFrecuencias("ficheros/quijote.txt");
 //		System.out.println(String.format("(%s,%s)",1,r.get(1)));
-		System.out.println(r.keySet().stream().map(k->String.format("(%s,%s)",k,r.get(k))).collect(Collectors.joining("\n")));
+//		System.out.println(CollectionsTools.mapToString(r));
+		Map<String, Integer> r1 = Libro.frecuenciasDePalabras2("ficheros/quijote.txt");
+//		System.out.println(String.format("(%s,%s)",1,r.get(1)));
+		System.out.println(CollectionsTools.mapToString(r1));
 
 	}
 

@@ -1,6 +1,7 @@
 package us.lsi.tools;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Preconditions {
@@ -53,11 +54,11 @@ public class Preconditions {
 	 */
 	public static <T> void checkNotNull(@SuppressWarnings("unchecked") T... reference){
 		if(Arrays.stream(reference).anyMatch(x->x == null)){
-			throw new NullPointerException(String.format("Es nulo el elemento %d",
+			throw new NullPointerException(String.format("Son nulos los elementos %s",
 					IntStream.range(0, reference.length)
-					.filter(i->reference[i]!=null)
-					.findFirst()
-					.getAsInt()));
+					.boxed()
+					.filter(i->reference[i] == null)
+					.collect(Collectors.toList())));
 		}
 	}
 		
