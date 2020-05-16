@@ -38,7 +38,7 @@ public class TestGeometria {
 		System.out.println(p3);
 		System.out.println(Vector2D.ofXY(2.0, 1.0).proyectaSobre(Vector2D.ofXY(0.,2.)).toString());
 		Segmento2D pc = c3.proyectaSobre(r);
-		AgregadoGeometrico2D a = AgregadoGeometrico2D.of(c1,c2,c3,pl,p0,s);
+		AgregadoGeometrico2D a = AgregadoGeometrico2D.of(r,c1,c2,c3,pl,pl2,s);
 		Ventana.escala = 1.;
 		Ventana.draw(a,Color.BLUE);
 

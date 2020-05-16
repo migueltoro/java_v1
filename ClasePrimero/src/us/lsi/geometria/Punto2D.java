@@ -1,8 +1,10 @@
 package us.lsi.geometria;
 
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 import java.util.function.Function;
 
-public class Punto2D implements Comparable<Punto2D>, ObjetoGeometrico2D {	
+public class Punto2D implements Comparable<Punto2D>, ObjetoGeometrico2D, ShapeDeObjeto, ShowObjeto {	
 
 	private static Punto2D cero = Punto2D.of();
 	
@@ -121,12 +123,22 @@ public class Punto2D implements Comparable<Punto2D>, ObjetoGeometrico2D {
 	
 	@Override
 	public void show(Ventana v) {
-		v.show(this);
+		v.g2.fill(this.shape(Ventana.xt,Ventana.yt));
+	}
+	
+	@Override
+	public Shape shape(Function<Double,Double> xt, Function<Double,Double> yt) {
+		Punto2D t = this.transform(xt,yt);
+		Punto2D sc = t.minus(Vector2D.baseX().multiply(5.));
+		sc = sc.minus(Vector2D.baseY().multiply(5.));
+		return new Ellipse2D.Double(sc.getX(),sc.getY(),10.,10.);
 	}
 		
 	public String toString() {
     	return String.format("(%.2f,%.2f)",this.getX(),this.getY());
     }
+	
+	
 
 	@Override
 	public int hashCode() {
@@ -166,5 +178,6 @@ public class Punto2D implements Comparable<Punto2D>, ObjetoGeometrico2D {
 	    }
 		return this.getDistanciaAlOrigen().compareTo(p.getDistanciaAlOrigen());
 	}
+
 	
 }

@@ -1,6 +1,8 @@
 package us.lsi.geometria;
 
 
+import java.awt.Shape;
+import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.stream.IntStream;
 import us.lsi.tools.Preconditions;
 
 
-public class Poligono2D implements ObjetoGeometrico2D {
+public class Poligono2D implements ObjetoGeometrico2D, ShapeDeObjeto, ShowObjeto{
 
 	public static Poligono2D empty() {
 		return new Poligono2D();
@@ -162,7 +164,22 @@ public class Poligono2D implements ObjetoGeometrico2D {
 	
 	@Override
 	public void show(Ventana v) {
-		v.show(this);
+		v.g2.draw(this.shape(Ventana.xt,Ventana.yt));
+	}
+	
+	public Shape shape(Function<Double,Double> xt, Function<Double,Double> yt) {
+		Poligono2D t = (Poligono2D) this.transform(xt, yt);
+		Integer n = t.getNumeroDeVertices();
+		GeneralPath polygon = new GeneralPath(GeneralPath.WIND_EVEN_ODD, n);
+		polygon.moveTo(t.getVertice(0).getX(),t.getVertice(0).getY());
+		IntStream.range(1, n).forEach(i->polygon.lineTo(t.getVertice(i).getX(),t.getVertice(i).getY()));
+		polygon.closePath();
+		return polygon;
+	}
+	
+	
+	public void show(Poligono2D s) {
+		
 	}
 		
 	@Override

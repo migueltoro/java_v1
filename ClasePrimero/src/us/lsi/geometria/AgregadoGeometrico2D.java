@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class AgregadoGeometrico2D implements ObjetoGeometrico2D {
+public class AgregadoGeometrico2D implements ObjetoGeometrico2D, ShowObjeto {
 
 	public static AgregadoGeometrico2D empty() {
 		return new AgregadoGeometrico2D();
@@ -89,7 +89,7 @@ public class AgregadoGeometrico2D implements ObjetoGeometrico2D {
 	
 	@Override
 	public void show(Ventana v) {
-		objetos.stream().forEach(x->x.show(v));
+		objetos.stream().map(x->(ShowObjeto)x).forEach(x->x.show(v));
 	}
 
 }

@@ -1,6 +1,9 @@
 package us.lsi.geometria;
 
-public class Recta2D {
+import java.awt.Shape;
+import java.util.function.Function;
+
+public class Recta2D implements ObjetoGeometrico2D, ShapeDeObjeto, ShowObjeto {
 	
 	public static Recta2D of(Punto2D punto, Vector2D vector) {
 		return new Recta2D(punto, vector);
@@ -23,13 +26,61 @@ public class Recta2D {
 	public Vector2D getVector() {
 		return this.vector;
 	}
-	
-	public Vector2D unitario() {
-		return this.vector.unitario();
-	}
 
 	public Punto2D punto(Double lambda) {
 		return this.punto.add(this.vector.multiply(lambda));
+	}
+	
+	@Override
+	public Recta2D rota(Punto2D p, Double angulo) {
+		Punto2D p1 = this.punto(0.);
+		Punto2D p2 = this.punto(1.);
+		return Recta2D.of(p1.rota(p, angulo), p2.rota(p, angulo));
+	}
+
+	@Override
+	public Recta2D traslada(Vector2D v) {
+		Punto2D p1 = this.punto(0.);
+		Punto2D p2 = this.punto(1.);
+		return Recta2D.of(p1.traslada(v), p2.traslada(v));
+	}
+
+	@Override
+	public Recta2D homotecia(Punto2D p, Double factor) {
+		Punto2D p1 = this.punto(0.);
+		Punto2D p2 = this.punto(1.);
+		return Recta2D.of(p1.homotecia(p2, factor), p2.homotecia(p2, factor));
+	}
+
+	@Override
+	public Recta2D proyectaSobre(Recta2D r) {
+		return r;
+	}
+
+	@Override
+	public Recta2D simetrico(Recta2D r) {
+		Punto2D p1 = this.punto(0.);
+		Punto2D p2 = this.punto(1.);
+		return Recta2D.of(p1.simetrico(r), p2.simetrico(r));
+	}
+
+	@Override
+	public Recta2D transform(Function<Double, Double> xt, Function<Double, Double> yt) {
+		Punto2D p1 = this.punto(0.);
+		Punto2D p2 = this.punto(1.);
+		return Recta2D.of(p1.transform(xt, yt), p2.transform(xt, yt));
+	}
+	
+	@Override
+	public void show(Ventana v) {
+		v.g2.draw(this.shape(Ventana.xt,Ventana.yt));		
+	}
+
+	@Override
+	public Shape shape(Function<Double, Double> xt, Function<Double, Double> yt) {
+		Punto2D p1 = this.punto(-100.);
+		Punto2D p2 = this.punto(100.);
+		return Segmento2D.of(p1, p2).shape(xt, yt);
 	}
 
 	@Override
@@ -68,6 +119,7 @@ public class Recta2D {
 			return false;
 		return true;
 	}
+
 	
 
 }

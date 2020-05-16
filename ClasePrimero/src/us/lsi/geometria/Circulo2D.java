@@ -1,10 +1,12 @@
 package us.lsi.geometria;
 
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 import java.util.function.Function;
 
 import us.lsi.tools.Preconditions;
 
-public class Circulo2D implements ObjetoGeometrico2D {
+public class Circulo2D implements ObjetoGeometrico2D, ShapeDeObjeto, ShowObjeto {
 	
 	public static Circulo2D of(Punto2D centro, Double radio) {
 		return new Circulo2D(centro, radio);
@@ -73,7 +75,15 @@ public class Circulo2D implements ObjetoGeometrico2D {
 	
 	@Override
 	public void show(Ventana v) {
-		v.show(this);
+		v.g2.draw(this.shape(Ventana.xt,Ventana.yt));
+	}
+	
+	
+	@Override
+	public Shape shape(Function<Double,Double> xt, Function<Double,Double> yt) {
+		Circulo2D ct = (Circulo2D) this.transform(xt,yt);
+		Punto2D sc = ct.getCentro().add(Vector2D.ofXY(-1.,-1.).multiply(ct.getRadio()));
+		return new Ellipse2D.Double(sc.getX(),sc.getY(),2*ct.getRadio(),2*ct.getRadio());	
 	}
 	
 	@Override
