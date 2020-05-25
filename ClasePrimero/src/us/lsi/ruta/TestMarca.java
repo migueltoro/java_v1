@@ -1,4 +1,4 @@
-package us.lsi.gps;
+package us.lsi.ruta;
 
 import java.util.Locale;
 

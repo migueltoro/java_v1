@@ -13,7 +13,7 @@ module clase_primero {
 	exports us.lsi.biblioteca;
 	exports us.lsi.sevici;
 	exports us.lsi.coordenadas;
-	exports us.lsi.gps;
+	exports us.lsi.ruta;
 
 	requires transitive java.desktop;
 }
