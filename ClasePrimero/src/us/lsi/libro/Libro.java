@@ -298,7 +298,7 @@ public class Libro {
 				.filter(np->np.value.length() >0)
 				.collect(Collectors.groupingBy(
 						np->np.value,
-						()->new TreeMap<String,Set<Integer>>(Comparator.reverseOrder()),
+						()->new TreeMap<String,Set<Integer>>(),
 						Collectors.mapping(np->np.counter,Collectors.toSet())));
 	}
 	

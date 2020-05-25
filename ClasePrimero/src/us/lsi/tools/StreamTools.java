@@ -30,7 +30,7 @@ public class StreamTools {
 	
 	public static <E> Stream<Enumerate<E>> enumerate(Stream<E> stream, Integer start){
 		Stream<Integer> st = Stream.iterate(start,e->e+1);
-		return zip(st,stream,(n,e)->Enumerate.of(n, e));
+		return zip(stream,st,(e,n)->Enumerate.of(n, e));
 	}
 	
 	public static <E> Stream<Enumerate<E>> enumerate(Stream<E> stream){
