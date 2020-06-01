@@ -1,4 +1,4 @@
-package us.lsi.vuelos;
+package us.lsi.aeropuerto1;
 
 import java.time.Duration;
 import java.time.LocalDate;
