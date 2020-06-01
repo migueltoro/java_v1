@@ -10,6 +10,7 @@ import us.lsi.tools.Enumerate;
 import us.lsi.tools.IntPair;
 import us.lsi.tools.StreamTools;
 
+@SuppressWarnings("unused")
 public class Test {
 
 	public static void main(String[] args) {
