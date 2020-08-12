@@ -2,27 +2,10 @@ package us.lsi.ruta;
 
 import java.time.temporal.ChronoUnit;
 
-public class Intervalo {
+public record Intervalo(Marca principio, Marca fin) {
 	
 	public static Intervalo of(Marca principio, Marca fin) {
 		return new Intervalo(principio, fin);
-	}
-
-	private Marca principio;
-	private Marca fin;
-	
-	private Intervalo(Marca principio, Marca fin) {
-		super();
-		this.principio = principio;
-		this.fin = fin;
-	}
-
-	public Marca getPrincipio() {
-		return this.principio;
-	}
-
-	public Marca getFin() {
-		return this.fin;
 	}
 
 	@Override
@@ -30,20 +13,21 @@ public class Intervalo {
 		return String.format("(%s,%s)", this.principio.toString(),this.fin.toString());
 	}
 	
-	public Double getDesnivel() {
-		return this.fin.getCoordenadas().getAltitud()-this.principio.getCoordenadas().getAltitud();
+	public Double desnivel() {
+		return this.fin.coordenadas().altitud()-this.principio().coordenadas().altitud();
 	}
 	
-	public Double getLongitud() {
-		return this.getPrincipio().getCoordenadas().distancia(this.getFin().getCoordenadas());
+	public Double longitud() {
+		return this.principio().coordenadas().distancia(this.fin().coordenadas());
 	}
 	
-	public Double getTiempo() {
-		return this.getPrincipio().getTime().until(this.getFin().getTime(), ChronoUnit.SECONDS)/3600.;
+	public Double tiempo() {
+		return this.principio().time().until(this.fin().time(), ChronoUnit.SECONDS)/3600.;
 	}
 	
-	public Double getVelocidad() {
-		return this.getLongitud()/this.getTiempo();
+	public Double velocidad() {
+		return this.longitud()/this.tiempo();
 	}
+
 
 }

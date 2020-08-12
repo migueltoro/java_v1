@@ -16,7 +16,7 @@ public class Ventana extends JPanel {
   
 	private static final long serialVersionUID = 865807501071430378L;
 	
-	private ShowObjeto objeto;
+	private ObjetoGeometrico2D objeto;
 	private Color color = Color.BLACK;
 	public Graphics2D g2;
 	
@@ -53,7 +53,7 @@ public class Ventana extends JPanel {
 		return o2d.transform(Ventana.xt,Ventana.yt);
 	}
 		
-	public Ventana(ShowObjeto objeto,Color color) {
+	public Ventana(ObjetoGeometrico2D objeto,Color color) {
 		super();
 		this.objeto = objeto;
 		this.color = color;
@@ -89,7 +89,7 @@ public class Ventana extends JPanel {
 	  this.objeto.show(this);
 	}
   
-	public static void draw(ShowObjeto objeto, Color color) {
+	public static void draw(ObjetoGeometrico2D objeto, Color color) {
 	  JFrame f = new JFrame("Ventana de dibujo");
 	  f.getContentPane().add(new Ventana(objeto,color));
 	  f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

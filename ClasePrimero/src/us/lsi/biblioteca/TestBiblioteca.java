@@ -17,18 +17,18 @@ public class TestBiblioteca {
 		Libro libro3 = Libro.of("9711385537716","La nueva esperanza", "Adela Ríos",200, 
 				LocalDate.of(2020, 3, 7), 30.,600,TipoPrestamo.SEMANAL);
 		System.out.println(libro3);
-		LibroElectronico libro4 = LibroElectronico.of("9711385667716","La nueva sociedad", "Fermin Cuesta",200, 
-				LocalDate.of(2020, 2, 4), 30.,600,TipoPrestamo.SEMANAL,FomatoLibroElectronico.PDF);			
-		System.out.println(libro4);
-		AudioLibro libro5 = 
-				AudioLibro.of("9711385667716","La nueva sociedad", "Fermin Cuesta",200, 
-				LocalDate.of(2020, 3, 4), 30.,600,TipoPrestamo.SEMANAL,FormatoAudio.MP3, "http: wwww.lsi.us.es", 20);			
-		System.out.println(libro5);
+//		LibroElectronico libro4 = LibroElectronico.of("9711385667716","La nueva sociedad", "Fermin Cuesta",200, 
+//				LocalDate.of(2020, 2, 4), 30.,600,TipoPrestamo.SEMANAL,FomatoLibroElectronico.PDF);			
+//		System.out.println(libro4);
+//		AudioLibro libro5 = 
+//				AudioLibro.of("9711385667716","La nueva sociedad", "Fermin Cuesta",200, 
+//				LocalDate.of(2020, 3, 4), 30.,600,TipoPrestamo.SEMANAL,FormatoAudio.MP3, "http: wwww.lsi.us.es", 20);			
+//		System.out.println(libro5);
 		biblioteca.añadeLibro(libro1);
 		biblioteca.añadeLibro(libro2);
 		biblioteca.añadeLibro(libro3);
-		biblioteca.añadeLibro(libro4);
-		biblioteca.añadeLibro(libro5);
+//		biblioteca.añadeLibro(libro4);
+//		biblioteca.añadeLibro(libro5);
 		System.out.println(biblioteca.getLibros());
 	}
 

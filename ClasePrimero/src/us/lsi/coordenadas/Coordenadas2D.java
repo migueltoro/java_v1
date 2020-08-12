@@ -2,28 +2,10 @@ package us.lsi.coordenadas;
 
 import java.util.List;
 
-public class Coordenadas2D {
+public record Coordenadas2D(Double latitud, Double longitud) {
 	
-
 	public static Coordenadas2D of(Double latitud, Double longitud) {
 		return new Coordenadas2D(latitud, longitud);
-	}
-
-	private Double latitud;
-	private Double longitud;
-	
-	private Coordenadas2D(Double latitud, Double longitud) {
-		super();
-		this.latitud = latitud;
-		this.longitud = longitud;
-	}
-
-	public Double getLatitud() {
-		return latitud;
-	}
-
-	public Double getLongitud() {
-		return longitud;
 	}
 	
 	public Coordenadas2D toRadians() {
@@ -59,4 +41,5 @@ public class Coordenadas2D {
 		return String.format("(%.2f,%.2f)",this.latitud,this.longitud);
 	}
 	
+
 }

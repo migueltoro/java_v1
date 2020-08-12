@@ -4,11 +4,11 @@ import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.util.function.Function;
 
-public class Punto2D implements Comparable<Punto2D>, ObjetoGeometrico2D, ShapeDeObjeto, ShowObjeto {	
-
-	private static Punto2D cero = Punto2D.of();
+public record Punto2D(Double x,Double y) implements ObjetoGeometrico2D, ShapeDeObjeto, Comparable<Punto2D> {
 	
-	public static Punto2D getOrigen(){
+	private static Punto2D cero = Punto2D.of(0.,0.);
+	
+	public static Punto2D origen(){
 		return Punto2D.cero;
 	}
 	
@@ -16,48 +16,14 @@ public class Punto2D implements Comparable<Punto2D>, ObjetoGeometrico2D, ShapeDe
 		return new Punto2D(x, y);
 	}
 
-	public static Punto2D copy(Punto2D p) {
-		return new Punto2D(p.getX(), p.getY());
-	}
-	
-	public static Punto2D of() {
-		return new Punto2D();
-	}
-	
-	private Double x;
-	private Double y;
-
-	protected Punto2D(){
-		x = 0.;
-		y = 0.;
-	}
-	
-	protected Punto2D(Double x, Double y){
-		this.x = x;
-		this.y = y;
-	}
-	
-	public Double getX(){
-		return this.x;
-	}
-	public Double getY(){
-		return this.y;
-	}
-
-	public void setX(Double x){
-		this.x = x;
-	}
-    public void setY(Double y){
-    	this.y = y;
-    }
     
-    public Cuadrante getCuadrante(){
+    public Cuadrante cuadrante(){
 		Cuadrante c;
-		if(this.getX() >=0 && this.getY() >=0){
+		if(this.x() >=0 && this.y() >=0){
 			c = Cuadrante.PRIMER_CUADRANTE;
-		} else if(this.getX() <=0 && this.getY() >=0){
+		} else if(this.x() <=0 && this.y() >=0){
 			c = Cuadrante.SEGUNDO_CUADRANTE;
-		} else if(this.getX() <=0 && this.getY() <=0){
+		} else if(this.x() <=0 && this.y() <=0){
 			c = Cuadrante.TERCER_CUADRANTE;
 		} else {
 			c = Cuadrante.CUARTO_CUADRANTE;
@@ -65,26 +31,26 @@ public class Punto2D implements Comparable<Punto2D>, ObjetoGeometrico2D, ShapeDe
 		return c;
 	}
     
-    public Double getDistanciaA(Punto2D p) {
-    	Double dx = this.x-p.getX();
-    	Double dy = this.y-p.getY();
+    public Double distanciaA(Punto2D p) {
+    	Double dx = this.x-p.x();
+    	Double dy = this.y-p.x();
 		return Math.sqrt(dx*dx+dy*dy);
 	}
     
-	public Double getDistanciaAlOrigen() {
-		return getDistanciaA(Punto2D.getOrigen());
+	public Double distanciaAlOrigen() {
+		return distanciaA(Punto2D.origen());
 	} 
 	
 	public Punto2D add(Vector2D v){
-    	return Punto2D.of(this.x+v.getX(),this.y+v.getY());
+    	return Punto2D.of(this.x+v.x(),this.y+v.y());
     }
 	
 	public Punto2D minus(Vector2D v){
-    	return Punto2D.of(this.x-v.getX(),this.y-v.getY());
+    	return Punto2D.of(this.x-v.x(),this.y-v.y());
     }
     
-    public Vector2D minus(Punto2D v){
-    	return Vector2D.ofXY(this.x-v.getX(),this.y-v.getY());
+    public Vector2D minus(Punto2D p){
+    	return Vector2D.ofXY(this.x-p.x(),this.y-p.y());
     }
     
     public Vector2D vector() {
@@ -107,7 +73,7 @@ public class Punto2D implements Comparable<Punto2D>, ObjetoGeometrico2D, ShapeDe
 	
 	@Override
 	public Punto2D proyectaSobre(Recta2D r) {
-		return r.punto(0.).add(this.minus(r.punto(0.)).proyectaSobre(r.getVector()));
+		return r.punto().add(this.minus(r.punto()).proyectaSobre(r.vector()));
 	}
 	
 	@Override
@@ -131,53 +97,20 @@ public class Punto2D implements Comparable<Punto2D>, ObjetoGeometrico2D, ShapeDe
 		Punto2D t = this.transform(xt,yt);
 		Punto2D sc = t.minus(Vector2D.baseX().multiply(5.));
 		sc = sc.minus(Vector2D.baseY().multiply(5.));
-		return new Ellipse2D.Double(sc.getX(),sc.getY(),10.,10.);
+		return new Ellipse2D.Double(sc.x(),sc.y(),10.,10.);
 	}
 		
 	public String toString() {
-    	return String.format("(%.2f,%.2f)",this.getX(),this.getY());
+    	return String.format("(%.2f,%.2f)",this.x(),this.y());
     }
 	
-	
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((x == null) ? 0 : x.hashCode());
-		result = prime * result + ((y == null) ? 0 : y.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Punto2D))
-			return false;
-		Punto2D other = (Punto2D) obj;
-		if (x == null) {
-			if (other.x != null)
-				return false;
-		} else if (!x.equals(other.x))
-			return false;
-		if (y == null) {
-			if (other.y != null)
-				return false;
-		} else if (!y.equals(other.y))
-			return false;
-		return true;
-	}
-
 	@Override
 	public int compareTo(Punto2D p) {
-		if(p==null || this.getX() ==null || this.getY() == null|| p.getX() ==null || p.getY() == null ){
+		if(p==null || this.x() ==null || this.y() == null|| p.x() ==null || p.y() == null ){
 	           throw new NullPointerException();
 	    }
-		return this.getDistanciaAlOrigen().compareTo(p.getDistanciaAlOrigen());
+		return this.distanciaAlOrigen().compareTo(p.distanciaAlOrigen());
 	}
 
-	
+
 }

@@ -5,8 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 import us.lsi.coordenadas.Coordenadas3D;
 
-
-public class Marca {
+public record Marca(LocalTime time, Coordenadas3D coordenadas) {
 	
 	public static Marca parse(String text) {
 		String[] campos = text.split(",");
@@ -19,26 +18,9 @@ public class Marca {
 		return new Marca(time, coordenadas);
 	}
 
-	private LocalTime time;
-	private Coordenadas3D coordenadas;
-	
-	private Marca(LocalTime time, Coordenadas3D coordenadas) {
-		super();
-		this.time = time;
-		this.coordenadas = coordenadas;
-	}
-
-	public LocalTime getTime() {
-		return time;
-	}
-
-	public Coordenadas3D getCoordenadas() {
-		return coordenadas;
-	}
-
 	@Override
 	public String toString() {
-		return String.format("(%s,%.2f,%.2f,%.2f)",time,coordenadas.getLatitud(),coordenadas.getLongitud(),coordenadas.getAltitud());
+		return String.format("(%s,%.2f,%.2f,%.2f)",time,coordenadas.latitud(),coordenadas.longitud(),coordenadas.altitud());
 	}
 
 }

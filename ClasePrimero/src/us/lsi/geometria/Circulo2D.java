@@ -6,35 +6,25 @@ import java.util.function.Function;
 
 import us.lsi.tools.Preconditions;
 
-public class Circulo2D implements ObjetoGeometrico2D, ShapeDeObjeto, ShowObjeto {
+public record Circulo2D(Punto2D centro,Double radio)  implements ObjetoGeometrico2D, ShapeDeObjeto{
 	
-	public static Circulo2D of(Punto2D centro, Double radio) {
+	public static Circulo2D of(Punto2D centro, Double radio) {		
 		return new Circulo2D(centro, radio);
 	}
-
-	private Punto2D centro;
-	private Double radio;
 	
-	private Circulo2D(Punto2D centro, Double radio) {
-		super();
+	public Circulo2D() {		
+		this(Punto2D.origen(),1.);
+	}
+	
+	public Circulo2D {
 		Preconditions.checkArgument(radio>=0, "El radio debe ser mayor o igual a cero");
-		this.centro = centro;
-		this.radio = radio;
 	}
 	
-	public Punto2D getCentro() {
-		return centro;
-	}
-
-	public Double getRadio() {
-		return radio;
-	}
-	
-	public Double getArea() {
+	public Double area() {
 		return Math.PI*this.radio*this.radio;
 	}
 
-	public Double getPerimetro() {
+	public Double perimetro() {
 		return 2*Math.PI*this.radio;
 	}
 
@@ -56,7 +46,7 @@ public class Circulo2D implements ObjetoGeometrico2D, ShapeDeObjeto, ShowObjeto 
 	@Override
 	public Segmento2D proyectaSobre(Recta2D r) {
 		Punto2D pc = this.centro.proyectaSobre(r);
-		Vector2D u = r.getVector().unitario();
+		Vector2D u = r.vector().unitario();
 		return Segmento2D.of(pc.add(u.multiply(this.radio)),pc.add(u.multiply(-this.radio)));
 	}
 	
@@ -69,7 +59,7 @@ public class Circulo2D implements ObjetoGeometrico2D, ShapeDeObjeto, ShowObjeto 
 	public Circulo2D transform(Function<Double,Double> xt, Function<Double,Double> yt) {
 		Punto2D p = this.centro.add(Vector2D.ofXY(1.,0.).multiply(this.radio)).transform(xt,yt);
 		Punto2D c = this.centro.transform(xt,yt);
-		return Circulo2D.of(c,p.getX()-c.getX());
+		return Circulo2D.of(c,p.x()-c.x());
 	}
 
 	
@@ -82,47 +72,13 @@ public class Circulo2D implements ObjetoGeometrico2D, ShapeDeObjeto, ShowObjeto 
 	@Override
 	public Shape shape(Function<Double,Double> xt, Function<Double,Double> yt) {
 		Circulo2D ct = (Circulo2D) this.transform(xt,yt);
-		Punto2D sc = ct.getCentro().add(Vector2D.ofXY(-1.,-1.).multiply(ct.getRadio()));
-		return new Ellipse2D.Double(sc.getX(),sc.getY(),2*ct.getRadio(),2*ct.getRadio());	
+		Punto2D sc = ct.centro().add(Vector2D.ofXY(-1.,-1.).multiply(ct.radio()));
+		return new Ellipse2D.Double(sc.x(),sc.y(),2*ct.radio(),2*ct.radio());	
 	}
 	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((centro == null) ? 0 : centro.hashCode());
-		result = prime * result + ((radio == null) ? 0 : radio.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Circulo2D other = (Circulo2D) obj;
-		if (centro == null) {
-			if (other.centro != null)
-				return false;
-		} else if (!centro.equals(other.centro))
-			return false;
-		if (radio == null) {
-			if (other.radio != null)
-				return false;
-		} else if (!radio.equals(other.radio))
-			return false;
-		return true;
-	}
-
-
 	@Override
 	public String toString() {
 		return String.format("(%s,%.2f)",this.centro,this.radio);
 	}
-
-	
 
 }

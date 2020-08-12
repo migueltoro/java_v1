@@ -1,31 +1,9 @@
 package us.lsi.coordenadas;
 
-public class Coordenadas3D {
+public record Coordenadas3D(Double latitud, Double longitud, Double altitud) {
+
 	public static Coordenadas3D of(Double latitud, Double longitud, Double altitud) {
 		return new Coordenadas3D(latitud, longitud, altitud);
-	}
-
-	private Double latitud;
-	private Double longitud;
-	private Double altitud;
-	
-	private Coordenadas3D(Double latitud, Double longitud, Double altitud) {
-		super();
-		this.latitud = latitud;
-		this.longitud = longitud;
-		this.altitud = altitud;
-	}
-
-	public Double getLatitud() {
-		return latitud;
-	}
-
-	public Double getLongitud() {
-		return longitud;
-	}
-
-	public Double getAltitud() {
-		return altitud;
 	}
 
 	public Double distancia(Coordenadas3D c) {
@@ -47,5 +25,6 @@ public class Coordenadas3D {
 	public String toString() {
 		return String.format("(%f,%f,%f)",latitud,longitud,altitud);
 	}
+	
 	
 }

@@ -20,42 +20,42 @@ public class Aeropuerto {
 	// Dado un conjunto de destinos s y una fecha f devuelve cierto si existe un vuelo en la fecha f con destino en s.
 	
 	public static Boolean  hayDestino(Set<String>  destinos, LocalDate f  ) {
-		return Aeropuerto.vuelos.stream().filter(v->v.getFecha().equals(f)).anyMatch(v->destinos.contains(v.getDestino()));
+		return Aeropuerto.vuelos.stream().filter(v->v.fecha().equals(f)).anyMatch(v->destinos.contains(v.destino()));
 	}
 	
 	//Dada una fecha f devuelve el conjunto de destinos diferentes de todos los vuelos de fecha f
 	
 	public static Set<String> destinosDiferentes(LocalDate f) {
-		return Aeropuerto.vuelos.stream().filter(v->v.getFecha().equals(f)).map(v->v.getDestino()).collect(Collectors.toSet());
+		return Aeropuerto.vuelos.stream().filter(v->v.fecha().equals(f)).map(v->v.destino()).collect(Collectors.toSet());
 	}
 	
 	//Dada una cadena de caracteres s devuelve el número total de pasajeros de los destinos que tienen 
 	// como prefijo s (esto es, comienzan por s).
 	
 	public static Integer numeroDepasajeros(String prefix) {
-		return Aeropuerto.vuelos.stream().filter(v->v.getDestino().startsWith(prefix)).mapToInt(v->v.getNumPasajeros()).sum();	
+		return Aeropuerto.vuelos.stream().filter(v->v.destino().startsWith(prefix)).mapToInt(v->v.numPasajeros()).sum();	
 	}
 	
 	//Dado una entero anyo devuelve un SortedMap que relacione cada destino con el total de pasajeros a ese destino en el año anyo
 	
 	public static  SortedMap<String,Integer> totalPasajerosADestino(Integer a) {
 		return Aeropuerto.vuelos.stream()
-			.filter(v->v.getFecha().getYear() == a)
+			.filter(v->v.fecha().getYear() == a)
 			.collect(Collectors.groupingBy( 
-					Vuelo::getDestino, 
+					Vuelo::destino, 
 					()->new TreeMap<String,Integer>(Comparator.reverseOrder()), 
-					Collectors.summingInt(Vuelo::getNumPasajeros)));	
+					Collectors.summingInt(Vuelo::numPasajeros)));	
 	}
 	
 	//Dado un destino devuelve el código del primer vuelo con plazas libres a ese destino
 	
 	public static String  primerVuelo(String destino) {
 		return Aeropuerto.vuelos.stream()
-				.filter(v->v.getDestino().equals(destino) && v.getNumPlazas()>v.getNumPasajeros())
-				.filter(v->v.getFecha().isAfter(LocalDate.now()))
-				.min(Comparator.comparing(Vuelo::getFecha))
+				.filter(v->v.destino().equals(destino) && v.numPlazas()>v.numPasajeros())
+				.filter(v->v.fecha().isAfter(LocalDate.now()))
+				.min(Comparator.comparing(Vuelo::fecha))
 				.get()
-				.getCodigo();
+				.codigo();
 	}
 	
 	//Devuelve el destino con mayor número de vuelos
@@ -63,7 +63,7 @@ public class Aeropuerto {
 	public static String destinoConMasVuelos() {
 		Map<String,Integer> numVuelosDeDestino = Aeropuerto.vuelos.stream()
 				.collect(Collectors.groupingBy(
-						Vuelo::getDestino,
+						Vuelo::destino,
 						Collectors.collectingAndThen(Collectors.counting(),Long::intValue)));					
 		return 	numVuelosDeDestino.keySet().stream()
 				.max(Comparator.comparing(d->numVuelosDeDestino.get(d)))
@@ -76,11 +76,11 @@ public class Aeropuerto {
 	
 	public static Map<LocalDate,List<String>>  destinosConMayorDuracion(Integer n) {
 		return vuelos.stream()
-				.collect(Collectors.groupingBy(Vuelo::getFecha,
+				.collect(Collectors.groupingBy(Vuelo::fecha,
 						Collectors.collectingAndThen(
 								Collectors.toList(),
-								g->g.stream().sorted(Comparator.comparing(Vuelo::getDuracion))
-											 .map(Vuelo::getDestino)
+								g->g.stream().sorted(Comparator.comparing(Vuelo::duracion))
+											 .map(Vuelo::destino)
 											 .collect(Collectors.toList())
 						))); 	
 	}
@@ -89,7 +89,7 @@ public class Aeropuerto {
 	
 	public static SortedSet<Duration> duraciones(Integer m) {
 		return vuelos.stream()
-				.map(Vuelo::getDuracion)
+				.map(Vuelo::duracion)
 				.filter(d->d.getSeconds()/60. > m)
 				.collect(Collectors.toCollection(()->new TreeSet<>()));
 				
@@ -100,8 +100,8 @@ public class Aeropuerto {
 	
 	public static Double precioMedio(LocalDate f) {
 		return vuelos.stream()
-				.filter(v->v.getFecha().isAfter(f))
-				.mapToDouble(Vuelo::getPrecio)
+				.filter(v->v.fecha().isAfter(f))
+				.mapToDouble(Vuelo::precio)
 				.average()
 				.orElse(0.0);
 	}
@@ -110,9 +110,9 @@ public class Aeropuerto {
 	
 	public static Set<String> destinosMayorDuracion(Integer n) {
 		return vuelos.stream()
-				.sorted(Comparator.comparing(Vuelo::getDuracion).reversed())
+				.sorted(Comparator.comparing(Vuelo::duracion).reversed())
 				.limit(n)
-				.map(Vuelo::getDestino)
+				.map(Vuelo::destino)
 				.collect(Collectors.toSet());
 	}
 	
@@ -120,21 +120,21 @@ public class Aeropuerto {
 	
 	public static Map<String,Double> precioMedio() {
 		return vuelos.stream()
-				.filter(v->v.getNumPasajeros().equals(v.getNumPlazas()))
-				.collect(Collectors.groupingBy(Vuelo::getDestino,Collectors.averagingDouble(Vuelo::getPrecio)));
+				.filter(v->v.numPasajeros().equals(v.numPlazas()))
+				.collect(Collectors.groupingBy(Vuelo::destino,Collectors.averagingDouble(Vuelo::precio)));
 	}
 	
 	// Devuelve un Map que haga corresponder a cada destino un conjunto con las fechas de los vuelos a ese destino.
 	
 	public static Map<String,Set<LocalDate>> fechasADestino() {
 		return vuelos.stream()
-				.collect(Collectors.groupingBy(Vuelo::getDestino,Collectors.mapping(Vuelo::getFecha,Collectors.toSet())));		
+				.collect(Collectors.groupingBy(Vuelo::destino,Collectors.mapping(Vuelo::fecha,Collectors.toSet())));		
 	}
 	
 	//13. Dado un número n devuelve un conjunto con los destinos que están entre los n con más vuelos
 	
 	public static Set<String> entreLosMasVuelos(Integer n) {
-		Map<String,List<Vuelo>> vuelosADestino = vuelos.stream().collect(Collectors.groupingBy(Vuelo::getDestino));
+		Map<String,List<Vuelo>> vuelosADestino = vuelos.stream().collect(Collectors.groupingBy(Vuelo::destino));
 		return vuelosADestino.keySet().stream()
 				.sorted(Comparator.comparing(d->vuelosADestino.get(d).size()))
 				.limit(n)
@@ -145,7 +145,7 @@ public class Aeropuerto {
 	// 14. Dado un número entero n devuelve una lista con los destinos que tienen más de n vuelos
 	
 	public static List<String> masDeNVuelos(Integer n) {
-		Map<String,List<Vuelo>> vuelosADestino = vuelos.stream().collect(Collectors.groupingBy(Vuelo::getDestino));
+		Map<String,List<Vuelo>> vuelosADestino = vuelos.stream().collect(Collectors.groupingBy(Vuelo::destino));
 		return vuelosADestino.keySet().stream()
 				.filter(d->vuelosADestino.get(d).size() > n)
 				.collect(Collectors.toList());
@@ -157,7 +157,7 @@ public class Aeropuerto {
 	public static Map<String,Double>  procentajeADestino() {
 		Double n = (double) vuelos.stream().count();
 		return vuelos.stream()
-				.collect(Collectors.groupingBy(Vuelo::getDestino,
+				.collect(Collectors.groupingBy(Vuelo::destino,
 						Collectors.collectingAndThen(Collectors.toList(),g->g.size()/n)));
 		
 	}
@@ -166,9 +166,9 @@ public class Aeropuerto {
 	
 	public static Map<String,Vuelo> masBarato() {
 		return vuelos.stream()
-				.collect(Collectors.groupingBy(Vuelo::getDestino,
+				.collect(Collectors.groupingBy(Vuelo::destino,
 						Collectors.collectingAndThen(
-								Collectors.minBy(Comparator.comparing(Vuelo::getPrecio)),
+								Collectors.minBy(Comparator.comparing(Vuelo::precio)),
 								op->op.get())));	
 	}
 	
@@ -176,8 +176,8 @@ public class Aeropuerto {
 	
 	public static Map<String,Integer> fechasDistintas() {
 		return vuelos.stream()
-				.collect(Collectors.groupingBy(Vuelo::getDestino, 
-						Collectors.mapping(Vuelo::getFecha,
+				.collect(Collectors.groupingBy(Vuelo::destino, 
+						Collectors.mapping(Vuelo::fecha,
 								Collectors.collectingAndThen(Collectors.toSet(),s->s.size()))));
 	}
 	
@@ -185,9 +185,9 @@ public class Aeropuerto {
 	
 	public static Map<String,Integer> fechasDistintas2() {
 		return vuelos.stream()
-				.collect(Collectors.groupingBy(Vuelo::getDestino, 
+				.collect(Collectors.groupingBy(Vuelo::destino, 
 								Collectors.collectingAndThen(Collectors.toList(),
-										g->(int) g.stream().map(Vuelo::getFecha).distinct().count()
+										g->(int) g.stream().map(Vuelo::fecha).distinct().count()
 								)
 						 ));
 	}

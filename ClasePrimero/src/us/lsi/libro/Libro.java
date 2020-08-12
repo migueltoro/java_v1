@@ -143,10 +143,10 @@ public class Libro {
 	public static Integer primeraNumeroLineaConPalabra(String fichero, String palabra) {
 		Stream<String> lineas = FileTools.streamFromFile(fichero);
 		Stream<Enumerate<String>> lineasNumeros = StreamTools.enumerate(lineas);
-		return lineasNumeros.filter(e->e.value.contains(palabra))
+		return lineasNumeros.filter(e->e.value().contains(palabra))
 				.findFirst()
 				.get()
-				.counter;
+				.counter();
 	}
 	
 	public static Integer primeraNumeroLineaConPalabra2(String fichero, String palabra) {
@@ -166,10 +166,10 @@ public class Libro {
 	public static String lineaNumero(String fichero, Integer n) {
 		Stream<String> lineas = FileTools.streamFromFile(fichero);
 		Stream<Enumerate<String>> lineasNumeros = StreamTools.enumerate(lineas);
-		return lineasNumeros.filter(e->e.counter.equals(n))
+		return lineasNumeros.filter(e->e.counter().equals(n))
 				.findFirst()
 				.get()
-				.value;
+				.value();
 	}
 	
 	public static String lineaNumero2(String fichero, Integer n) {
@@ -285,8 +285,8 @@ public class Libro {
 	}
 	
 	private static Stream<Enumerate<String>> lineasAPalabras2(Enumerate<String> nl){
-		return Arrays.stream(nl.value.split(Libro.separadores))
-				.map(p->Enumerate.of(nl.counter,p));
+		return Arrays.stream(nl.value().split(Libro.separadores))
+				.map(p->Enumerate.of(nl.counter(),p));
 	}
 	
 	public static SortedMap<String,Set<Integer>> lineasDePalabra(String fichero) {
@@ -294,11 +294,11 @@ public class Libro {
 		Stream<Enumerate<String>> lineasNumeros = StreamTools.enumerate(lineas);
 		return lineasNumeros
 				.flatMap(Libro::lineasAPalabras2)
-				.filter(np->np.value.length() >0)
+				.filter(np->np.value().length() >0)
 				.collect(Collectors.groupingBy(
-						np->np.value,
+						np->np.value(),
 						()->new TreeMap<String,Set<Integer>>(),
-						Collectors.mapping(np->np.counter,Collectors.toSet())));
+						Collectors.mapping(np->np.counter(),Collectors.toSet())));
 	}
 	
 	

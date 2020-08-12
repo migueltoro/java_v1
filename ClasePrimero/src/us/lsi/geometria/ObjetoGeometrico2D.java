@@ -34,5 +34,11 @@ public interface ObjetoGeometrico2D {
 	 * @return El objeto geométrico transformado al sistema de coordenadas de la ventana
 	 */
 	ObjetoGeometrico2D transform(Function<Double,Double> xt, Function<Double,Double> yt);
+	
+	/**
+	 * @param v Una ventana donde se representará el objeto
+	 * @post La representación del objeto geométrico en la ventana
+	 */
+	void show(Ventana v);
 		
 }

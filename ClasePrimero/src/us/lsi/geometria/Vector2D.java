@@ -2,7 +2,7 @@ package us.lsi.geometria;
 
 import us.lsi.tools.Preconditions;
 
-public class Vector2D {
+public record Vector2D(Double x,Double y) {
 
 	public static Vector2D baseX() {
 		return new Vector2D(1., 0.);
@@ -21,7 +21,7 @@ public class Vector2D {
 	}
 	
 	public static Vector2D copy(Vector2D p) {
-		return new Vector2D(p.getX(), p.getY());
+		return new Vector2D(p.x(), p.y());
 	}
 	
 	public static Vector2D ofGrados(Double modulo, Double angulo){
@@ -34,45 +34,24 @@ public class Vector2D {
 		return ofXY(modulo*Math.cos(angulo),modulo*Math.sin(angulo));		
 	}
 	
-	private Double x;
-	private Double y;
-	private Double modulo;
-	private Double angulo; // en radianes
-	
-	private Vector2D(Double x, Double y) {
-		super();
-		this.x = x;
-		this.y = y;
-		this.modulo = Math.abs(Math.hypot(x, y));
-		this.angulo = Math.atan2(y, x);
+	public Double modulo() {
+		return Math.abs(Math.hypot(x, y));
 	}
 
-	public Double getX() {
-		return this.x;
-	}
-
-	public Double getY() {
-		return this.y;
+	public Double angulo() {
+		return Math.atan2(y, x);
 	}
 	
-	public Double getModulo() {
-		return this.modulo;
+	public Double anguloEnGrados() {
+		return Math.toDegrees(this.angulo());
 	}
 
-	public Double getAngulo() {   //en radianes
-		return this.angulo;
-	}
-
-	public Double getAnguloEnGrados() {
-		return Math.toDegrees(angulo);
-	}
-
-	public Double getAngulo(Vector2D v) {
-		return Math.asin(this.multiplicaVectorial(v)/(this.getModulo()*v.getModulo()));
+	public Double angulo(Vector2D v) {
+		return Math.asin(this.multiplicaVectorial(v)/(this.modulo()*v.modulo()));
 	}
 	
-	public Double getAnguloEnGrados(Vector2D v) {
-		return Math.toDegrees(getAngulo(v));
+	public Double anguloEnGrados(Vector2D v) {
+		return Math.toDegrees(angulo(v));
 	}
 	
 	public Vector2D proyectaSobre(Vector2D v){
@@ -89,7 +68,7 @@ public class Vector2D {
 	}
 	
 	public Vector2D unitario() {
-		return Vector2D.ofRadianes(1.,this.getAngulo());
+		return Vector2D.ofRadianes(1.,this.angulo());
 	}
 	
 	public Vector2D opuesto() {
@@ -105,7 +84,7 @@ public class Vector2D {
 	}
 	
 	public Vector2D rota(Double angulo) {
-		return Vector2D.ofRadianes(this.getModulo(),this.getAngulo()+angulo);
+		return Vector2D.ofRadianes(this.modulo(),this.angulo()+angulo);
 	}
 		
 	public Vector2D multiply(Double factor) {
@@ -113,44 +92,14 @@ public class Vector2D {
 	}
 	
 	public Double multiplicaVectorial(Vector2D v) {
-		return this.getX()*v.getY()-this.getY()*v.getX();
+		return this.x()*v.y()-this.y()*v.x();
 	}
 	
 	public Double multiplicaEscalar(Vector2D v) {
-		return this.getX()*v.getX()+this.getY()*v.getY();
+		return this.x()*v.x()+this.y()*v.y();
 	}
 	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((x == null) ? 0 : x.hashCode());
-		result = prime * result + ((y == null) ? 0 : y.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Vector2D other = (Vector2D) obj;
-		if (x == null) {
-			if (other.x != null)
-				return false;
-		} else if (!x.equals(other.x))
-			return false;
-		if (y == null) {
-			if (other.y != null)
-				return false;
-		} else if (!y.equals(other.y))
-			return false;
-		return true;
-	}
-
+	
 	@Override
 	public String toString() {
 		return String.format("(%.2f,%.2f)",this.x, this.y);

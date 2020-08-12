@@ -1,18 +1,13 @@
 package us.lsi.sevici;
 
 import us.lsi.coordenadas.Coordenadas2D;
-import us.lsi.tools.Preconditions;
 
-public class Estacion {
-	
-	private Integer numero;
-	private String name;	
-	private Integer slots;
-	private Integer empty_slots;
-	private Integer free_bikes;
-	private Coordenadas2D coordenadas;
-
-// 149_CALLE ARROYO,20,11,9,37.397829929383,-5.97567172039552	
+public record Estacion(Integer numero,
+		String name,
+		Integer slots,
+		Integer empty_slots,
+		Integer free_bikes,
+		Coordenadas2D coordenadas) {
 	
 	public static Estacion parse(String linea) {
 		String[] partes = linea.split(",");
@@ -26,56 +21,9 @@ public class Estacion {
 		return new Estacion(numero,name,slots,empty_slots,free_bikes,coordenadas);
 	}
 	
-	
-	private Estacion(Integer numero, String name, Integer slots, Integer empty_slots, Integer free_bikes,
-			Coordenadas2D coordenadas) {
-		super();
-		Preconditions.checkArgument(slots>=0,String.format("Slots deben ser mayor o igual que cero y es %d",slots));
-		Preconditions.checkArgument(empty_slots>=0,String.format("Empty_Slots deben ser mayor o igual que cero y es %d",empty_slots));
-		Preconditions.checkArgument(free_bikes>=0,String.format("Free_Bikes deben ser mayor o igual que cero y es %d",free_bikes));
-		this.numero = numero;
-		this.name = name;
-		this.slots = slots;
-		this.empty_slots = empty_slots;
-		this.free_bikes = free_bikes;
-		this.coordenadas = coordenadas;
-	}
-	
-
-	public Integer getNumero() {
-		return numero;
-	}
-
-
-	public String getName() {
-		return name;
-	}
-
-
-	public Integer getSlots() {
-		return slots;
-	}
-
-
-	public Integer getEmpty_slots() {
-		return empty_slots;
-	}
-
-
-	public Integer getFree_bikes() {
-		return free_bikes;
-	}
-	
-
-	public Coordenadas2D getCoordenadas() {
-		return coordenadas;
-	}
-
-
 	@Override
 	public String toString() {
 		return String.format("(%3d,%30s,%2d,%2d,%2d,%s)",numero,name,slots,empty_slots,free_bikes,coordenadas.toString());
 	}
 	
-
 }
