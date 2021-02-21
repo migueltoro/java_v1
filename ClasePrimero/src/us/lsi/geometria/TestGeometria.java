@@ -8,6 +8,8 @@ public class TestGeometria {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		Locale.setDefault(Locale.US);
+		Punto2D p = Punto2D.parse("(2.0,3.1");
+		System.out.println(p);
 		Circulo2D c1 = Circulo2D.of(Punto2D.of(0.,0.),60.);
 		Circulo2D c2 = Circulo2D.of(Punto2D.of(60.,70.),30.);
 		Circulo2D c3 = Circulo2D.of(Punto2D.of(-50.,150.),100.);

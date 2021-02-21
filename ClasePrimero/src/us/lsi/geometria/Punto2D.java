@@ -16,6 +16,11 @@ public record Punto2D(Double x,Double y) implements ObjetoGeometrico2D, ShapeDeO
 		return new Punto2D(x, y);
 	}
 
+	public static Punto2D parse(String text) {
+		String text2 = text.substring(1, text.length()-1);
+		String[] campos = text2.split(",");
+		return new Punto2D(Double.parseDouble(campos[0]), Double.parseDouble(campos[1]));
+	}
     
     public Cuadrante cuadrante(){
 		Cuadrante c;

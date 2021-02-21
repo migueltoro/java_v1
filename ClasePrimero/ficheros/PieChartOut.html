@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+        ['Tipo de Jugada','Numero'],
+        ['Pareja',2318],
+['Trio',234],
+['Color',15],
+['Escalera',16],
+['DoblePareja',343],
+['CartaAlta',2042],
+['Full',19],
+['Poker',13]
+]
+        );
+
+        var options = {
+          title: 'Tipos de jugadas'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="piechart" style="width: 900px; height: 500px;"></div>
+  </body>
+</html>

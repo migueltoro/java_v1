@@ -1,9 +1,17 @@
 package us.lsi.tools;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
 import java.util.Spliterator;
 import java.util.Spliterators.AbstractSpliterator;
+import java.util.TreeSet;
 import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -35,6 +43,52 @@ public class StreamTools {
 	
 	public static <E> Stream<Enumerate<E>> enumerate(Stream<E> stream){
 		return enumerate(stream,0);
+	}
+	
+	public static <E> Iterable<E> toIterable(Stream<E> st){
+		return st::iterator;
+	}
+	
+	public static <E> List<E> toList(Stream<E> st){
+		return st.collect(Collectors.toList());
+	}
+	
+	public static <E> Set<E> toSet(Stream<E> st){
+		return st.collect(Collectors.toSet());
+	}
+	
+	public static <K,E> Map<K,List<E>> groupingList(Stream<E> st,Function<E,K> key){
+		return st.collect(Collectors.groupingBy(key));
+	}
+	
+	public static <E,K,T> Map<K,List<T>> groupingList(Stream<E> st,Function<E,K> key, Function<E,T> map){
+		return st.collect(Collectors.groupingBy(key,Collectors.mapping(map,Collectors.toList())));
+	}
+	
+	public static <E,K> Map<K,Set<E>> groupingSet(Stream<E> st,Function<E,K> key){
+		return st.collect(Collectors.groupingBy(key,Collectors.toSet()));
+	}
+	
+	public static <E,K> Map<K,SortedSet<E>> groupingSortedSet(Stream<E> st,Function<E,K> key){
+		return st.collect(Collectors.groupingBy(key,Collectors.toCollection(TreeSet::new)));
+	}
+	
+	public static <E,K> Map<K,Integer> counting(Stream<E> st,Function<E,K> key){
+		return st.collect(Collectors.groupingBy(key,
+				Collectors.collectingAndThen(Collectors.counting(),Long::intValue)));
+	}
+	
+	public static <E,K> Map<K,E> groupingReduce(Stream<E> st, Function<E,K> key, BinaryOperator<E> op){
+		return st.collect(Collectors.groupingBy(key,
+				Collectors.collectingAndThen(Collectors.reducing(op),e->e.get())));
+	}
+	
+	public static <E,K> Map<K,E> groupingReduce(Stream<E> st, Function<E,K> key, BinaryOperator<E> op, E a0){
+		return st.collect(Collectors.groupingBy(key,Collectors.reducing(a0,op)));
+	}
+	
+	public static <E,K,T> Map<K,T> groupingReduce(Stream<E> st, Function<E,K> key, Function<E,T> map, BinaryOperator<T> op, T a0){
+		return st.collect(Collectors.groupingBy(key,Collectors.reducing(a0,map,op)));
 	}
 
 }
