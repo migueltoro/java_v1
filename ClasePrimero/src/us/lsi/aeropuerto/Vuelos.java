@@ -3,36 +3,54 @@ package us.lsi.aeropuerto;
 import java.time.Duration;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.function.BinaryOperator;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import us.lsi.tools.FileTools;
+
+import static us.lsi.tools.StreamTools.*;
 
 public class Vuelos {
 	
 	public static List<Vuelo> vuelos;
-	public static Map<String,Vuelo> datosVuelos;
+	public static Map<String, Vuelo> datosVuelos;
+	public static Integer numVuelos;
+	
+	public static void random(Integer numVuelos) {
+		Vuelos.vuelos = toList(IntStream.range(0,numVuelos).boxed().map(e->Vuelo.random()));
+		Vuelos.datosVuelos = Vuelos.vuelos.stream().collect(Collectors.toMap(Vuelo::codigoVuelo,x->x));
+		Vuelos.numVuelos = Vuelos.datosVuelos.size();
+	}
+
+	public static void leeFicheroVuelos(String fichero) {
+		Vuelos.vuelos = FileTools.streamFromFile(fichero)
+				.map(x -> Vuelo.parse(x))
+				.collect(Collectors.toList());
+		Vuelos.datosVuelos = Vuelos.vuelos.stream().collect(Collectors.toMap(Vuelo::codigoVuelo,x->x));
+		Vuelos.numVuelos = Vuelos.datosVuelos.size();
+	}
 	
 	public static void addVuelo(Vuelo v) {
 		Vuelos.vuelos.add(v);
 	}
 	
-	public void removeVuelo(Vuelo v) {
+	public static void removeVuelo(Vuelo v) {
 		Vuelos.vuelos.remove(v);
 	}
 	
-
-	
-	
-	
 	//Devuelve el destino con mayor número de vuelos
 	
-	public String destinoConMasVuelos() {
-		Map<String,Integer> numVuelosDeDestino = Vuelos.vuelos.stream()
-				.collect(Collectors.groupingBy(
-						Vuelo::codeDestino,
-						Collectors.collectingAndThen(Collectors.counting(),Long::intValue)));					
+	public static String destinoConMasVuelos() {
+//		Map<String,Integer> numVuelosDeDestino = Vuelos.vuelos.stream()
+//				.collect(Collectors.groupingBy(
+//						Vuelo::codeDestino,
+//						Collectors.collectingAndThen(Collectors.counting(),Long::intValue)));	
+		Map<String,Integer> numVuelosDeDestino = counting(Vuelos.vuelos.stream(),Vuelo::codeDestino);
 		return 	numVuelosDeDestino.keySet().stream()
 				.max(Comparator.comparing(d->numVuelosDeDestino.get(d)))
 				.get();	
@@ -43,12 +61,12 @@ public class Vuelos {
 	
 	//Dado un entero m devuelve un conjunto ordenado con las duraciones de todos los vuelos cuya duración es mayor que m minutos.
 	
-	public SortedSet<Duration> duraciones(Integer m) {
-		return Vuelos.vuelos.stream()
+	public static SortedSet<Duration> duraciones(Integer m) {
+		Stream<Duration> st = Vuelos.vuelos.stream()
 				.map(Vuelo::duracion)
-				.filter(d->d.getSeconds()/60. > m)
-				.collect(Collectors.toCollection(()->new TreeSet<>()));
-				
+				.filter(d->d.getSeconds()/60. > m);
+//				.collect(Collectors.toCollection(()->new TreeSet<>()));	
+		return toSortedSet(st);
 	}
  
 	
@@ -56,7 +74,7 @@ public class Vuelos {
 	
 	// Dado un número n devuelve un conjunto con los destinos de los vuelos que están entre los n que más duración tienen.
 	
-	public Set<String> destinosMayorDuracion(Integer n) {
+	public static Set<String> destinosMayorDuracion(Integer n) {
 		return Vuelos.vuelos.stream()
 				.sorted(Comparator.comparing(Vuelo::duracion).reversed())
 				.limit(n)
@@ -66,7 +84,7 @@ public class Vuelos {
 	
 	//13. Dado un número n devuelve un conjunto con los destinos que están entre los n con más vuelos
 	
-	public Set<String> entreLosMasVuelos(Integer n) {
+	public static Set<String> entreLosMasVuelos(Integer n) {
 		Map<String,List<Vuelo>> vuelosADestino = Vuelos.vuelos.stream().collect(Collectors.groupingBy(Vuelo::codeDestino));
 		return vuelosADestino.keySet().stream()
 				.sorted(Comparator.comparing(d->vuelosADestino.get(d).size()))
@@ -77,7 +95,7 @@ public class Vuelos {
 	
 	// 14. Dado un número entero n devuelve una lista con los destinos que tienen más de n vuelos
 	
-	public List<String> masDeNVuelos(Integer n) {
+	public static List<String> masDeNVuelos(Integer n) {
 		Map<String,List<Vuelo>> vuelosADestino = vuelos.stream().collect(Collectors.groupingBy(Vuelo::codeDestino));
 		return vuelosADestino.keySet().stream()
 				.filter(d->vuelosADestino.get(d).size() > n)
@@ -87,7 +105,7 @@ public class Vuelos {
 	
 	// 15. Devuelve un Map que relación cada destino con el porcentaje de los vuelos del total que van a ese destino.
 	
-	public Map<String,Double>  procentajeADestino() {
+	public static Map<String,Double>  procentajeADestino() {
 		Double n = (double) Vuelos.vuelos.stream().count();
 		return vuelos.stream()
 				.collect(Collectors.groupingBy(Vuelo::codeDestino,
@@ -97,16 +115,16 @@ public class Vuelos {
 	
 	// 16. Devuelve un Map que haga corresponder a cada ciudad destino el vuelo de más barato
 	
-	public Map<String,Vuelo> masBarato() {
-		return Vuelos.vuelos.stream()
-				.collect(Collectors.groupingBy(Vuelo::ciudadDestino,
-						Collectors.collectingAndThen(
-								Collectors.minBy(Comparator.comparing(Vuelo::precio)),
-								op->op.get())));	
+	public static Map<String,Vuelo> masBarato() {
+//		return Vuelos.vuelos.stream()
+//				.collect(Collectors.groupingBy(Vuelo::ciudadDestino,
+//						Collectors.collectingAndThen(
+//								Collectors.minBy(Comparator.comparing(Vuelo::precio)),
+//								op->op.get())));
+		
+		return groupingReduce(Vuelos.vuelos.stream(),Vuelo::ciudadDestino,
+				BinaryOperator.minBy(Comparator.comparing(Vuelo::precio)));
 	}
-	
-	
-	
 	
 	
 }

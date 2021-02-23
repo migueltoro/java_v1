@@ -58,9 +58,9 @@ public class Calculos {
 	}
 	
 	public static Double media(Stream<Integer> st) {
-	    TMedia ac = new TMedia(0,0);
+	    Tmedia ac = new Tmedia(0,0);
 	    for(Integer e: toIterable(st)) {
-	    	ac = new TMedia(ac.sum+e,ac.n+1);
+	    	ac = new Tmedia(ac.sum+e,ac.n+1);
 	    }
 	    Preconditions.checkArgument(ac.n>0,String.format("El iterador esta vacio"));
 	    return (1.0*ac.sum)/ac.n; 
@@ -73,7 +73,13 @@ public class Calculos {
 	    System.out.println(f1.multiply(f2));
 	}
 	
-	
+	public static int mcd(int a, int b){		
+	       Tmcd t = Tmcd.of(a, b);
+	       while (t.b() != 0) {
+	            t = Tmcd.of(t.b(),t.a()%t.b());
+	       }
+		    return t.a();
+	}
 
 	public static void main(String[] args) {
 		Locale.setDefault(new Locale("en", "US"));
@@ -81,9 +87,16 @@ public class Calculos {
 		System.out.println(toList(Calculos.secuenciaAritmetica(5,20,3)));
 		System.out.println(Calculos.media(Calculos.secuenciaAritmetica(5,20,3)));
 		fractions();
+		System.out.println(mcd(79,11));
 	}
 	
-	public static record TMedia(Integer sum, Integer n) {}
+	public static record Tmcd(Integer a, Integer b) {
+		public static Tmcd of(Integer a, Integer b) {
+			return new Tmcd(a,b);
+		}
+	}
+	
+	public static record Tmedia(Integer sum, Integer n) {}
 	
 	public static record Solucion2G(Complex a, Complex b) {
 		

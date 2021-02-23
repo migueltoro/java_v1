@@ -1,5 +1,6 @@
 package us.lsi.tools;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -55,6 +56,26 @@ public class StreamTools {
 	
 	public static <E> Set<E> toSet(Stream<E> st){
 		return st.collect(Collectors.toSet());
+	}
+	
+	public static <E> SortedSet<E> toSortedSet(Stream<E> st){
+		return st.collect(Collectors.toCollection(()->new TreeSet<>()));
+	}
+	
+	public static <E> SortedSet<E> toSortedSet(Stream<E> st, Comparator<E> cmp){
+		return st.collect(Collectors.toCollection(()->new TreeSet<>(cmp)));
+	}
+	
+	public static <K,E> Map<K,E> toMap(Stream<E> st, Function<E,K> key){
+		return st.collect(Collectors.toMap(key,x->x));
+	}
+	
+	public static <K,V,E> Map<K,V> toMap(Stream<E> st, Function<E,K> key, Function<E,V> value){
+		return st.collect(Collectors.toMap(key,value));
+	}
+	
+	public static <K,V,E> Map<K,V> toMap(Stream<E> st, Function<E,K> key, Function<E,V> value, BinaryOperator<V> op){
+		return st.collect(Collectors.toMap(key,value,op));
 	}
 	
 	public static <K,E> Map<K,List<E>> groupingList(Stream<E> st,Function<E,K> key){
