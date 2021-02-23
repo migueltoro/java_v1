@@ -14,7 +14,7 @@ import java.util.TreeMap;
 
 import us.lsi.tools.Enumerate;
 import us.lsi.tools.FileTools;
-import us.lsi.tools.StreamTools;
+import static us.lsi.tools.StreamTools.*;
 
 public class Libro {
 	
@@ -54,10 +54,9 @@ public class Libro {
 		return a.size();
 	}
 	
-	// https://github.com/migueltoro/clase_primero_2020
-	
 	public static Integer numeroDePalabrasDistintasNoHuecas(String fichero) {
-		Set<String> palabrasHuecas = FileTools.streamFromFile("ficheros/palabras_huecas.txt").collect(Collectors.toSet());
+		Set<String> palabrasHuecas = FileTools.streamFromFile("ficheros/palabras_huecas.txt")
+				.collect(Collectors.toSet());
 		return (int) FileTools.streamFromFile(fichero)
 				.flatMap(linea->Arrays.stream(linea.split(Libro.separadores)))
 				.distinct()
@@ -142,7 +141,7 @@ public class Libro {
 	
 	public static Integer primeraNumeroLineaConPalabra(String fichero, String palabra) {
 		Stream<String> lineas = FileTools.streamFromFile(fichero);
-		Stream<Enumerate<String>> lineasNumeros = StreamTools.enumerate(lineas);
+		Stream<Enumerate<String>> lineasNumeros = enumerate(lineas);
 		return lineasNumeros.filter(e->e.value().contains(palabra))
 				.findFirst()
 				.get()
@@ -165,7 +164,7 @@ public class Libro {
 	
 	public static String lineaNumero(String fichero, Integer n) {
 		Stream<String> lineas = FileTools.streamFromFile(fichero);
-		Stream<Enumerate<String>> lineasNumeros = StreamTools.enumerate(lineas);
+		Stream<Enumerate<String>> lineasNumeros = enumerate(lineas);
 		return lineasNumeros.filter(e->e.counter().equals(n))
 				.findFirst()
 				.get()
@@ -190,12 +189,16 @@ public class Libro {
 		return Arrays.stream(nl.split(Libro.separadores));
 	}
 	
-	public static Map<String,Long> frecuenciasDePalabras1(String fichero) {
-		return FileTools.streamFromFile(fichero)
-				.flatMap(Libro::lineasAPalabras)
-				.collect(Collectors.groupingBy(
-						x->x,
-						Collectors.counting()));				
+	public static Map<String,Integer> frecuenciasDePalabras1(String fichero) {
+//		return FileTools.streamFromFile(fichero)
+//				.flatMap(Libro::lineasAPalabras)
+//				.collect(Collectors.groupingBy(
+//						x->x,
+//						Collectors.counting()));	
+		Stream<String> st = FileTools.streamFromFile(fichero)
+				.flatMap(Libro::lineasAPalabras);
+		return counting(st);
+		
 	}
 	
 	
@@ -291,7 +294,7 @@ public class Libro {
 	
 	public static SortedMap<String,Set<Integer>> lineasDePalabra(String fichero) {
 		Stream<String> lineas = FileTools.streamFromFile(fichero);
-		Stream<Enumerate<String>> lineasNumeros = StreamTools.enumerate(lineas);
+		Stream<Enumerate<String>> lineasNumeros = enumerate(lineas);
 		return lineasNumeros
 				.flatMap(Libro::lineasAPalabras2)
 				.filter(np->np.value().length() >0)

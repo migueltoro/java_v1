@@ -99,6 +99,11 @@ public class StreamTools {
 				Collectors.collectingAndThen(Collectors.counting(),Long::intValue)));
 	}
 	
+	public static <E> Map<E,Integer> counting(Stream<E> st){
+		return st.collect(Collectors.groupingBy(x->x,
+				Collectors.collectingAndThen(Collectors.counting(),Long::intValue)));
+	}
+	
 	public static <E,K> Map<K,E> groupingReduce(Stream<E> st, Function<E,K> key, BinaryOperator<E> op){
 		return st.collect(Collectors.groupingBy(key,
 				Collectors.collectingAndThen(Collectors.reducing(op),e->e.get())));
