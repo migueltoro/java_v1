@@ -17,25 +17,25 @@ public class Calculos {
 	
 	public static Double areaCirculo(Double radio) {
 	    Preconditions.checkArgument(radio>=0,
-	    		String.format("El radio debe ser mayor o igual a cero y es {0:.2f}'",radio));
+	    		String.format("El radio debe ser mayor o igual a cero y es %.2f'",radio));
 	    return Math.PI*radio*radio;
 	}
 	
 	public static Double longitud_circunferencia(Double radio) {
 	    Preconditions.checkArgument(radio>=0,
-	    		String.format("El radio debe ser mayor o igual a cero y es {0:.2f}'",radio));
+	    		String.format("El radio debe ser mayor o igual a cero y es %.2f'",radio));
 	    return 2*Math.PI*radio;
 	}
 	    		
 	public static Double sol_ecuacion_primer_grado(Double a,Double b) { 
 	    Preconditions.checkArgument(a>0,
-	    		String.format("El coeficiente a debe ser distinto de cero y es {0:.2f}",a));
+	    		String.format("El coeficiente a debe ser distinto de cero y es %.2f",a));
 	    return -b/a;
 	}
 	
 	public static Solucion2G solEcuacionSegundoGrado(Double a, Double b, Double c) {
 	    Preconditions.checkArgument(a>0,
-	    		String.format("El coeficiente a debe ser distinto de cero y es {0:.2f}",a));
+	    		String.format("El coeficiente a debe ser distinto de cero y es %.2",a));
 	    Double disc = b*b-4*a*c;
 	    if (disc >= 0) {
 	        Double r1 = -b/(2*a);
@@ -67,8 +67,9 @@ public class Calculos {
 	}
 	
 	public static void fractions() {
-		Fraction f1 = Fraction.getReducedFraction(3, 4);
+		Fraction f1 = Fraction.getReducedFraction(6, 8);
 	    Fraction f2 = Fraction.getReducedFraction(1, 4);
+	    System.out.println(f1);
 	    System.out.println(f1.subtract(f2));
 	    System.out.println(f1.multiply(f2));
 	}

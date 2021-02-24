@@ -10,12 +10,14 @@ public class TestAeropuerto {
 		Aeropuertos.leeFicheroAeropuertos("ficheros/Aeropuertos.csv");
 		EmpresasAereas.leeFicheroEmpresas("ficheros/EmpresasAereas.csv");
 		Vuelos.random(100);
+		OcupacionesVuelos.random(200, 2020);
 		System.out.println(Vuelo.random());
 		OcupacionVuelo ocp = OcupacionVuelo.random(Vuelos.vuelos.get(0),2020);
 		System.out.println(ocp);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		System.out.println(ocp.fecha().format(formatter));
-		System.out.println(CollectionsTools.mapToString(Vuelos.masBarato()));
+//		System.out.println(CollectionsTools.mapToString(OcupacionesVuelos.fechasADestino()));
+		System.out.println(CollectionsTools.mapToString(OcupacionesVuelos.destinosConMayorDuracion(2)));
 	}
 
 }

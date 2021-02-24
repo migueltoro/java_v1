@@ -42,7 +42,7 @@ public record OcupacionVuelo(String codeVuelo, LocalDateTime fecha, Integer numP
 				.get();
 		d = d.plus(7*rnd.nextInt(53),ChronoUnit.DAYS); //53 semanas en un año
 		LocalDateTime fecha = LocalDateTime.of(d, t);
-	    Integer numPasajeros = rnd.nextInt(np);
+	    Integer numPasajeros = np>0?rnd.nextInt(np):0;
 		return new OcupacionVuelo(codeVuelo,fecha,numPasajeros);
 	}
 	

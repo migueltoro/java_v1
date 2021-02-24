@@ -45,12 +45,9 @@ public class Vuelos {
 	
 	//Devuelve el destino con mayor número de vuelos
 	
-	public static String destinoConMasVuelos() {
-//		Map<String,Integer> numVuelosDeDestino = Vuelos.vuelos.stream()
-//				.collect(Collectors.groupingBy(
-//						Vuelo::codeDestino,
-//						Collectors.collectingAndThen(Collectors.counting(),Long::intValue)));	
+	public static String destinoConMasVuelos() {	
 		Map<String,Integer> numVuelosDeDestino = counting(Vuelos.vuelos.stream(),Vuelo::codeDestino);
+		
 		return 	numVuelosDeDestino.keySet().stream()
 				.max(Comparator.comparing(d->numVuelosDeDestino.get(d)))
 				.get();	
@@ -65,7 +62,7 @@ public class Vuelos {
 		Stream<Duration> st = Vuelos.vuelos.stream()
 				.map(Vuelo::duracion)
 				.filter(d->d.getSeconds()/60. > m);
-//				.collect(Collectors.toCollection(()->new TreeSet<>()));	
+
 		return toSortedSet(st);
 	}
  
@@ -75,17 +72,19 @@ public class Vuelos {
 	// Dado un número n devuelve un conjunto con los destinos de los vuelos que están entre los n que más duración tienen.
 	
 	public static Set<String> destinosMayorDuracion(Integer n) {
-		return Vuelos.vuelos.stream()
+		Stream<String> st = Vuelos.vuelos.stream()
 				.sorted(Comparator.comparing(Vuelo::duracion).reversed())
 				.limit(n)
-				.map(Vuelo::codeDestino)
-				.collect(Collectors.toSet());
+				.map(Vuelo::codeDestino);
+		
+		return toSet(st);
 	}
 	
-	//13. Dado un número n devuelve un conjunto con los destinos que están entre los n con más vuelos
+	//13. Dado un número n devuelve un conjunto con los n destinos con más vuelos
 	
 	public static Set<String> entreLosMasVuelos(Integer n) {
 		Map<String,List<Vuelo>> vuelosADestino = Vuelos.vuelos.stream().collect(Collectors.groupingBy(Vuelo::codeDestino));
+		
 		return vuelosADestino.keySet().stream()
 				.sorted(Comparator.comparing(d->vuelosADestino.get(d).size()))
 				.limit(n)
@@ -106,21 +105,14 @@ public class Vuelos {
 	// 15. Devuelve un Map que relación cada destino con el porcentaje de los vuelos del total que van a ese destino.
 	
 	public static Map<String,Double>  procentajeADestino() {
-		Double n = (double) Vuelos.vuelos.stream().count();
-		return vuelos.stream()
-				.collect(Collectors.groupingBy(Vuelo::codeDestino,
-						Collectors.collectingAndThen(Collectors.toList(),g->g.size()/n)));
+		Integer n = Vuelos.numVuelos;
 		
+		return groupingListAndThen(Vuelos.vuelos.stream(),Vuelo::codeDestino,g->(1.0*g.size())/n);
 	}
 	
 	// 16. Devuelve un Map que haga corresponder a cada ciudad destino el vuelo de más barato
 	
 	public static Map<String,Vuelo> masBarato() {
-//		return Vuelos.vuelos.stream()
-//				.collect(Collectors.groupingBy(Vuelo::ciudadDestino,
-//						Collectors.collectingAndThen(
-//								Collectors.minBy(Comparator.comparing(Vuelo::precio)),
-//								op->op.get())));
 		
 		return groupingReduce(Vuelos.vuelos.stream(),Vuelo::ciudadDestino,
 				BinaryOperator.minBy(Comparator.comparing(Vuelo::precio)));
