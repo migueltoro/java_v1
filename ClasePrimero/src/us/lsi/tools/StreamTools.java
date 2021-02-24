@@ -89,6 +89,35 @@ public class StreamTools {
 				Collectors.toList()));
 	}
 	
+	public static <E,K,V> SortedMap<K,List<V>> groupingListSorted(
+			Stream<E> st, 
+			Function<E,K> key,
+			Comparator<K> cmp,
+			Function<E,V> value){
+		return st.collect(Collectors.groupingBy(key,
+				() -> new TreeMap<K,List<V>>(cmp),
+				Collectors.mapping(value,Collectors.toList())));
+	}
+	
+	public static <E,K> SortedMap<K,Set<E>> groupingSetSorted(
+			Stream<E> st, 
+			Function<E,K> key,
+			Comparator<K> cmp){
+		return st.collect(Collectors.groupingBy(key,
+				() -> new TreeMap<K,Set<E>>(cmp),
+				Collectors.toSet()));
+	}
+	
+	public static <E,K,V> SortedMap<K,Set<V>> groupingSetSorted(
+			Stream<E> st, 
+			Function<E,K> key,
+			Comparator<K> cmp,
+			Function<E,V> value){
+		return st.collect(Collectors.groupingBy(key,
+				() -> new TreeMap<K,Set<V>>(cmp),
+				Collectors.mapping(value,Collectors.toSet())));
+	}
+	
 	public static <E,K> SortedMap<K,E> groupingReduceSorted(
 			Stream<E> st, 
 			Function<E,K> key, 

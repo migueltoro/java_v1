@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
@@ -190,18 +191,10 @@ public class Libro {
 	}
 	
 	public static Map<String,Integer> frecuenciasDePalabras1(String fichero) {
-//		return FileTools.streamFromFile(fichero)
-//				.flatMap(Libro::lineasAPalabras)
-//				.collect(Collectors.groupingBy(
-//						x->x,
-//						Collectors.counting()));	
-		Stream<String> st = FileTools.streamFromFile(fichero)
-				.flatMap(Libro::lineasAPalabras);
+		Stream<String> st = FileTools.streamFromFile(fichero).flatMap(Libro::lineasAPalabras);
 		return counting(st);
 		
 	}
-	
-	
 	
 	public static Map<String,Integer> frecuenciasDePalabras2(String fichero) {
 		return FileTools.streamFromFile(fichero)
@@ -230,8 +223,6 @@ public class Libro {
 		}
 		return a;
 	}
-	
-	
 	
 	public static SortedMap<String,Integer> frecuenciasDePalabras3(String fichero) {
 		return FileTools.streamFromFile(fichero)
@@ -264,11 +255,11 @@ public class Libro {
 	
 	public static SortedMap<Integer,Set<String>> palabrasPorFrecuencias(String fichero) {
 		SortedMap<String,Integer> m = frecuenciasDePalabras3(fichero);
-		return m.keySet().stream()
-				.collect(Collectors.groupingBy(
-						x->m.get(x),
-						()->new TreeMap<>(),
-						Collectors.toSet()));	
+		Stream<String> st = m.keySet().stream();			
+		return groupingSetSorted(
+				st,
+				(String x)->m.get(x),
+				Comparator.naturalOrder());		
 	}
 	
 	public static SortedMap<Integer,Set<String>> palabrasPorFrecuencias2(String fichero){
@@ -293,15 +284,18 @@ public class Libro {
 	}
 	
 	public static SortedMap<String,Set<Integer>> lineasDePalabra(String fichero) {
-		Stream<String> lineas = FileTools.streamFromFile(fichero);
-		Stream<Enumerate<String>> lineasNumeros = enumerate(lineas);
-		return lineasNumeros
+		Stream<Enumerate<String>> lineas = enumerate(FileTools.streamFromFile(fichero));
+		
+		Stream<Enumerate<String>> st =lineas
 				.flatMap(Libro::lineasAPalabras2)
-				.filter(np->np.value().length() >0)
-				.collect(Collectors.groupingBy(
-						np->np.value(),
-						()->new TreeMap<String,Set<Integer>>(),
-						Collectors.mapping(np->np.counter(),Collectors.toSet())));
+				.filter(np->np.value().length() >0);
+		
+		return groupingSetSorted(
+				st,
+				(Enumerate<String> np)->np.value(),
+				Comparator.naturalOrder(),
+				np->np.counter()
+				);
 	}
 	
 	
