@@ -12,7 +12,7 @@ public record Vector2D(Double x,Double y) {
 		return new Vector2D(0., 1.);
 	}
 	
-	public static Vector2D ofXY(Double x, Double y) {
+	public static Vector2D of(Double x, Double y) {
 		return new Vector2D(x, y);
 	}
 
@@ -31,7 +31,7 @@ public record Vector2D(Double x,Double y) {
 	
 	public static Vector2D ofRadianes(Double modulo, Double angulo){
 		Preconditions.checkArgument(modulo >= 0, String.format("El módulo debe ser mayor o igual a cero y es %.2f",modulo));
-		return ofXY(modulo*Math.cos(angulo),modulo*Math.sin(angulo));		
+		return of(modulo*Math.cos(angulo),modulo*Math.sin(angulo));		
 	}
 	
 	public Double modulo() {
@@ -64,7 +64,7 @@ public record Vector2D(Double x,Double y) {
 	}
 	
 	public Vector2D ortogonal() {
-		return Vector2D.ofXY(-this.y, this.x);
+		return Vector2D.of(-this.y, this.x);
 	}
 	
 	public Vector2D unitario() {
@@ -72,15 +72,15 @@ public record Vector2D(Double x,Double y) {
 	}
 	
 	public Vector2D opuesto() {
-		return Vector2D.ofXY(-x, -y);
+		return Vector2D.of(-x, -y);
 	}
 	
 	public Vector2D add(Vector2D v) {
-		return Vector2D.ofXY(this.x+v.x,this.y+v.y);
+		return Vector2D.of(this.x+v.x,this.y+v.y);
 	}
 	
 	public Vector2D minus(Vector2D v) {
-		return Vector2D.ofXY(this.x-v.x,this.y-v.y);
+		return Vector2D.of(this.x-v.x,this.y-v.y);
 	}
 	
 	public Vector2D rota(Double angulo) {
@@ -88,7 +88,7 @@ public record Vector2D(Double x,Double y) {
 	}
 		
 	public Vector2D multiply(Double factor) {
-		return Vector2D.ofXY(this.x*factor,this.y*factor);
+		return Vector2D.of(this.x*factor,this.y*factor);
 	}
 	
 	public Double multiplicaVectorial(Vector2D v) {

@@ -57,7 +57,7 @@ public record Circulo2D(Punto2D centro,Double radio)  implements ObjetoGeometric
 	
 	@Override
 	public Circulo2D transform(Function<Double,Double> xt, Function<Double,Double> yt) {
-		Punto2D p = this.centro.add(Vector2D.ofXY(1.,0.).multiply(this.radio)).transform(xt,yt);
+		Punto2D p = this.centro.add(Vector2D.of(1.,0.).multiply(this.radio)).transform(xt,yt);
 		Punto2D c = this.centro.transform(xt,yt);
 		return Circulo2D.of(c,p.x()-c.x());
 	}
@@ -72,7 +72,7 @@ public record Circulo2D(Punto2D centro,Double radio)  implements ObjetoGeometric
 	@Override
 	public Shape shape(Function<Double,Double> xt, Function<Double,Double> yt) {
 		Circulo2D ct = (Circulo2D) this.transform(xt,yt);
-		Punto2D sc = ct.centro().add(Vector2D.ofXY(-1.,-1.).multiply(ct.radio()));
+		Punto2D sc = ct.centro().add(Vector2D.of(-1.,-1.).multiply(ct.radio()));
 		return new Ellipse2D.Double(sc.x(),sc.y(),2*ct.radio(),2*ct.radio());	
 	}
 	

@@ -50,9 +50,9 @@ public record Poligono2D(List<Punto2D> vertices) implements ObjetoGeometrico2D, 
 	}
 
 	public static Poligono2D rectanguloHorizontal(Punto2D p, Double base, Double altura) {
-		var p2 = p.add(Vector2D.ofXY(base, 0.));
-		var p3 = p.add(Vector2D.ofXY(base, altura));
-		var p4 = p.add(Vector2D.ofXY(0., altura));
+		var p2 = p.add(Vector2D.of(base, 0.));
+		var p3 = p.add(Vector2D.of(base, altura));
+		var p4 = p.add(Vector2D.of(0., altura));
 		return new Poligono2D(List.of(p,p2,p3,p4));
 	}
 

@@ -55,11 +55,11 @@ public record Punto2D(Double x,Double y) implements ObjetoGeometrico2D, ShapeDeO
     }
     
     public Vector2D minus(Punto2D p){
-    	return Vector2D.ofXY(this.x-p.x(),this.y-p.y());
+    	return Vector2D.of(this.x-p.x(),this.y-p.y());
     }
     
     public Vector2D vector() {
-		return Vector2D.ofXY(this.x, this.y);
+		return Vector2D.of(this.x, this.y);
 	}	
 	
 	public Punto2D traslada(Vector2D v){

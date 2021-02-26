@@ -43,7 +43,7 @@ public class Ventana extends JPanel {
 	 */
 	public static Double escala = 0.1;
 	
-	public static Vector2D centro = Vector2D.ofXY((double)Ventana.xCentro,(double)Ventana.yCentro);
+	public static Vector2D centro = Vector2D.of((double)Ventana.xCentro,(double)Ventana.yCentro);
 	
 	public static Function<Double,Double> xt = x->Ventana.escala*x+Ventana.xCentro;
 	
