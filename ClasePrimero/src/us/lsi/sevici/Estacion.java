@@ -20,6 +20,8 @@ public record Estacion(Integer numero,
 		Coordenadas2D coordenadas = Coordenadas2D.of(Double.parseDouble(partes[4]), Double.parseDouble(partes[5]));
 		return new Estacion(numero,name,slots,empty_slots,free_bikes,coordenadas);
 	}
+
+	
 	
 	@Override
 	public String toString() {
