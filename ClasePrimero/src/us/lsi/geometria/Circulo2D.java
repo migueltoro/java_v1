@@ -8,16 +8,9 @@ import us.lsi.tools.Preconditions;
 
 public record Circulo2D(Punto2D centro,Double radio)  implements ObjetoGeometrico2D, ShapeDeObjeto{
 	
-	public static Circulo2D of(Punto2D centro, Double radio) {		
+	public static Circulo2D of(Punto2D centro, Double radio) {
+		Preconditions.checkArgument(radio>=0, String.format("El radio debe ser mayor o igual a cero y es %.2f",radio));
 		return new Circulo2D(centro, radio);
-	}
-	
-	public Circulo2D() {		
-		this(Punto2D.origen(),1.);
-	}
-	
-	public Circulo2D {
-		Preconditions.checkArgument(radio>=0, "El radio debe ser mayor o igual a cero");
 	}
 	
 	public Double area() {

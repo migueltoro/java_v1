@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import us.lsi.coordenadas.Coordenadas2D;
 import us.lsi.tools.FileTools;
@@ -66,6 +67,11 @@ public record Red(List<Estacion> estaciones) {
 	@Override
 	public String toString() {
 		return estaciones.stream().map(e -> e.toString()).collect(Collectors.joining("\n"));
+	}
+	
+	public void escribe(Integer n, String file) {
+		Stream<String> s = this.estaciones.subList(0,n).stream().map(e->e.toString());
+		FileTools.writeStream(s,file);
 	}
 
 }

@@ -37,6 +37,15 @@ public class FileTools {
 		return lineas;
 	}
 	
+	public static void writeStream(Stream<String> s, String file) {
+		Iterable<String> it = ()->s.iterator();
+		try {
+			Files.write(Paths.get(file),it);
+		} catch (IOException e) {
+			System.out.println(e.toString());
+		}
+	}
+	
 	public static void write(String file, String text){
 		try {
 			final PrintWriter f =  new PrintWriter(new BufferedWriter(new FileWriter(file)));
