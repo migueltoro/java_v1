@@ -5,9 +5,6 @@ import java.util.Locale;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.apache.commons.math3.complex.Complex;
-import org.apache.commons.math3.fraction.Fraction;
-
 import static us.lsi.tools.StreamTools.*;
 
 import us.lsi.tools.Preconditions;
@@ -42,11 +39,11 @@ public class Calculos {
 	        Double r2 = Math.sqrt(disc)/(2*a);
 	        Double s1 = r1+r2;
 	        Double s2  = r1-r2;
-	        return new Solucion2G(Complex.valueOf(s1),Complex.valueOf(s2));   		
+	        return new Solucion2G(Complex2.of(s1),Complex2.of(s2));   		
 	    }else {
 	        Double re = -b/(2*a);
 	        Double im = Math.sqrt(-disc)/(2*a);
-	        return new Solucion2G(Complex.valueOf(re,im), Complex.valueOf(re,-im));
+	        return new Solucion2G(Complex2.of(re,im), Complex2.of(re,-im));
 	    }
 	        		
 	}
@@ -67,8 +64,8 @@ public class Calculos {
 	}
 	
 	public static void fractions() {
-		Fraction f1 = Fraction.getReducedFraction(6, 8);
-	    Fraction f2 = Fraction.getReducedFraction(1, 4);
+		Fraction2 f1 = Fraction2.of(6, 8);
+	    Fraction2 f2 = Fraction2.of(1, 4);
 	    System.out.println(f1);
 	    System.out.println(f1.subtract(f2));
 	    System.out.println(f1.multiply(f2));
@@ -99,20 +96,14 @@ public class Calculos {
 	
 	public static record Tmedia(Integer sum, Integer n) {}
 	
-	public static record Solucion2G(Complex a, Complex b) {
+	public static record Solucion2G(Complex2 a, Complex2 b) {
 		
-		public static Solucion2G of(Complex a, Complex b) {
+		public static Solucion2G of(Complex2 a, Complex2 b) {
 			return new Solucion2G(a,b);
 		}
 		
 		public String toString() {	
-			String ra = "";
-			if(this.a.getReal() != 0.) ra = String.format("%s%.2f",ra,this.a.getReal());
-			if(this.a.getImaginary() != 0.) ra = String.format("%s+%.2fi",ra,this.a.getImaginary());
-			String rb = "";
-			if(this.b.getReal() != 0.) rb = String.format("%s%.2f",rb,this.b.getReal());
-			if(this.b.getImaginary() != 0.) rb = String.format("%s+%.2fi",rb,this.b.getImaginary());
-	    	return String.format("(%s,%s)",ra,rb);
+	    	return String.format("(%s,%s)",this.a,this.b);
 	    }
 	}
 
