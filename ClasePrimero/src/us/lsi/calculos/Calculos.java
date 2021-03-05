@@ -2,6 +2,7 @@ package us.lsi.calculos;
 
 
 import java.util.Locale;
+import java.util.Scanner;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -48,19 +49,36 @@ public class Calculos {
 	        		
 	}
 	
-	// ls = (e for e in range(a,b) if (e-a)%c==0)
-	
-	public static Stream<Integer> secuenciaAritmetica(Integer a,Integer b,Integer c) {
-		return IntStream.range(a,b).boxed().filter(e->(e-a)%c==0);
+	public static void ejemploWhile() {
+		Integer n = 10;
+		Integer suma = 0;
+		int i = 1;
+		while (i <= n) {
+			suma = suma + i;
+			i++;
+		}
 	}
 	
-	public static Double media(Stream<Integer> st) {
-	    Tmedia ac = new Tmedia(0,0);
-	    for(Integer e: toIterable(st)) {
-	    	ac = new Tmedia(ac.sum+e,ac.n+1);
-	    }
-	    Preconditions.checkArgument(ac.n>0,String.format("El iterador esta vacio"));
-	    return (1.0*ac.sum)/ac.n; 
+	public static void ejemploSwitch() {
+		String r = "Lunes";
+		Character s = switch(r) {
+		case "Lunes" -> r.charAt(0);
+		case "Martes" -> r.charAt(1);
+		default -> throw new IllegalArgumentException("Unexpected value: " + r);
+		};
+		System.out.println(s);
+	}
+	
+	public static void ejemplosScanner() {
+		Scanner in = new Scanner(System.in);  
+		System.out.printf("Ejemplos 4");
+		System.out.printf("Introduzca una cadena\n");
+		String s = in.nextLine();
+		in.close();
+		Double r = 1.1;
+		Integer a= 3;
+		System.out.printf("%s\n",s);
+		System.out.printf("(%.2f,%d)\n",r,a);
 	}
 	
 	public static void fractions() {
@@ -78,6 +96,21 @@ public class Calculos {
 	       }
 		    return t.a();
 	}
+	
+	// ls = (e for e in range(a,b) if (e-a)%c==0)
+	
+		public static Stream<Integer> secuenciaAritmetica(Integer a,Integer b,Integer c) {
+			return IntStream.range(a,b).boxed().filter(e->(e-a)%c==0);
+		}
+		
+		public static Double media(Stream<Integer> st) {
+		    Tmedia ac = new Tmedia(0,0);
+		    for(Integer e: toIterable(st)) {
+		    	ac = new Tmedia(ac.sum+e,ac.n+1);
+		    }
+		    Preconditions.checkArgument(ac.n>0,String.format("El iterador esta vacio"));
+		    return (1.0*ac.sum)/ac.n; 
+		}
 
 	public static void main(String[] args) {
 		Locale.setDefault(new Locale("en", "US"));
