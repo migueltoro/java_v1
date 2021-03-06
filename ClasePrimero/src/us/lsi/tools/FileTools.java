@@ -27,10 +27,8 @@ public class FileTools {
 	
 	public static List<String> lineasFromFile(String file) {
 		List<String> lineas = null;
-		try {
-			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-			lineas = bufferedReader.lines().collect(Collectors.toList());
-			bufferedReader.close();
+		try {		
+			lineas = Files.lines(Paths.get(file), Charset.defaultCharset()).collect(Collectors.toList());
 		} catch (IOException e) {
 			System.out.println(e.toString());
 		}
