@@ -15,7 +15,7 @@ public record OcupacionVuelo(String codeVuelo, LocalDateTime fecha, Integer numP
 	public static OcupacionVuelo parse(String text) {
 		String[] campos = text.split(",");
 		String codeVuelo = campos[0];
-		LocalTime t = Vuelos.datosVuelos.get(codeVuelo).hora();
+		LocalTime t = Vuelos.datos().codigosVuelos().get(codeVuelo).hora();
 		LocalDate d = LocalDate.parse(campos[1], DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 		LocalDateTime fecha = LocalDateTime.of(d, t);
 		Integer numPasajeros = Integer.parseInt(campos[2]);		
@@ -32,10 +32,10 @@ public record OcupacionVuelo(String codeVuelo, LocalDateTime fecha, Integer numP
 	
 	
 	public static OcupacionVuelo random(Vuelo v, Integer anyo) {
-		String codeVuelo = v.codigoVuelo();
-		Integer np = Vuelos.datosVuelos.get(codeVuelo).numPlazas();
-		LocalTime t = Vuelos.datosVuelos.get(codeVuelo).hora();
-		DayOfWeek dw = Vuelos.datosVuelos.get(codeVuelo).diaSemana();
+		String codeVuelo = v.codigo();
+		Integer np = Vuelos.datos().codigosVuelos().get(codeVuelo).numPlazas();
+		LocalTime t = Vuelos.datos().codigosVuelos().get(codeVuelo).hora();
+		DayOfWeek dw = Vuelos.datos().codigosVuelos().get(codeVuelo).diaSemana();
 		LocalDate d = Stream.iterate(LocalDate.of(anyo,1,1),dt->dt.plus(1,ChronoUnit.DAYS))
 				.filter(dt->dt.getDayOfWeek().equals(dw))
 				.findFirst()
@@ -47,11 +47,11 @@ public record OcupacionVuelo(String codeVuelo, LocalDateTime fecha, Integer numP
 	}
 	
 	public Vuelo vuelo() {
-		return Vuelos.datosVuelos.get(this.codeVuelo);
+		return Vuelos.datos().codigosVuelos().get(this.codeVuelo);
 	}
 	
 	public LocalDateTime llegada() {
-		Vuelo vuelo = Vuelos.datosVuelos.get(this.codeVuelo);
+		Vuelo vuelo = Vuelos.datos().codigosVuelos().get(this.codeVuelo);
 		return LocalDateTime.of(fecha.toLocalDate(),vuelo.hora()).plus(vuelo.duracion());
 	}
 	

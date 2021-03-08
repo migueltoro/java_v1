@@ -18,29 +18,49 @@ import java.util.stream.Stream;
 import us.lsi.tools.FileTools;
 
 public class OcupacionesVuelos {
-
-	public static List<OcupacionVuelo> ocupaciones;
+	
+	private static OcupacionesVuelos datos;
 	private static Random rnd = new Random(System.nanoTime());
+	
+	public static OcupacionesVuelos datos() {
+		return datos;
+	}
 
 	public static void random(Integer numOcupaciones, Integer anyo) {
-		Integer n = Vuelos.numVuelos;
-		OcupacionesVuelos.ocupaciones = toList(
+		Integer n = Vuelos.datos().numVuelos();
+		List<OcupacionVuelo> r = toList(
 				IntStream.range(0, numOcupaciones).boxed()
-				.map(e -> OcupacionVuelo.random(Vuelos.vuelos.get(rnd.nextInt(n)), anyo)));
+				.map(e -> OcupacionVuelo.random(Vuelos.datos().vuelos().get(rnd.nextInt(n)), anyo)));
+		 OcupacionesVuelos.datos = new OcupacionesVuelos(r);
 	}
 
 	public static void leeFicheroOcupaciones(String fichero) {
-		OcupacionesVuelos.ocupaciones = FileTools.streamFromFile(fichero)
+		List<OcupacionVuelo> r = FileTools.streamFromFile(fichero)
 				.map(x -> OcupacionVuelo.parse(x))
 				.collect(Collectors.toList());
+		OcupacionesVuelos.datos = new OcupacionesVuelos(r);
 	}
 
+	private List<OcupacionVuelo> ocupaciones;
+	
+	private OcupacionesVuelos(List<OcupacionVuelo> ocupaciones) {
+		super();
+		this.ocupaciones = ocupaciones;
+	}
+
+	public List<OcupacionVuelo> ocupaciones() {
+		return ocupaciones;
+	}
+
+	
 	// Dada una cadena de caracteres s devuelve el número total de pasajeros a
 	// ciudades destino que tienen
 	// como prefijo s (esto es, comienzan por s).
 
+	
+
 	public static Integer numeroDepasajeros(String prefix) {
-		IntStream st = OcupacionesVuelos.ocupaciones.stream()
+		IntStream st = OcupacionesVuelos.datos().ocupaciones().stream()
 				.filter(ocp -> ocp.vuelo().ciudadDestino().startsWith(prefix))
 				.mapToInt(v -> v.numPasajeros());
 		return 	st.sum();
@@ -50,7 +70,7 @@ public class OcupacionesVuelos {
 	// existe un vuelo en la fecha f con destino en s.
 
 	public static Boolean hayDestino(Set<String> destinos, LocalDate f) {
-		Stream<OcupacionVuelo> st = OcupacionesVuelos.ocupaciones.stream()
+		Stream<OcupacionVuelo> st = OcupacionesVuelos.datos().ocupaciones().stream()
 				.filter(ocp -> ocp.fecha().toLocalDate().equals(f));
 		return st.anyMatch(ocp -> destinos.contains(ocp.vuelo().ciudadDestino()));
 	}
@@ -59,7 +79,7 @@ public class OcupacionesVuelos {
 	// los vuelos de fecha f
 
 	public static Set<String> destinosDiferentes(LocalDate f) {
-		Stream<String> st = OcupacionesVuelos.ocupaciones.stream()
+		Stream<String> st = OcupacionesVuelos.datos().ocupaciones().stream()
 				.filter(ocp -> ocp.fecha().toLocalDate().equals(f))
 				.map(ocp -> ocp.vuelo().ciudadDestino());
 		return 	toSet(st);
@@ -69,7 +89,7 @@ public class OcupacionesVuelos {
 	// total de pasajeros a ese destino en el año anyo
 
 	public static SortedMap<String, Integer> totalPasajerosADestino(Integer a) {
-		Stream<OcupacionVuelo> st = OcupacionesVuelos.ocupaciones.stream().filter(ocp -> ocp.fecha().getYear() == a);
+		Stream<OcupacionVuelo> st = OcupacionesVuelos.datos().ocupaciones().stream().filter(ocp -> ocp.fecha().getYear() == a);
 		
 //		return	st.collect(Collectors.groupingBy(ocp -> ocp.vuelo().ciudadDestino(),
 //						() -> new TreeMap<String, Integer>(Comparator.reverseOrder()),
@@ -88,7 +108,7 @@ public class OcupacionesVuelos {
 	// destino
 
 	public static String primerVuelo(String destino) {
-		Stream<OcupacionVuelo> st = OcupacionesVuelos.ocupaciones.stream()
+		Stream<OcupacionVuelo> st = OcupacionesVuelos.datos().ocupaciones().stream()
 				.filter(ocp -> ocp.vuelo().ciudadDestino().equals(destino))
 			    .filter(ocp->ocp.vuelo().numPlazas() > ocp.numPasajeros())
 				.filter(ocp -> ocp.fecha().isAfter(LocalDateTime.now()));
@@ -108,7 +128,7 @@ public class OcupacionesVuelos {
 	}
 
 	public static Map<String, Double> precioMedio() {
-		Stream<OcupacionVuelo> st = OcupacionesVuelos.ocupaciones.stream()
+		Stream<OcupacionVuelo> st = OcupacionesVuelos.datos().ocupaciones().stream()
 				.filter(ocp -> ocp.numPasajeros().equals(ocp.vuelo().numPlazas()));
 		return groupingListAndThen(
 				st,
@@ -129,7 +149,7 @@ public class OcupacionesVuelos {
 	}
 
 	public static Map<LocalDate, List<String>> destinosConMayorDuracion(Integer n) {
-		Stream<OcupacionVuelo> st =  OcupacionesVuelos.ocupaciones.stream();
+		Stream<OcupacionVuelo> st =  OcupacionesVuelos.datos().ocupaciones().stream();
 		
 		return groupingListAndThen(
 				st,
@@ -141,7 +161,7 @@ public class OcupacionesVuelos {
 	// a f. Si no hubiera vuelos devuelve 0.0
 
 	public static Double precioMedio(LocalDateTime f) {
-		DoubleStream st = OcupacionesVuelos.ocupaciones.stream()
+		DoubleStream st = OcupacionesVuelos.datos().ocupaciones().stream()
 				.filter(ocp -> ocp.fecha().isAfter(f))
 				.mapToDouble(ocp -> ocp.vuelo().precio());
 		
@@ -153,7 +173,7 @@ public class OcupacionesVuelos {
 	// fechas de los vuelos a ese destino.
 
 	public static Map<String, Set<LocalDate>> fechasADestino() {
-		Stream<OcupacionVuelo> st = OcupacionesVuelos.ocupaciones.stream();
+		Stream<OcupacionVuelo> st = OcupacionesVuelos.datos().ocupaciones().stream();
 		return groupingSet(
 				st,
 				ocp -> ocp.vuelo().ciudadDestino(),
@@ -164,7 +184,7 @@ public class OcupacionesVuelos {
 	// distintas en las que hay vuelos a ese destino.
 
 	public static Map<String, Integer> fechasDistintas() {
-		Stream<OcupacionVuelo> st = OcupacionesVuelos.ocupaciones.stream();
+		Stream<OcupacionVuelo> st = OcupacionesVuelos.datos().ocupaciones().stream();
 
 		return groupingSetAndThen(
 				st,
