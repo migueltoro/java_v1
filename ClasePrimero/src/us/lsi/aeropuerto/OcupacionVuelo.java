@@ -66,7 +66,7 @@ public record OcupacionVuelo(String codeVuelo, LocalDateTime fecha, Integer numP
 	@Override
 	public String toString() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		return "OcupacionVuelo [codeVuelo=" + codeVuelo + ", fecha=" + fecha.format(formatter) + ", numPasajeros=" + numPasajeros + "]";
+		return String.format("%s,%s,%d",codeVuelo,fecha.format(formatter),numPasajeros);
 	}
 	
 	

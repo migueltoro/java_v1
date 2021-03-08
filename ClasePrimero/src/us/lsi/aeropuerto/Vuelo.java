@@ -8,10 +8,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.Random;
 
 public record Vuelo(
-		String codigoEmpresa,
+		String codigoAerolinea,
 		String numero,
-		String codeDestino,
-		String codeOrigen,
+		String codigoDestino,
+		String codigoOrigen,
 		Double precio,
 		Integer numPlazas,	
 		Duration duracion,
@@ -51,23 +51,23 @@ public record Vuelo(
 
 	@Override
 	public String toString() {
-		return "Vuelo [codigoEmpresa=" + codigoEmpresa + ", numero=" + numero + ", codeDestino=" + codeDestino
-				+ ", codeOrigen=" + codeOrigen + String.format(", precio=%.2f",precio) + ", numPlazas=" + numPlazas + ", duracion="
-				+ duracion.toMinutes() + ", hora=" + hora + ", diaSemana=" + diaSemana + "]";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+		return String.format("%s,%s,%s,%s,%.2f,%d,%d,%s,%s",codigoAerolinea,numero,codigoDestino,codigoOrigen,precio,
+				numPlazas,duracion.toMinutes(),hora.format(formatter),diaSemana.toString());
 	}
 	
 	
 	public static Vuelo random() {
-		Integer e = rnd.nextInt(EmpresasAereas.numeroEmpresas);
-		String codigo = EmpresasAereas.empresas.get(e).codigo();
+		Integer e = rnd.nextInt(Aerolineas.numeroAerolineas);
+		String codigo = Aerolineas.aerolineas.get(e).codigo();
 		String numero = String.format("%04d",rnd.nextInt(1000));
 		Integer ad = rnd.nextInt(Aeropuertos.numAeropuertos);
-		String codeDestino = Aeropuertos.aeropuertos.get(ad).code();
+		String codeDestino = Aeropuertos.aeropuertos.get(ad).codigo();
 		Integer ao;
 		do {
 			ao = rnd.nextInt(Aeropuertos.numAeropuertos);
 		} while (ao == ad);
-		String codeOrigen = Aeropuertos.aeropuertos.get(ao).code();
+		String codeOrigen = Aeropuertos.aeropuertos.get(ao).codigo();
 		Double precio = 1000*rnd.nextDouble();
 		Integer numPlazas = rnd.nextInt(300);
 		Duration duracion = Duration.of(rnd.nextInt(360), ChronoUnit.MINUTES);
@@ -77,15 +77,15 @@ public record Vuelo(
 	}
 	
 	public String ciudadDestino() {
-		return Aeropuertos.ciudadDeAeropuerto.get(this.codeDestino);
+		return Aeropuertos.ciudadDeAeropuerto.get(this.codigoDestino);
 	}
 	
 	public String ciudadOrigen() {
-		return Aeropuertos.ciudadDeAeropuerto.get(this.codeOrigen);
+		return Aeropuertos.ciudadDeAeropuerto.get(this.codigoOrigen);
 	}	
 	
 	public String codigoVuelo() {
-		return this.codigoEmpresa+this.numero;
+		return this.codigoAerolinea+this.numero;
 	}
 	
 	public static void main(String[] args) {

@@ -96,7 +96,7 @@ public class OcupacionesVuelos {
 		return st.min(Comparator.comparing(OcupacionVuelo::fecha))
 				.get()
 				.vuelo()
-				.codigoEmpresa();
+				.codigoAerolinea();
 
 	}
 

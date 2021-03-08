@@ -12,24 +12,24 @@ import us.lsi.tools.StreamTools;
 public class Aeropuertos {
 
 	public static List<Aeropuerto> aeropuertos;
-	public static Map<String,Aeropuerto> codigoAeropuerto;
+	public static Map<String,Aeropuerto> codigosAeropuertos;
 	public static Map<String,String> ciudadDeAeropuerto;  //codigoAeropuerto, ciudad
 	public static Map<String,Set<Aeropuerto>> aeropuertosEnCiudad; //ciudad, {codigosAeropuerto, ...} 
 	public static Integer numAeropuertos;
 
-	public static void leeFicheroAeropuertos(String fichero) {
+	public static void leeAeropuertos(String fichero) {
 		Aeropuertos.aeropuertos = FileTools.streamFromFile(fichero)
 				.map(x -> Aeropuerto.parse(x))
 				.collect(Collectors.toList());
 		try {
-			Aeropuertos.codigoAeropuerto = Aeropuertos.aeropuertos.stream()
-					.collect(Collectors.toMap(Aeropuerto::code,x->x));
+			Aeropuertos.codigosAeropuertos = Aeropuertos.aeropuertos.stream()
+					.collect(Collectors.toMap(Aeropuerto::codigo,x->x));
 		} catch (IllegalStateException e) {
 			Preconditions.checkState(false,e.toString());
 		}
 		try {
 			Aeropuertos.ciudadDeAeropuerto = Aeropuertos.aeropuertos.stream()
-					.collect(Collectors.toMap(Aeropuerto::code, Aeropuerto::ciudad));
+					.collect(Collectors.toMap(Aeropuerto::codigo, Aeropuerto::ciudad));
 		} catch (IllegalStateException e) {
 			Preconditions.checkState(false,e.toString());
 		}

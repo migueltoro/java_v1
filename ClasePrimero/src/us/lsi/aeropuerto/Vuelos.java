@@ -46,7 +46,7 @@ public class Vuelos {
 	//Devuelve el destino con mayor número de vuelos
 	
 	public static String destinoConMasVuelos() {	
-		Map<String,Integer> numVuelosDeDestino = counting(Vuelos.vuelos.stream(),Vuelo::codeDestino);
+		Map<String,Integer> numVuelosDeDestino = counting(Vuelos.vuelos.stream(),Vuelo::codigoDestino);
 		
 		return 	numVuelosDeDestino.keySet().stream()
 				.max(Comparator.comparing(d->numVuelosDeDestino.get(d)))
@@ -75,7 +75,7 @@ public class Vuelos {
 		Stream<String> st = Vuelos.vuelos.stream()
 				.sorted(Comparator.comparing(Vuelo::duracion).reversed())
 				.limit(n)
-				.map(Vuelo::codeDestino);
+				.map(Vuelo::codigoDestino);
 		
 		return toSet(st);
 	}
@@ -83,7 +83,7 @@ public class Vuelos {
 	//13. Dado un número n devuelve un conjunto con los n destinos con más vuelos
 	
 	public static Set<String> entreLosMasVuelos(Integer n) {
-		Map<String,List<Vuelo>> vuelosADestino = Vuelos.vuelos.stream().collect(Collectors.groupingBy(Vuelo::codeDestino));
+		Map<String,List<Vuelo>> vuelosADestino = Vuelos.vuelos.stream().collect(Collectors.groupingBy(Vuelo::codigoDestino));
 		
 		return vuelosADestino.keySet().stream()
 				.sorted(Comparator.comparing(d->vuelosADestino.get(d).size()))
@@ -95,7 +95,7 @@ public class Vuelos {
 	// 14. Dado un número entero n devuelve una lista con los destinos que tienen más de n vuelos
 	
 	public static List<String> masDeNVuelos(Integer n) {
-		Map<String,List<Vuelo>> vuelosADestino = vuelos.stream().collect(Collectors.groupingBy(Vuelo::codeDestino));
+		Map<String,List<Vuelo>> vuelosADestino = vuelos.stream().collect(Collectors.groupingBy(Vuelo::codigoDestino));
 		return vuelosADestino.keySet().stream()
 				.filter(d->vuelosADestino.get(d).size() > n)
 				.collect(Collectors.toList());
@@ -107,7 +107,7 @@ public class Vuelos {
 	public static Map<String,Double>  procentajeADestino() {
 		Integer n = Vuelos.numVuelos;
 		
-		return groupingListAndThen(Vuelos.vuelos.stream(),Vuelo::codeDestino,g->(1.0*g.size())/n);
+		return groupingListAndThen(Vuelos.vuelos.stream(),Vuelo::codigoDestino,g->(1.0*g.size())/n);
 	}
 	
 	// 16. Devuelve un Map que haga corresponder a cada ciudad destino el vuelo de más barato

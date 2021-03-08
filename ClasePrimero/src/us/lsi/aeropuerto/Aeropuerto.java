@@ -1,6 +1,6 @@
 package us.lsi.aeropuerto;
 
-public record Aeropuerto(String code, String ciudad, String pais, String nombre) {
+public record Aeropuerto(String codigo, String ciudad, String pais, String nombre) {
 	
 	public static Aeropuerto parse(String text) {
 		String[] campos = text.split(",");
