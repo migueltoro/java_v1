@@ -9,7 +9,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Random;
 import java.util.stream.Stream;
 
-public record OcupacionVuelo(String codeVuelo, LocalDateTime fecha, Integer numPasajeros) {
+public record OcupacionVuelo(String codigoVuelo, LocalDateTime fecha, Integer numPasajeros) {
 	
 	
 	public static OcupacionVuelo parse(String text) {
@@ -47,11 +47,11 @@ public record OcupacionVuelo(String codeVuelo, LocalDateTime fecha, Integer numP
 	}
 	
 	public Vuelo vuelo() {
-		return Vuelos.datos().codigosVuelos().get(this.codeVuelo);
+		return Vuelos.datos().codigosVuelos().get(this.codigoVuelo);
 	}
 	
 	public LocalDateTime llegada() {
-		Vuelo vuelo = Vuelos.datos().codigosVuelos().get(this.codeVuelo);
+		Vuelo vuelo = Vuelos.datos().codigosVuelos().get(this.codigoVuelo);
 		return LocalDateTime.of(fecha.toLocalDate(),vuelo.hora()).plus(vuelo.duracion());
 	}
 	
@@ -66,7 +66,7 @@ public record OcupacionVuelo(String codeVuelo, LocalDateTime fecha, Integer numP
 	@Override
 	public String toString() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		return String.format("%s,%s,%d",codeVuelo,fecha.format(formatter),numPasajeros);
+		return String.format("%s,%s,%d",codigoVuelo,fecha.format(formatter),numPasajeros);
 	}
 	
 	
