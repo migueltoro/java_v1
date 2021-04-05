@@ -2,9 +2,9 @@ package us.lsi.geometria;
 
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
-import java.util.function.Function;
 
 import us.lsi.tools.Preconditions;
+import us.lsi.tools.Ventana;
 
 public record Circulo2D(Punto2D centro,Double radio)  implements ObjetoGeometrico2D, ShapeDeObjeto{
 	
@@ -49,22 +49,22 @@ public record Circulo2D(Punto2D centro,Double radio)  implements ObjetoGeometric
 	}
 	
 	@Override
-	public Circulo2D transform(Function<Double,Double> xt, Function<Double,Double> yt) {
-		Punto2D p = this.centro.add(Vector2D.of(1.,0.).multiply(this.radio)).transform(xt,yt);
-		Punto2D c = this.centro.transform(xt,yt);
+	public Circulo2D transform(Ventana v) {
+		Punto2D p = this.centro.add(Vector2D.of(1.,0.).multiply(this.radio)).transform(v);
+		Punto2D c = this.centro.transform(v);
 		return Circulo2D.of(c,p.x()-c.x());
 	}
 
 	
 	@Override
 	public void show(Ventana v) {
-		v.g2.draw(this.shape(Ventana.xt,Ventana.yt));
+		v.canvas.draw(this.shape(v));
 	}
 	
 	
 	@Override
-	public Shape shape(Function<Double,Double> xt, Function<Double,Double> yt) {
-		Circulo2D ct = (Circulo2D) this.transform(xt,yt);
+	public Shape shape(Ventana v) {
+		Circulo2D ct = (Circulo2D) this.transform(v);
 		Punto2D sc = ct.centro().add(Vector2D.of(-1.,-1.).multiply(ct.radio()));
 		return new Ellipse2D.Double(sc.x(),sc.y(),2*ct.radio(),2*ct.radio());	
 	}

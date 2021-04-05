@@ -1,11 +1,13 @@
 package us.lsi.geometria;
 
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import us.lsi.tools.Ventana;
 
 public class AgregadoGeometrico2D implements ObjetoGeometrico2D {
 
@@ -82,9 +84,10 @@ public class AgregadoGeometrico2D implements ObjetoGeometrico2D {
 		return AgregadoGeometrico2D.of(this.objetos.stream().map(x->x.simetrico(r)).collect(Collectors.toSet()));
 	}
 	
+	
 	@Override
-	public AgregadoGeometrico2D transform(Function<Double,Double> xt, Function<Double,Double> yt) {
-		return AgregadoGeometrico2D.of(this.objetos.stream().map(x->x.transform(xt,yt)).collect(Collectors.toSet()));
+	public AgregadoGeometrico2D transform(Ventana v) {
+		return AgregadoGeometrico2D.of(this.objetos.stream().map(x->x.transform(v)).collect(Collectors.toSet()));
 	}
 	
 	@Override

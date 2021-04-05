@@ -1,10 +1,11 @@
 package us.lsi.geometria;
 
 import java.awt.Shape;
-import java.util.function.Function;
+
+import us.lsi.tools.Ventana;
 
 public interface ShapeDeObjeto {
-	
-	Shape shape(Function<Double,Double> xt, Function<Double,Double> yt);
 
+	public Shape shape(Ventana v);
+	
 }

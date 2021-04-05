@@ -1,6 +1,8 @@
 package us.lsi.geometria;
 
-import java.util.function.Function;
+
+
+import us.lsi.tools.Ventana;
 
 public interface ObjetoGeometrico2D {
 	/**
@@ -30,10 +32,12 @@ public interface ObjetoGeometrico2D {
 	 * @return El objeto geométrico simetrico con respecto a la recta r
 	 */
 	ObjetoGeometrico2D simetrico(Recta2D r);
+	
 	/**
-	 * @return El objeto geométrico transformado al sistema de coordenadas de la ventana
+	 * @param v Una ventana
+	 * @return El objeto geométrico transformado para ser pintado en la ventana
 	 */
-	ObjetoGeometrico2D transform(Function<Double,Double> xt, Function<Double,Double> yt);
+	ObjetoGeometrico2D transform(Ventana v);
 	
 	/**
 	 * @param v Una ventana donde se representará el objeto

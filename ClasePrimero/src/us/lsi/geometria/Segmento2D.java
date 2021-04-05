@@ -2,10 +2,11 @@ package us.lsi.geometria;
 
 import java.awt.Shape;
 import java.awt.geom.Line2D;
-import java.util.function.Function;
+
+import us.lsi.tools.Ventana;
 
 public record Segmento2D(Punto2D p1, Punto2D p2) implements ObjetoGeometrico2D, ShapeDeObjeto {
-
+	
 	public static Segmento2D of(Punto2D p1, Punto2D p2) {
 		return new Segmento2D(p1, p2);
 	}
@@ -44,18 +45,18 @@ public record Segmento2D(Punto2D p1, Punto2D p2) implements ObjetoGeometrico2D, 
 	}
 
 	@Override
-	public Segmento2D transform(Function<Double, Double> xt, Function<Double, Double> yt) {
-		return Segmento2D.of(this.p1.transform(xt, yt), this.p2.transform(xt, yt));
+	public Segmento2D transform(Ventana v) {
+		return Segmento2D.of(this.p1.transform(v), this.p2.transform(v));
 	}
 
 	@Override
 	public void show(Ventana v) {
-		v.g2.draw(this.shape(Ventana.xt, Ventana.yt));
+		v.canvas.draw(this.shape(v));
 	}
 
 	@Override
-	public Shape shape(Function<Double, Double> xt, Function<Double, Double> yt) {
-		Segmento2D t = (Segmento2D) this.transform(xt, yt);
+	public Shape shape(Ventana v) {
+		Segmento2D t = (Segmento2D) this.transform(v);
 		return new Line2D.Double(t.p1().x(), t.p1().y(), t.p2().y(), t.p2().y());
 	}
 

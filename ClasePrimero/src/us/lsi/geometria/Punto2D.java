@@ -2,9 +2,11 @@ package us.lsi.geometria;
 
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
-import java.util.function.Function;
 
-public record Punto2D(Double x,Double y) implements ObjetoGeometrico2D, ShapeDeObjeto, Comparable<Punto2D> {
+import us.lsi.tools.Ventana;
+import us.lsi.tools.Ventana.DoublePair;
+
+public record Punto2D(Double x,Double y) implements ObjetoGeometrico2D, Comparable<Punto2D>, ShapeDeObjeto {
 	
 	private static Punto2D cero = Punto2D.of(0.,0.);
 	
@@ -85,21 +87,23 @@ public record Punto2D(Double x,Double y) implements ObjetoGeometrico2D, ShapeDeO
 	public Punto2D simetrico(Recta2D r) {
 		Punto2D p = this.proyectaSobre(r);
 		return p.vector().multiply(2.).minus(this.vector()).punto();
-	}
-	
-	@Override
-	public Punto2D transform(Function<Double,Double> xt, Function<Double,Double> yt) {
-		return Punto2D.of(xt.apply(this.x),yt.apply(this.y));
 	}	
+
+	@Override
+	public Punto2D transform(Ventana v) {
+		DoublePair d = v.transform(this.x,this.y);
+		Punto2D t = Punto2D.of(d.x(), d.y());
+		return t;
+	}
 	
 	@Override
 	public void show(Ventana v) {
-		v.g2.fill(this.shape(Ventana.xt,Ventana.yt));
+		v.canvas.fill(this.shape(v));
 	}
 	
 	@Override
-	public Shape shape(Function<Double,Double> xt, Function<Double,Double> yt) {
-		Punto2D t = this.transform(xt,yt);
+	public Shape shape(Ventana v) {
+		Punto2D t = this.transform(v);
 		Punto2D sc = t.minus(Vector2D.baseX().multiply(5.));
 		sc = sc.minus(Vector2D.baseY().multiply(5.));
 		return new Ellipse2D.Double(sc.x(),sc.y(),10.,10.);
@@ -116,6 +120,8 @@ public record Punto2D(Double x,Double y) implements ObjetoGeometrico2D, ShapeDeO
 	    }
 		return this.distanciaAlOrigen().compareTo(p.distanciaAlOrigen());
 	}
+
+	
 
 
 }

@@ -3,6 +3,8 @@ package us.lsi.geometria;
 import java.awt.Color;
 import java.util.Locale;
 
+import us.lsi.tools.Ventana;
+
 public class TestGeometria {
 
 	@SuppressWarnings("unused")
@@ -40,10 +42,12 @@ public class TestGeometria {
 		System.out.println(p3);
 		System.out.println(Vector2D.of(2.0, 1.0).proyectaSobre(Vector2D.of(0.,2.)).toString());
 		Segmento2D pc = c3.proyectaSobre(r);
-		AgregadoGeometrico2D a = AgregadoGeometrico2D.of(c1,c2,c3,pl,pl2,s);
-		Ventana.escala = 1.;
-		Ventana.draw(a,Color.BLUE);
-
+		AgregadoGeometrico2D a1 = AgregadoGeometrico2D.of(c1,pl,s);
+		AgregadoGeometrico2D a2 = AgregadoGeometrico2D.of(c2,c3,pl2);
+		Ventana v = Ventana.of("Geometria", 0.5, Color.WHITE, Color.RED);
+		a1.show(v);
+		v.setForegroundColor(Color.GREEN);
+		a2.show(v);
 	}
 
 }

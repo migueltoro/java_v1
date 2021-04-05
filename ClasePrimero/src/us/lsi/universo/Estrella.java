@@ -6,12 +6,12 @@ import us.lsi.geometria.Punto2D;
 
 public class Estrella extends CuerpoCeleste {   
    
-	public static Estrella of(String nombre, Punto2D posicion, int diametro, Universo2D universo) {
+	public static Estrella of(String nombre, Punto2D posicion, Integer diametro, Universo2D universo) {
 		return new Estrella(nombre, posicion, diametro, universo);
 	}
 
 	
-    private Estrella(String nombre,Punto2D posicion, Integer diametro,Universo2D universo) {
+    private Estrella(String nombre,Punto2D posicion, Integer diametro, Universo2D universo) {
         super(nombre,diametro,Color.YELLOW,universo); 
         this.coordenadas = posicion;
     }

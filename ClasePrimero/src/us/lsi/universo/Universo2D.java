@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
 
+
 import us.lsi.tools.Canvas;
 import us.lsi.tools.IntPair;
 import us.lsi.tools.Preconditions;
@@ -41,12 +42,12 @@ public class Universo2D  {
     protected List<CuerpoCeleste> cuerposCelestes;
     
     
-     protected Universo2D(String nombre, int longitudX, int longitudY, Color colorFondo) {
-    	 Preconditions.checkArgument(longitudX>300,"La anchura de un universo debe ser al menos 300");
-    	 Preconditions.checkArgument(longitudY>300,"La altura de un universo debe ser al menos 300");
-         this.ventana = Canvas.of(nombre, longitudX, longitudY, colorFondo);
-         this.xMax = longitudX;
-         this.yMax = longitudY;
+     protected Universo2D(String nombre, int xMax, int yMax, Color colorFondo) {
+    	 Preconditions.checkArgument(xMax>300,"La anchura de un universo debe ser al menos 300");
+    	 Preconditions.checkArgument(yMax>300,"La altura de un universo debe ser al menos 300");
+         this.ventana = Canvas.of(nombre, xMax, yMax, colorFondo);
+         this.xMax = xMax;
+         this.yMax = yMax;
          this.cuerposCelestes = new ArrayList<CuerpoCeleste>();   
          this.tiempo = 0;
     }  
@@ -77,6 +78,11 @@ public class Universo2D  {
     			            cuerpo.diametro);
      }
      
+     public void pintarFinal(Integer x, Integer y, Double d, String s1, String s2) {
+    	 ventana.setForegroundColor(Color.RED);
+    	 ventana.drawString(String.format("Choque entre %s y %s a %.2f",s1,s2,d), x, y);
+     }
+     
      
      public Location location(CuerpoCeleste cuerpo) {
     	Integer minimoX = cuerpo.coordenadas().x().intValue() - (cuerpo.diametro/2);
@@ -104,15 +110,17 @@ public class Universo2D  {
     	Preconditions.checkState(p.equals(Location.Inside),String.format("El cuerpo está fuera de la ventana %s",p));
     }
      
-
+    private IntPair choque;
     
-	public double distanciaMinima() {
+	public Double distanciaMinima() {
 		Integer n = cuerposCelestes.size();
-		Double distanciaMinima = IntStream.range(0, n).boxed()
+		choque = IntStream.range(0, n).boxed()
 				.flatMap(i -> IntStream.range(i + 1, n).boxed().map(j -> IntPair.of(i, j)))
-				.map(p -> this.cuerposCelestes.get(p.first()).distanciaA(this.cuerposCelestes.get(p.second())))
-				.min(Comparator.naturalOrder()).get();
-		return distanciaMinima;
+//				.map(p -> this.cuerposCelestes.get(p.first()).distanciaA(this.cuerposCelestes.get(p.second())))
+				.min(Comparator.comparing(p -> this.cuerposCelestes.get(p.first()).distanciaA(this.cuerposCelestes.get(p.second()))))
+				.get();
+		
+		return this.cuerposCelestes.get(choque.first()).distanciaA(this.cuerposCelestes.get(choque.second()));
 	}
     
    
@@ -133,10 +141,21 @@ public class Universo2D  {
             
 			
             distanciaMinima = distanciaMinima();
-			for (CuerpoCeleste cuerpo : cuerposCelestes) cuerpo.mover();
-			if (distanciaMinima < umbralRiesgo) vecesEnRiesgo += 1;
-
+            
+            if(distanciaMinima < -5) {
+            	var p = this.cuerposCelestes.get(choque.first()).coordenadas();
+            	pintarFinal(p.x().intValue(),p.y().intValue(),distanciaMinima,
+            			this.cuerposCelestes.get(choque.first()).nombre(),
+            			this.cuerposCelestes.get(choque.second()).nombre());
+            	return;
+            }
 			
+            for (CuerpoCeleste cuerpo : cuerposCelestes) cuerpo.mover();
+            
+            
+			
+            if (distanciaMinima < umbralRiesgo) vecesEnRiesgo += 1;
+
 			tiempo++;
 			ventana.drawString("Tiempo: " + tiempo, 1, 11);
             ventana.drawString("Veces en riesgo: " + vecesEnRiesgo, 1, yMax-20);

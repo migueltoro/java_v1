@@ -5,13 +5,13 @@ import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import us.lsi.tools.Preconditions;
+import us.lsi.tools.Ventana;
 
-public record Poligono2D(List<Punto2D> vertices) implements ObjetoGeometrico2D, ShapeDeObjeto {
+public record Poligono2D(List<Punto2D> vertices) implements ObjetoGeometrico2D {
 
 	public static Poligono2D empty() {
 		return new Poligono2D(new ArrayList<>());
@@ -120,17 +120,17 @@ public record Poligono2D(List<Punto2D> vertices) implements ObjetoGeometrico2D, 
 	}
 
 	@Override
-	public Poligono2D transform(Function<Double, Double> xt, Function<Double, Double> yt) {
-		return Poligono2D.ofPuntos(this.vertices.stream().map(x -> x.transform(xt, yt)).collect(Collectors.toList()));
+	public Poligono2D transform(Ventana v) {
+		return Poligono2D.ofPuntos(this.vertices.stream().map(x -> x.transform(v)).collect(Collectors.toList()));
 	}
 
 	@Override
 	public void show(Ventana v) {
-		v.g2.draw(this.shape(Ventana.xt, Ventana.yt));
+		v.canvas.draw(this.shape(v));
 	}
 
-	public Shape shape(Function<Double, Double> xt, Function<Double, Double> yt) {
-		Poligono2D t = (Poligono2D) this.transform(xt, yt);
+	public Shape shape(Ventana v) {
+		Poligono2D t = (Poligono2D) this.transform(v);
 		Integer n = t.numeroDeVertices();
 		GeneralPath polygon = new GeneralPath(GeneralPath.WIND_EVEN_ODD, n);
 		polygon.moveTo(t.vertice(0).x(), t.vertice(0).y());

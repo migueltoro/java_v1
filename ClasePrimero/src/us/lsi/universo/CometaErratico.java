@@ -13,7 +13,7 @@ public class CometaErratico extends Cometa {
 		Punto2D coordenadas = Orbita2D.puntoAleatorio(0., (double)universo.xMax,0.,(double)universo.yMax);
 		Integer diametro = 10;
 		Vector2D direccion = Vector2D.of(1.,Orbita2D.valorAleatorioEntre(0.,Math.PI/2));
-		Double velocidad = 10.;
+		Double velocidad = 5.;
 		return new CometaErratico(nombre,coordenadas, diametro, direccion, velocidad, universo);
 	}
 	
