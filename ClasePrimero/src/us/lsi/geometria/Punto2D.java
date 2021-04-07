@@ -38,9 +38,15 @@ public record Punto2D(Double x,Double y) implements ObjetoGeometrico2D, Comparab
 		return c;
 	}
     
+    public static Double distanciaA(Punto2D p1, Punto2D p2) {
+    	Double dx = p1.x()-p2.x();
+    	Double dy = p1.y()-p2.y();
+		return Math.sqrt(dx*dx+dy*dy);
+    }
+    
     public Double distanciaA(Punto2D p) {
-    	Double dx = this.x-p.x();
-    	Double dy = this.y-p.x();
+    	Double dx = this.x()-p.x();
+    	Double dy = this.y()-p.y();
 		return Math.sqrt(dx*dx+dy*dy);
 	}
     
@@ -121,7 +127,21 @@ public record Punto2D(Double x,Double y) implements ObjetoGeometrico2D, Comparab
 		return this.distanciaAlOrigen().compareTo(p.distanciaAlOrigen());
 	}
 
-	
+	//854.400375,1204.159458
+	public static void main(String[] args) {
+		Punto2D p1 = Punto2D.of(200.00,100.00);
+		Punto2D p2 = Punto2D.of(1000.00,400.00);
+		System.out.println(p1.distanciaA(p2));
+		Double distanciaCentros = Math.sqrt(
+				Math.pow(p1.x()-p2.x(),2)+
+				Math.pow(p1.y()-p2.y(),2));
+		System.out.println(distanciaCentros);
+		Double distanciaCentros2 = Math.sqrt(
+			    (p1.x()-p2.x())*(p1.x()-p2.x())+
+			    (p1.y()-p2.y())*(p1.y()-p2.y()));
+		System.out.println(distanciaCentros2);
+		System.out.println(distanciaA(p1,p2));
+	}
 
 
 }

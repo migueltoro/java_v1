@@ -44,8 +44,9 @@ public abstract class CuerpoCeleste {
 	}
 
 	public double distanciaA(CuerpoCeleste cuerpo) {
-		double distanciaCentros = this.coordenadas().distanciaA(cuerpo.coordenadas());
-		return distanciaCentros - this.diametro / 2 - cuerpo.diametro() / 2;
+		Double distanciaCentros = this.coordenadas().distanciaA(cuerpo.coordenadas());
+		Double d = distanciaCentros - this.diametro / 2 - cuerpo.diametro() / 2;
+		return d;
 	}
 	
 	public Boolean visible() {
@@ -56,7 +57,7 @@ public abstract class CuerpoCeleste {
 		if (this.visible()) {
 			universo.borrarCuerpoCeleste(this);	
 		}	
-        unPaso();
+        this.unPaso();
         this.cambiaPropiedades();
         if (this.visible()) {
 			universo.pintarCuerpoCeleste(this);

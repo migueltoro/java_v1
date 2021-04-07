@@ -2,11 +2,9 @@ package us.lsi.universo;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.IntStream;
 
-
+import us.lsi.geometria.Punto2D;
 import us.lsi.tools.Canvas;
 import us.lsi.tools.IntPair;
 import us.lsi.tools.Preconditions;
@@ -78,9 +76,9 @@ public class Universo2D  {
     			            cuerpo.diametro);
      }
      
-     public void pintarFinal(Integer x, Integer y, Double d, String s1, String s2) {
-    	 ventana.setForegroundColor(Color.RED);
-    	 ventana.drawString(String.format("Choque entre %s y %s a %.2f",s1,s2,d), x, y);
+     public void pintarFinal(Integer x1, Integer y1, Double d, String s1, String s2) {
+    	 ventana.setForegroundColor(Color.WHITE);
+    	 ventana.drawString(String.format("Choque entre %s y %s a %.2f",s1,s2,d), x1, y1);
      }
      
      
@@ -114,13 +112,18 @@ public class Universo2D  {
     
 	public Double distanciaMinima() {
 		Integer n = cuerposCelestes.size();
-		choque = IntStream.range(0, n).boxed()
-				.flatMap(i -> IntStream.range(i + 1, n).boxed().map(j -> IntPair.of(i, j)))
-//				.map(p -> this.cuerposCelestes.get(p.first()).distanciaA(this.cuerposCelestes.get(p.second())))
-				.min(Comparator.comparing(p -> this.cuerposCelestes.get(p.first()).distanciaA(this.cuerposCelestes.get(p.second()))))
-				.get();
-		
-		return this.cuerposCelestes.get(choque.first()).distanciaA(this.cuerposCelestes.get(choque.second()));
+		Double distanciaMinima = Double.MAX_VALUE;
+		choque = null;
+		for(int i = 0; i< n; i++) {
+			for(int j = i+1; j<n; j++) {
+				Double d = this.cuerposCelestes.get(i).distanciaA(this.cuerposCelestes.get(j));
+				if(d < distanciaMinima) {
+					distanciaMinima = d;
+					choque = IntPair.of(i,j);
+				}
+			}
+		}
+		return distanciaMinima;
 	}
     
    
@@ -142,17 +145,19 @@ public class Universo2D  {
 			
             distanciaMinima = distanciaMinima();
             
-            if(distanciaMinima < -5) {
-            	var p = this.cuerposCelestes.get(choque.first()).coordenadas();
-            	pintarFinal(p.x().intValue(),p.y().intValue(),distanciaMinima,
+            if(distanciaMinima < 0) {
+            	Punto2D p1 = this.cuerposCelestes.get(choque.first()).coordenadas();
+            	Punto2D p2 = this.cuerposCelestes.get(choque.second()).coordenadas();
+            	Punto2D pm = Punto2D.of((p1.x()+p2.x())/2, (p1.y()+p2.y())/2);
+            	pintarFinal(pm.x().intValue(),pm.y().intValue(),
+            			distanciaMinima,
             			this.cuerposCelestes.get(choque.first()).nombre(),
             			this.cuerposCelestes.get(choque.second()).nombre());
             	return;
             }
+            
 			
             for (CuerpoCeleste cuerpo : cuerposCelestes) cuerpo.mover();
-            
-            
 			
             if (distanciaMinima < umbralRiesgo) vecesEnRiesgo += 1;
 

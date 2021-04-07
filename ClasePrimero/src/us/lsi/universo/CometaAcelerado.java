@@ -31,7 +31,7 @@ public class CometaAcelerado extends Cometa {
     		Vector2D direccion, Double velocidad, Double aceleracion, Universo2D universo) {
         super(nombre, coordenadas, diametro, direccion, velocidad, universo);
         this.aceleracion = aceleracion;
-        super.color = Color.RED;
+        super.color = Color.WHITE;
     }
 
     public void cambiaPropiedades() {

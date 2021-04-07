@@ -27,7 +27,7 @@ public class CometaErratico extends Cometa {
     private CometaErratico(String nombre,Punto2D coordenadas, Integer diametro, 
 			Vector2D direccion,Double velocidad, Universo2D universo) {
         super(nombre,coordenadas, diametro, direccion, velocidad,universo);
-        super.color = Color.GREEN;
+        super.color = Color.WHITE;
     }
     
    

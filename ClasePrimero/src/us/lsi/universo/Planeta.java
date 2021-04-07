@@ -3,6 +3,7 @@ package us.lsi.universo;
 import java.awt.Color;
 
 import us.lsi.geometria.Punto2D;
+import us.lsi.geometria.Vector2D;
 import us.lsi.tools.Preconditions;
 
 public class Planeta extends CuerpoCeleste {
@@ -24,9 +25,9 @@ public class Planeta extends CuerpoCeleste {
 		Double a = Orbita2D.valorAleatorioEntre(40., 50.);
 		Double excentricidad = 0.;
 		Double anguloEjeMayor = 0.;
-		Double velocidadGiro = Orbita2D.valorAleatorioEntre(0.1,1.);
+		Double velocidadGiro = Orbita2D.valorAleatorioEntre(0.5,1.5);
 		Double angulo = 0.;
-		return  of(nombre, diametro, Color.WHITE, a, excentricidad, anguloEjeMayor, dextrogiro, velocidadGiro, angulo, planeta);
+		return  of(nombre, diametro, Color.GREEN, a, excentricidad, anguloEjeMayor, dextrogiro, velocidadGiro, angulo, planeta);
 	}
 
 	
@@ -63,7 +64,8 @@ public class Planeta extends CuerpoCeleste {
 	@Override
 	public void unPaso() {
 		this.angulo = this.angulo + this.velocidadGiro;
-		this.last =  this.planeta.coordenadas().add(this.orbita.radioVector(this.angulo));
+		Vector2D v = this.orbita.radioVector(this.angulo);
+		this.last =  this.planeta.coordenadas().add(v);
 	}
 
 	@Override

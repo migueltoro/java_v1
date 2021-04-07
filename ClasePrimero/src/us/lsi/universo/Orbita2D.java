@@ -46,7 +46,8 @@ public class Orbita2D {
 	
 	public Vector2D radioVector(Double angulo) {
 		Double r = this.d/(1+this.excentricidad*Math.cos(angulo));
-		return Vector2D.ofRadianes(r,angulo+this.anguloEjeMayor);
+		Vector2D v = Vector2D.ofRadianes(r,angulo+this.anguloEjeMayor);
+		return v;
 	}
 
 	public Double a() {
