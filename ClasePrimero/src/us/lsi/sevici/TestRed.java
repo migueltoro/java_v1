@@ -9,6 +9,7 @@ import us.lsi.tools.GraphicsMaps.GraphicType;
 
 public class TestRed {
 
+	
 	public static void main(String[] args) {
 		Locale.setDefault(new Locale("en", "US"));
 		Red r = Red.parse("ficheros/estaciones.csv");
