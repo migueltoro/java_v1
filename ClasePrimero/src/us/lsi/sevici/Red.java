@@ -4,20 +4,22 @@ package us.lsi.sevici;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import us.lsi.coordenadas.Coordenadas2D;
 import us.lsi.tools.FileTools;
+import us.lsi.tools.Preconditions;
+import us.lsi.tools.StreamTools;
 
-public record Red(List<Estacion> estaciones) {
+public record Red(List<Estacion> estaciones, Map<Integer,Estacion> indices) {
 
 	public static Red parse(String fichero) {
 		List<Estacion> estaciones = FileTools.streamFromFile("ficheros/estaciones.csv").skip(1)
 				.map(linea -> Estacion.parse(linea)).collect(Collectors.toList());
-		return new Red(estaciones);
+		Map<Integer,Estacion> porNumero = estaciones.stream().collect(Collectors.toMap(e->e.numero(),e->e));
+		return new Red(estaciones,porNumero);
 	}
 
 	public Integer numero() {
@@ -25,13 +27,13 @@ public record Red(List<Estacion> estaciones) {
 	}
 
 	public Estacion porNumero(Integer numero) {
-		Optional<Estacion> r = this.estaciones.stream().filter(e -> e.numero().equals(numero)).findFirst();
-		return r.get();
+		Estacion e = this.indices().getOrDefault(numero,null);
+		Preconditions.checkNotNull(e);
+		return e;
 	}
 
-	public Estacion porName(String nombre) {
-		Optional<Estacion> r = this.estaciones.stream().filter(e -> e.name().equals(nombre)).findFirst();
-		return r.get();
+	public Set<Estacion> porName(String nombre) {
+		return this.estaciones.stream().filter(e -> e.name().equals(nombre)).collect(Collectors.toSet());
 	}
 
 	public Set<Estacion> estacionesConBicisDisponibles() {
@@ -42,13 +44,14 @@ public record Red(List<Estacion> estaciones) {
 		return this.estaciones.stream().filter(e -> e.free_bikes() >= n).collect(Collectors.toSet());
 	}
 
-	public Set<Coordenadas2D> ubicaciones() {
-		return this.estaciones.stream().map(e -> e.coordenadas()).collect(Collectors.toSet());
+	public List<Coordenadas2D> ubicaciones() {
+		return this.estaciones.stream().map(e -> e.coordenadas()).collect(Collectors.toList());
 	}
 
-	public Set<Coordenadas2D> ubicacionEstacionesDisponibles(Integer k) {
+
+	public List<Coordenadas2D> ubicacionEstacionesDisponibles(Integer k) {
 		return this.estaciones.stream().filter(e -> e.free_bikes() >= k).map(e -> e.coordenadas())
-				.collect(Collectors.toSet());
+				.collect(Collectors.toList());
 	}
 
 	public Estacion estacionMasBicisDisponibles() {
@@ -56,13 +59,17 @@ public record Red(List<Estacion> estaciones) {
 	}
 
 	public Map<Integer, List<Estacion>> estacionesPorBicisDisponibles() {
-		return this.estaciones.stream().collect(Collectors.groupingBy(e -> e.free_bikes()));
+//		return this.estaciones.stream().collect(Collectors.groupingBy(e -> e.free_bikes()));
+		return StreamTools.groupingList(this.estaciones.stream(),e -> e.free_bikes());
 	}
 
 	public Map<Integer, Integer> numeroDeEstacionesPorBicisDisponibles() {
-		return this.estaciones.stream().collect(Collectors.groupingBy(e -> e.free_bikes(),
-				Collectors.collectingAndThen(Collectors.counting(), r -> r.intValue())));
+//		return this.estaciones.stream().collect(Collectors.groupingBy(e -> e.free_bikes(),
+//				Collectors.collectingAndThen(Collectors.counting(), r -> r.intValue())));
+		return StreamTools.groupingListAndThen(this.estaciones.stream(),e->e.free_bikes(),ls->ls.size());
 	}
+	
+	
 
 	@Override
 	public String toString() {

@@ -146,12 +146,12 @@ public class StreamTools {
 		return st.collect(Collectors.groupingBy(key));
 	}
 	
-	public static <K,E,R> Map<K,R> groupingListAndThen(Stream<E> st,Function<E,K> key, Function<List<E>,R> f){
-		return st.collect(Collectors.groupingBy(key,Collectors.collectingAndThen(Collectors.toList(),f)));
-	}
-	
 	public static <E,K,T> Map<K,List<T>> groupingList(Stream<E> st,Function<E,K> key, Function<E,T> value){
 		return st.collect(Collectors.groupingBy(key,Collectors.mapping(value,Collectors.toList())));
+	}
+	
+	public static <K,E,R> Map<K,R> groupingListAndThen(Stream<E> st,Function<E,K> key, Function<List<E>,R> f){
+		return st.collect(Collectors.groupingBy(key,Collectors.collectingAndThen(Collectors.toList(),f)));
 	}
 	
 	public static <E,K,T,R> Map<K,R> groupingListAndThen(Stream<E> st,Function<E,K> key, 

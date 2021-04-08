@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <title>Simple Polylines</title>
+    <title>Marcadores en Mapa</title>
     <style>
       
       #map {
@@ -30,19 +30,8 @@
         });
         
         {markercenter}
-         {markerbegin}
-          {markerend}
-
-        var flightPlanCoordinates = {polyline};
-        var flightPath = new google.maps.Polyline({
-          path: flightPlanCoordinates,
-          geodesic: true,
-          strokeColor: '#FF0000',
-          strokeOpacity: 1.0,
-          strokeWeight: 2
-        });
-
-        flightPath.setMap(map);
+	{markers}
+       
       }
     </script>
     <script async defer
