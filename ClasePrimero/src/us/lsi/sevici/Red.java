@@ -11,7 +11,6 @@ import java.util.stream.Stream;
 import us.lsi.coordenadas.Coordenadas2D;
 import us.lsi.tools.FileTools;
 import us.lsi.tools.Preconditions;
-import us.lsi.tools.StreamTools;
 
 public record Red(List<Estacion> estaciones, Map<Integer,Estacion> indices) {
 
@@ -59,17 +58,13 @@ public record Red(List<Estacion> estaciones, Map<Integer,Estacion> indices) {
 	}
 
 	public Map<Integer, List<Estacion>> estacionesPorBicisDisponibles() {
-//		return this.estaciones.stream().collect(Collectors.groupingBy(e -> e.free_bikes()));
-		return StreamTools.groupingList(this.estaciones.stream(),e -> e.free_bikes());
+		return this.estaciones.stream().collect(Collectors.groupingBy(e -> e.free_bikes()));
 	}
 
 	public Map<Integer, Integer> numeroDeEstacionesPorBicisDisponibles() {
-//		return this.estaciones.stream().collect(Collectors.groupingBy(e -> e.free_bikes(),
-//				Collectors.collectingAndThen(Collectors.counting(), r -> r.intValue())));
-		return StreamTools.groupingListAndThen(this.estaciones.stream(),e->e.free_bikes(),ls->ls.size());
+		return this.estaciones.stream().collect(Collectors.groupingBy(e -> e.free_bikes(),
+				Collectors.collectingAndThen(Collectors.toList(),ls->ls.size())));
 	}
-	
-	
 
 	@Override
 	public String toString() {
