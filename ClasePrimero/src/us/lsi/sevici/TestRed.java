@@ -20,7 +20,7 @@ public class TestRed {
 //		r.showUbicaciones();
 //		r.escribe(10,"ficheros/estaciones2.txt");
 		List<Coordenadas2D> ubicaciones = r.ubicacionEstacionesDisponibles(25);
-		GraphicsMaps.of(GraphicType.Google).markers("ficheros/MarkersGoogleOut.html","green", ubicaciones);
+		GraphicsMaps.of(GraphicType.Bing).markers("ficheros/MarkersBingOut.html","green", ubicaciones);
 	}
 
 }

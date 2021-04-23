@@ -36,7 +36,7 @@ public class GraphicsBingMaps extends AbstractGraphicsMaps implements GraphicsMa
 
 	@Override
 	public String getKey() {
-		return FileTools.lineasFromFile("C:/Users/migueltoro/Desktop/Jars/Keys//privateBing.txt").get(0);
+		return FileTools.lineasFromFile("C:/Users/migueltoro/OneDrive - UNIVERSIDAD DE SEVILLA/Escritorio/Jars/Keys/privateBing.txt").get(0);
 	}
 
 	@Override
