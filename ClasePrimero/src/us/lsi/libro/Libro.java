@@ -1,322 +1,274 @@
 package us.lsi.libro;
 
-import java.util.function.Function;
-import java.util.HashMap;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import us.lsi.tools.Enumerate;
+import us.lsi.tools.CollectionsTools;
 import us.lsi.tools.FileTools;
-import static us.lsi.tools.StreamTools.*;
+import us.lsi.tools.StreamTools;
 
 public class Libro {
 	
+//	Integer numeroDeLineas(String file); 
+//	Integer numeroDePalabrasDistintasNoHuecas(String file); 
+//	Set<String> palabrasDistintasNoHuecas(String file); 
+//	Double longitudMediaDeLineas(String file); 
+//	Integer numeroDeLineasVacias(String file);
+//	String lineaMasLarga(String file); 
+//	Integer primeraLineaConPalabra(String file, String palabra); 
+//	String lineaNumero(String file,Integer n); 
+//	SortedMap<String,Integer> frecuenciasDePalabras(String file);
+//	SortedMap<Integer,Set<String>> palabrasPorFrecuencias(String file);
+//	SortedMap<String,Set<Integer>> lineasDePalabra(String file);
+	
 	public static String separadores = "[- ,;.\n()?¿!¡:\"]";
 	
-	public static Function<String,Stream<String>> f = linea->Arrays.stream(linea.split(Libro.separadores));
-	
-	public static Integer numeroDeLineas(String fichero) {
-		return (int) FileTools.streamFromFile(fichero).count();
+	public static Integer numeroDeLineas(String file) {
+		return (int) FileTools.streamFromFile(file).count();
 	}
 	
-	public static Integer numeroDeLineas2(String fichero) {
-		Integer a = 0;
-		List<String> lineas = FileTools.lineasFromFile(fichero);
-		for(@SuppressWarnings("unused") String linea:lineas) {
-			a = a+1;
+	public static Integer numeroDeLineas2(String file) {
+		List<String> ls = FileTools.lineasFromFile(file);
+		return ls.size();
+	}
+	
+	public static Set<String> palabrasHuecas(String file) {
+		return FileTools.streamFromFile(file).collect(Collectors.toSet());
+	}
+	
+	public static Set<String> palabrasHuecas2(String file) {
+		Set<String> s = new HashSet<>();
+		for(String p: FileTools.lineasFromFile(file)) {
+			s.add(p);
 		}
-		return a;
+		return s;
 	}
 	
-	public static Integer numeroDePalabrasDistintas(String fichero) {
-		return (int) FileTools.streamFromFile(fichero)
-				.flatMap(linea->Arrays.stream(linea.split(Libro.separadores)))
-				.distinct()
-				.count();
-	}
-	
-	public static Integer numeroDePalabrasDistintas2(String fichero) {
-		Set<String> a = new HashSet<>();
-		List<String> lineas = FileTools.lineasFromFile(fichero);
-		for(String linea:lineas) {
-			String[] palabras = linea.split(Libro.separadores);
-			for(String palabra: palabras) {
-				a.add(palabra);
-			}
-		}
-		return a.size();
-	}
-	
-	public static Integer numeroDePalabrasDistintasNoHuecas(String fichero) {
-		Set<String> palabrasHuecas = FileTools.streamFromFile("ficheros/palabras_huecas.txt")
-				.collect(Collectors.toSet());
-		return (int) FileTools.streamFromFile(fichero)
-				.flatMap(linea->Arrays.stream(linea.split(Libro.separadores)))
-				.distinct()
+	public static Integer numeroDePalabrasDistintasNoHuecas(String file) {
+		Set<String> palabrasHuecas = Libro.palabrasHuecas("ficheros/palabras_huecas.txt");
+		return (int) FileTools.streamFromFile(file)
+				.filter(ln->!ln.isEmpty())
+				.flatMap(ln->Arrays.stream(ln.split(Libro.separadores)))
 				.filter(p->!palabrasHuecas.contains(p))
+				.distinct()
+				.count();		
+	}
+	
+	public static Integer numeroDePalabrasDistintasNoHuecas2(String file) {
+		Set<String> palabrasHuecas = Libro.palabrasHuecas("ficheros/palabras_huecas.txt");
+		List<String> lineas = FileTools.lineasFromFile(file);
+		Set<String> palabrasDistintas = new HashSet<>();
+		for(String linea: lineas) {
+			if(!linea.isEmpty()) {
+				for(String p: linea.split(separadores)) {
+					if(!palabrasHuecas.contains(p)) {
+						palabrasDistintas.add(p);
+					}
+				}
+			}
+		}
+		return palabrasDistintas.size();
+	}
+	
+	public static Set<String> palabrasDistintasNoHuecas(String file) {
+		Set<String> palabrasHuecas = Libro.palabrasHuecas("ficheros/palabras_huecas.txt");
+		return FileTools.streamFromFile(file)
+				.filter(ln->!ln.isEmpty())
+				.flatMap(ln->Arrays.stream(ln.split(Libro.separadores)))
+//				.filter(p->!Libro.palabrasHuecas("ficheros/palabras_huecas.txt").contains(p))
+				.filter(p->!palabrasHuecas.contains(p))
+				.distinct()
+				.collect(Collectors.toSet());
+	}
+	
+	public static Double longitudMediaDeLineas(String file) {
+		return FileTools.streamFromFile(file)
+				.mapToInt(ln->ln.length())
+				.average()
+				.getAsDouble();		
+	}
+	
+	public static Double longitudMediaDeLineas2(String file) {
+		Integer numLineas = 0;
+		Integer sumTamLineas = 0;
+		for(String linea: FileTools.lineasFromFile(file)) {
+			Integer ln = linea.length();
+			numLineas ++;
+			sumTamLineas += ln;
+		}
+		return ((double)sumTamLineas)/numLineas;
+	}
+	
+	public static Integer numeroDeLineasVacias(String file) {
+		return (int) FileTools.streamFromFile(file)
+				.filter(ln->ln.isEmpty())
 				.count();
 	}
 	
-	public static Integer numeroDePalabrasDistintasNoHuecas2(String fichero) {
-		Set<String> palabrasHuecas = new HashSet<>();
-		List<String> lineasPalabrasHuecas = FileTools.lineasFromFile("ficheros/palabras_huecas.txt");
-		for(String palabra:lineasPalabrasHuecas) {
-			palabrasHuecas.add(palabra);
-		}
-		Set<String> a = new HashSet<>();
-		List<String> lineas = FileTools.lineasFromFile(fichero);
-		for(String linea:lineas) {
-			String[] palabras = linea.split(Libro.separadores);
-			for(String palabra: palabras) {
-				if (!palabrasHuecas.contains(palabra)) {
-					a.add(palabra);
-				}
+	public static Integer numeroDeLineasVacias2(String file) {
+		Integer n = 0;
+		for(String linea: FileTools.lineasFromFile(file)) {
+			if(linea.isEmpty()) {
+				n++;
 			}
 		}
-		return a.size();	
+		return n;
 	}
 	
-	
-	public static Integer numeroDeLineasVacias(String fichero) {
-		return (int) FileTools.streamFromFile(fichero)
-						.filter(linea->linea.length()==0)
-						.count();
+	public static String lineaMasLarga(String file) {
+		return FileTools.streamFromFile(file)
+				.max(Comparator.comparing((String ln)->ln.length()))
+				.get();
 	}
 	
-	public static Integer numeroDeLineasVacias2(String fichero) {
-		Integer a = 0;
-		List<String> lineas = FileTools.lineasFromFile(fichero);
-		for(String linea:lineas) {
-			if(linea.length()==0) {
-				a = a +1;
+	public static String lineaMasLarga2(String file) {
+		String lineaMaslarga = null;
+		Integer lnlineaMaslarga = null;
+		for(String linea: FileTools.lineasFromFile(file)) {
+			Integer nl = linea.length();
+			if(lnlineaMaslarga == null || nl > lnlineaMaslarga) {
+				lineaMaslarga = linea;
+				lnlineaMaslarga = nl;
 			}
 		}
-		return a;
+		return lineaMaslarga;
 	}
 	
-	public static Double longitudMediaDeLineas(String fichero) {
-		return FileTools.streamFromFile(fichero)
-				.mapToInt(linea->linea.length())
-				.average()
-				.getAsDouble();
+	public static Integer primeraLineaConPalabra(String file, String palabra) {
+		return StreamTools.enumerate(FileTools.streamFromFile(file))
+				.filter(p->p.value().contains(palabra))
+				.findFirst()
+				.get()
+				.counter();				
 	}
 	
-	public static Double longitudMediaDeLineas2(String fichero) {
-		Integer s = 0;
-		Integer c = 0;
-		List<String> lineas = FileTools.lineasFromFile(fichero);
+	public static Integer primeraLineaConPalabra2(String file, String palabra) {
+		Integer n = 0;
+		Integer r = -1;
+		for(String linea: FileTools.lineasFromFile(file)) {
+			if(linea.contains(palabra)) {
+				r = n;
+				break;
+			}
+			n++;
+		}
+		return r;
+	}
+	
+	public static SortedMap<String,Integer> frecuenciasDePalabras(String file){
+		return FileTools.streamFromFile(file)
+				.filter(ln->!ln.isEmpty())
+				.flatMap(ln->Arrays.stream(ln.split(separadores)))
+				.collect(Collectors.groupingBy(p->p,
+						    ()->new TreeMap<>(),
+						    Collectors.collectingAndThen(Collectors.toList(),ls->ls.size())));
+				
+				
+	}
+	
+	public static SortedMap<String,Integer> frecuenciasDePalabras2(String file) {
+		Set<String> palabrasHuecas = Libro.palabrasHuecas("ficheros/palabras_huecas.txt");
+		List<String> lineas = FileTools.lineasFromFile(file);
+//		Set<String> palabrasDistintas = new HashSet<>();
+		SortedMap<String,Integer> m = new TreeMap<>();
 		for(String linea: lineas) {
-			s = s+linea.length();
-			c = c+1;
-		}
-		return ((double)s)/c;
-	}
-	
-	public static String primeraLineaConPalabra(String fichero, String palabra) {
-		return FileTools.streamFromFile(fichero)
-				.filter(linea->linea.contains(palabra))
-				.findFirst()
-				.get();			
-	}
-	
-	
-	public static String primeraLineaConPalabra2(String fichero, String palabra) {
-		String a = null;
-		List<String> lineas = FileTools.lineasFromFile(fichero);
-		for(String linea:lineas) {
-			if(linea.contains(palabra)) {
-				a = linea;
-				break;
-			}
-		}
-		return a;
-	}
-	
-	public static Integer primeraNumeroLineaConPalabra(String fichero, String palabra) {
-		Stream<String> lineas = FileTools.streamFromFile(fichero);
-		Stream<Enumerate<String>> lineasNumeros = enumerate(lineas);
-		return lineasNumeros.filter(e->e.value().contains(palabra))
-				.findFirst()
-				.get()
-				.counter();
-	}
-	
-	public static Integer primeraNumeroLineaConPalabra2(String fichero, String palabra) {
-		Integer a = -1;
-		Integer c = 0;
-		List<String> lineas = FileTools.lineasFromFile(fichero);
-		for(String linea:lineas) {
-			c = c+1;
-			if(linea.contains(palabra)) {
-				a = c;
-				break;
-			}
-		}
-		return a;
-	}
-	
-	public static String lineaNumero(String fichero, Integer n) {
-		Stream<String> lineas = FileTools.streamFromFile(fichero);
-		Stream<Enumerate<String>> lineasNumeros = enumerate(lineas);
-		return lineasNumeros.filter(e->e.counter().equals(n))
-				.findFirst()
-				.get()
-				.value();
-	}
-	
-	public static String lineaNumero2(String fichero, Integer n) {
-		String a = null;
-		Integer c = 0;
-		List<String> lineas = FileTools.lineasFromFile(fichero);
-		for(String linea:lineas) {
-			c = c+1;
-			if(c == n) {
-				a = linea;
-				break;
-			}
-		}
-		return a;
-	}
-	
-	private static Stream<String> lineasAPalabras(String nl){
-		return Arrays.stream(nl.split(Libro.separadores));
-	}
-	
-	public static Map<String,Integer> frecuenciasDePalabras1(String fichero) {
-		Stream<String> st = FileTools.streamFromFile(fichero).flatMap(Libro::lineasAPalabras);
-		return counting(st);
-		
-	}
-	
-	public static Map<String,Integer> frecuenciasDePalabras2(String fichero) {
-		return FileTools.streamFromFile(fichero)
-				.flatMap(Libro::lineasAPalabras)
-				.filter(p->p.length() >0)
-				.collect(Collectors.groupingBy(
-						x->x,
-						Collectors.collectingAndThen(Collectors.counting(),x->x.intValue())));				
-	}
-	
-	public static Map<String,Integer> frecuenciasDePalabras2_1(String fichero){
-		Map<String,Integer> a = new HashMap<>();
-		List<String> lineas = FileTools.lineasFromFile(fichero);
-		for(String linea:lineas) {
-			String[] palabras = linea.split(Libro.separadores);
-			for(String palabra: palabras) {
-				if(palabra.length() >0) {
-					String key = palabra;
-					Integer f = 0;
-					if(a.containsKey(key)) {
-						f = f+ a.get(key);
+			if(!linea.isEmpty()) {
+				for(String p: linea.split(separadores)) {
+					if(!palabrasHuecas.contains(p)) {
+//						palabrasDistintas.add(p);
+						if(!m.containsKey(p)) {
+							m.put(p,1);
+						} else {
+							Integer f = m.get(p);
+							m.put(p,f+1);
+						}
 					}
-					a.put(key, f);
 				}
 			}
 		}
-		return a;
+		return m;
 	}
 	
-	public static SortedMap<String,Integer> frecuenciasDePalabras3(String fichero) {
-		return FileTools.streamFromFile(fichero)
-				.flatMap(Libro::lineasAPalabras)
-				.filter(p->p.length() >0)
-				.collect(Collectors.groupingBy(
-						x->x,
+	public static SortedMap<Integer,Set<String>> palabrasPorFrecuencias(String file){
+		SortedMap<String,Integer> fq = Libro.frecuenciasDePalabras(file);
+		return fq.keySet().stream()
+				.collect(Collectors.groupingBy(f->fq.get(f),
 						()->new TreeMap<>(),
-						Collectors.collectingAndThen(Collectors.counting(),x->x.intValue())));				
+						Collectors.toSet()));
 	}
 	
-	public static SortedMap<String,Integer> frecuenciasDePalabras3_1(String fichero){
-		SortedMap<String,Integer> a = new TreeMap<>();
-		List<String> lineas = FileTools.lineasFromFile(fichero);
-		for(String linea:lineas) {
-			String[] palabras = linea.split(Libro.separadores);
-			for(String palabra: palabras) {
-				if(palabra.length() >0) {
-					String key = palabra;
-					Integer f = 0;
-					if(a.containsKey(key)) {
-						f = f+ a.get(key);
+	public static SortedMap<Integer,Set<String>> palabrasPorFrecuencias2(String file){
+		SortedMap<String,Integer> fq = Libro.frecuenciasDePalabras(file);
+		SortedMap<Integer,Set<String>> r = new TreeMap<>();
+		for(String p: fq.keySet()) {
+			Integer f = fq.get(p);
+			if(!r.containsKey(f)) {
+				Set<String> s = new HashSet<>();
+				s.add(p);
+				r.put(f, s);
+			} else {
+				r.get(f).add(p);
+			}
+		}
+		return r;
+	}
+	
+	public static SortedMap<String,Set<Integer>> lineasDePalabra(String file){
+		Set<String> palabrasHuecas = Libro.palabrasHuecas("ficheros/palabras_huecas.txt");
+		 return StreamTools.enumerate(FileTools.streamFromFile(file))
+				 .filter(pp->!pp.value().isEmpty())
+				 .flatMap(pp->pp.expand(ln->Arrays.stream(ln.split(separadores))))
+				 .filter(pp->!palabrasHuecas.contains(pp.value()))
+				 .collect(Collectors.groupingBy(pp->pp.value(),
+						 ()->new TreeMap<>(),
+						 Collectors.mapping(pp->pp.counter(),Collectors.toSet())));		 
+	}
+	
+	public static SortedMap<String,Set<Integer>> lineasDePalabra2(String file){
+		Set<String> palabrasHuecas = Libro.palabrasHuecas("ficheros/palabras_huecas.txt");
+		List<String> lineas = FileTools.lineasFromFile(file);
+		SortedMap<String,Set<Integer>> r = new TreeMap<>();
+		Integer nl = 0;
+		for(String linea: lineas) {
+			if(!linea.isEmpty()) {
+				for(String p: linea.split(separadores)) {
+					if(!palabrasHuecas.contains(p)) {
+						if(!r.containsKey(p)) {
+							Set<Integer> s = new HashSet<>();
+							s.add(nl);
+							r.put(p, s);
+						} else {
+							r.get(p).add(nl);
+						}
 					}
-					a.put(key, f);
 				}
 			}
+			nl++;
 		}
-		return a;
-	}
-	
-	public static SortedMap<Integer,Set<String>> palabrasPorFrecuencias(String fichero) {
-		SortedMap<String,Integer> m = frecuenciasDePalabras3(fichero);
-		Stream<String> st = m.keySet().stream();			
-		return groupingSetSorted(
-				st,
-				(String x)->m.get(x),
-				Comparator.naturalOrder());		
-	}
-	
-	public static SortedMap<Integer,Set<String>> palabrasPorFrecuencias2(String fichero){
-		SortedMap<String,Integer> m = frecuenciasDePalabras3_1(fichero);
-		SortedMap<Integer,Set<String>> a = new TreeMap<>();
-		for(String palabra: m.keySet()) {
-			Integer key = m.get(palabra);
-			if(a.containsKey(key)) {
-				a.get(key).add(palabra);
-			} else {
-				Set<String> p = new HashSet<>();
-				p.add(palabra);
-				a.put(key,p);
-			}
-		}
-		return a;
-	}
-	
-	private static Stream<Enumerate<String>> lineasAPalabras2(Enumerate<String> nl){
-		return Arrays.stream(nl.value().split(Libro.separadores))
-				.map(p->Enumerate.of(nl.counter(),p));
-	}
-	
-	public static SortedMap<String,Set<Integer>> lineasDePalabra(String fichero) {
-		Stream<Enumerate<String>> lineas = enumerate(FileTools.streamFromFile(fichero));
+		return r;
 		
-		Stream<Enumerate<String>> st =lineas
-				.flatMap(Libro::lineasAPalabras2)
-				.filter(np->np.value().length() >0);
 		
-		return groupingSetSorted(
-				st,
-				(Enumerate<String> np)->np.value(),
-				Comparator.naturalOrder(),
-				np->np.counter()
-				);
 	}
 	
-	
-	public static SortedMap<String,Set<Integer>> lineasDePalabra_2(String fichero)  {
-		SortedMap<String,Set<Integer>> a = new TreeMap<>();
-		Integer c = 0;
-		for(String linea: FileTools.lineasFromFile(fichero)) {
-			for(String palabra: linea.split(Libro.separadores)) {
-				String key = palabra;
-				if(a.containsKey(key)) {
-					a.get(key).add(c);
-				} else {
-					Set<Integer> s = new HashSet<>();
-					s.add(c);
-					a.put(key,s);
-				}			
-			}
-			c = c+1;
-		}
-		return a;
+	public static void main(String[] args) {
+//		Integer n = Libro.numeroDeLineas2("ficheros/quijote.txt");
+//		Set<String> s = Libro.palabrasHuecas("ficheros/palabras_huecas.txt");
+//		System.out.println(CollectionsTools.collectionToString(s));
+//		Integer n = numeroDePalabrasDistintasNoHuecas("ficheros/quijote.txt");
+//		System.out.println(n);
+		System.out.println(Libro.primeraLineaConPalabra2("ficheros/quijote.txt","calzas"));
+//		System.out.println(linea);
+//		System.out.println(CollectionsTools.mapToString(Libro.frecuenciasDePalabras("ficheros/quijote.txt")));
+//		System.out.println(Libro.lineaMasLarga("ficheros/quijote.txt"));
+//		System.out.println((Libro.lineasDePalabra("ficheros/quijote.txt")).get("calzas"));
+		System.out.println(CollectionsTools.mapToString(Libro.lineasDePalabra("ficheros/quijote.txt")));
 	}
-	
 
 }
