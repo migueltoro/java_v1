@@ -8,12 +8,12 @@ import us.lsi.tools.FileTools;
 public class TestAeropuerto {
 
 	public static void main(String[] args) {
-		Aeropuertos.leeAeropuertos("ficheros/Aeropuertos.csv");
-		Aerolineas.leeAerolineas("ficheros/Aerolineas.csv");
+		Aeropuertos.leeAeropuertos("ficheros/aeropuertos.csv");
+		Aerolineas.leeAerolineas("ficheros/aerolineas.csv");
 		Vuelos.random(100);
-		FileTools.writeStream(Vuelos.datos().vuelos().stream().map(v->v.toString()),"ficheros/Vuelos.csv");
+		FileTools.writeStream(Vuelos.datos().vuelos().stream().map(v->v.toString()),"ficheros/vuelos.csv");
 		OcupacionesVuelos.random(200, 2020);
-		FileTools.writeStream(OcupacionesVuelos.datos().ocupaciones().stream().map(oc->oc.toString()),"ficheros/OcupacionesVuelos.csv");
+		FileTools.writeStream(OcupacionesVuelos.datos().ocupaciones().stream().map(oc->oc.toString()),"ficheros/ocupacionesVuelos.csv");
 		System.out.println(Vuelo.random());
 		OcupacionVuelo ocp = OcupacionVuelo.random(Vuelos.datos().vuelos().get(0),2020);
 		System.out.println(ocp);

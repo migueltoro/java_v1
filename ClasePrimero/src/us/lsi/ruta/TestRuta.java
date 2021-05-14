@@ -16,7 +16,7 @@ public class TestRuta {
 //		System.out.println(r.getDesnivelDecrecienteAcumulado());
 //		System.out.println(r.getLongitud());
 		List<Coordenadas2D> coordenadas = r.marcas().stream().map(m->m.coordenadas().to2D()).collect(Collectors.toList());
-		GraphicsMaps.of(GraphicType.Google).polyline("ficheros/GooglePolylineOut.html",coordenadas);
+		GraphicsMaps.of(GraphicType.Bing).polyline("ficheros/BingPolylineOut.html",coordenadas);
 	}
 
 }

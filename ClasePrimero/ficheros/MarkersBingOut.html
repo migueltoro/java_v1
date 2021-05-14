@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>setpolylinelocationsHTML</title>
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+        <style type='text/css'>body{margin:0;padding:0;overflow:hidden;font-family:'Segoe UI',Helvetica,Arial,Sans-Serif}</style>
+    </head>
+    <body>
+        <div id='printoutPanel'></div>
+        
+        <div id='myMap' style='width: 100vw; height: 100vh;'></div>
+        <script type='text/javascript'>
+            function loadMapScenario() {
+                var map = new Microsoft.Maps.Map(document.getElementById('myMap'), {});
+                 map.setView({
+            mapTypeId: Microsoft.Maps.MapTypeId.aerial,
+            center: new Microsoft.Maps.Location(37.388895,-5.993605),
+            zoom: 12
+        });
+                
+ var pin0 = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(37.388966,-5.995294), {
+color: 'green',text: 'E'
+ });
+map.entities.push(pin0);
+ var pin1 = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(37.378231,-5.979362), {
+color: 'green',text: 'E'
+ });
+map.entities.push(pin1);
+ var pin2 = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(37.362971,-5.986262), {
+color: 'green',text: 'E'
+ });
+map.entities.push(pin2);
+ var pin3 = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(37.411044,-6.001959), {
+color: 'green',text: 'E'
+ });
+map.entities.push(pin3);
+ var pin4 = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(37.382043,-5.99303), {
+color: 'green',text: 'E'
+ });
+map.entities.push(pin4);
+ var pin5 = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(37.410112,-6.005722), {
+color: 'green',text: 'E'
+ });
+map.entities.push(pin5);
+
+                 var pin6 = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(37.388895,-5.993605), {
+color: 'red',text: 'C'
+ });
+map.entities.push(pin6);
+            }
+        </script>
+        <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=Aunqyn-6bN5vz1GLFa0FMspXEZWEegNIEkAxSJq802SotcA7Mc4Odp0fftDYEv7v&callback=loadMapScenario' async defer></script>
+    </body>
+</html>

@@ -146,5 +146,10 @@ public class Vuelos {
 				BinaryOperator.minBy(Comparator.comparing(Vuelo::precio)));
 	}
 	
+	public static void main(String[] args) {
+		Aeropuertos.leeAeropuertos("ficheros/aeropuertos.csv");
+		Aerolineas.leeAerolineas("ficheros/aerolineas.csv");
+		Vuelos.leeFicheroVuelos("ficheros/vuelos.csv");
+	}
 	
 }

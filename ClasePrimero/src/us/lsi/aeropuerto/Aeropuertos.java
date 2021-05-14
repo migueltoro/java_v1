@@ -6,86 +6,73 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import us.lsi.tools.FileTools;
-import us.lsi.tools.Preconditions;
-import us.lsi.tools.StreamTools;
 
 public class Aeropuertos {
+	
+private static Aeropuertos datos;
+	
+	public static Aeropuertos getDatos() {
+		return datos;
+	}
 	
 	public static void leeAeropuertos(String fichero) {
 		List<Aeropuerto> aeropuertos = FileTools.streamFromFile(fichero)
 				.map(x -> Aeropuerto.parse(x))
-				.collect(Collectors.toList());
-		
+				.collect(Collectors.toList());	
 		Aeropuertos.datos = new Aeropuertos(aeropuertos);
 	}
-
+	
 	private List<Aeropuerto> aeropuertos;
-	private Map<String,Aeropuerto> codigosAeropuertos;
-	private Map<String,String> ciudadDeAeropuerto;  //codigoAeropuerto, ciudad
-	private Map<String,Set<Aeropuerto>> aeropuertosEnCiudad; //ciudad, {codigosAeropuerto, ...} 
-	private Integer numAeropuertos;
-	
-	private static Aeropuertos datos;
-	
-	public static Aeropuertos datos() {
-		return datos;
-	}
+	private Map<String,Aeropuerto> codigosAeropuertos = null;
+	private Map<String,String> ciudadDeAeropuerto = null;
+	private Map<String,Set<Aeropuerto>> aeropuertosEnCiudad = null;
 
-	private Aeropuertos(List<Aeropuerto> aeropuertos) {
+	public Aeropuertos(List<Aeropuerto> aeropuertos) {
 		super();
 		this.aeropuertos = aeropuertos;
-		try {
-			this.codigosAeropuertos = this.aeropuertos.stream()
-					.collect(Collectors.toMap(Aeropuerto::codigo,x->x));
-		} catch (IllegalStateException e) {
-			Preconditions.checkState(false,e.toString());
-		}
-		try {
-			this.ciudadDeAeropuerto = this.aeropuertos.stream()
-					.collect(Collectors.toMap(Aeropuerto::codigo, Aeropuerto::ciudad));
-		} catch (IllegalStateException e) {
-			Preconditions.checkState(false,e.toString());
-		}
-		this.aeropuertosEnCiudad = StreamTools.groupingSet(this.aeropuertos.stream(),Aeropuerto::ciudad);
-		this.numAeropuertos = this.ciudadDeAeropuerto.size();
 	}
-	
-	public List<Aeropuerto> aeropuertos() {
+
+	public List<Aeropuerto> getAeropuertos() {
 		return aeropuertos;
 	}
-
-	public Map<String, Aeropuerto> codigosAeropuertos() {
-		return codigosAeropuertos;
+	
+	public void addAeropuerto(Aeropuerto a) {
+		this.aeropuertos.add(a);
 	}
 	
-	public Map<String, String> ciudadDeAeropuerto() {
+	public void removeAeropuerto(Aeropuerto a) {
+		this.aeropuertos.remove(a);
+	}
+	
+	public Map<String,Aeropuerto> getCodigosAeropuertos() { //codigoAropueto, Aeropuerto
+		if(this.codigosAeropuertos == null)
+			this.codigosAeropuertos = this.aeropuertos.stream().collect(Collectors.toMap(a->a.codigo(),a->a));
+		return this.codigosAeropuertos;
+	}
+	
+	public Map<String,String> getCiudadDeAeropuerto() {  //codigoAeropuerto, ciudad
+		if(ciudadDeAeropuerto == null)
+		  this.ciudadDeAeropuerto = this.aeropuertos.stream().collect(Collectors.toMap(a->a.codigo(),a->a.ciudad()));
 		return ciudadDeAeropuerto;
 	}
-
-	public Map<String, Set<Aeropuerto>> aeropuertosEnCiudad() {
+	
+	public Map<String,Set<Aeropuerto>> getAeropuertosEnCiudad() { //ciudad, {codigosAeropuerto, ...} 
+		if(aeropuertosEnCiudad == null)
+		   this.aeropuertosEnCiudad = this.aeropuertos.stream()
+		       .collect(Collectors.groupingBy(a->a.ciudad(),Collectors.toSet()));
 		return aeropuertosEnCiudad;
 	}
+	
+	public Integer getNumAeropuertos() {
+		return this.aeropuertos.size();
+	}
 
-	public Integer numAeropuertos() {
-		return numAeropuertos;
+	@Override
+	public String toString() {
+		return String.format("Aeropuertos\n\t%s",this.aeropuertos.stream()
+				.map(a->a.toString())
+				.collect(Collectors.joining("\n\t")));
 	}
-	
-	public void addAeropuerto(Aeropuerto v) {
-		Preconditions.checkArgument(!this.codigosAeropuertos.containsKey(v.codigo()),
-				String.format("La aerolina %s ya existe",v.toString()));
-		this.aeropuertos.add(v);
-		this.codigosAeropuertos.put(v.codigo(),v);
-		this.ciudadDeAeropuerto.put(v.codigo(),v.ciudad());
-		this.numAeropuertos +=1;
-	}
-	
-	public void removeAeropuerto(Aeropuerto v) {
-		if (this.codigosAeropuertos.containsKey(v.codigo())) {
-			this.aeropuertos.remove(v);
-			this.codigosAeropuertos.remove(v.codigo());
-			this.ciudadDeAeropuerto.remove(v.codigo());
-			this.numAeropuertos +=1;
-		}
-	}
+
 
 }

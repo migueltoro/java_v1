@@ -5,53 +5,49 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import us.lsi.tools.FileTools;
-import us.lsi.tools.Preconditions;
-
 public class Aerolineas {
 	
 	public static void leeAerolineas(String fichero) {
 		List<Aerolinea> datos = FileTools.streamFromFile(fichero)
 				.map(x ->Aerolinea.parse(x))
-				.collect(Collectors.toList());
+				.toList();
 		Aerolineas.datos = new Aerolineas(datos);
 	}
 	
-	public List<Aerolinea> aeroLineas;
-	public Map<String,Aerolinea> codigosAerolineas;
-	public Integer numeroAerolineas;
+	private List<Aerolinea> aeroLineas;
+	
+	public List<Aerolinea> getAeroLineas() {
+		return aeroLineas;
+	}
+	
+	private Map<String,Aerolinea> codigosAerolineas = null;
+
+	public Map<String, Aerolinea> getCodigosAerolineas() {
+		if(codigosAerolineas == null)
+		   this.codigosAerolineas = this.aeroLineas.stream().collect(Collectors.toMap(a->a.codigo(),a->a));
+		return this.codigosAerolineas;
+	}
+	
+	public Integer getNumeroAerolineas() {
+		return this.aeroLineas.size();
+	}
 	
 	private static Aerolineas datos;
-	
-	public static Aerolineas datos() {
+
+	public static Aerolineas getDatos() {
 		return datos;
 	}
 
-	private Aerolineas(List<Aerolinea> aerolineas) {
+	public Aerolineas(List<Aerolinea> aeroLineas) {
 		super();
-		this.aeroLineas = aerolineas;
-		try {
-			this.codigosAerolineas = this.aeroLineas.stream()
-					.collect(Collectors.toMap(Aerolinea::codigo,x->x));
-		} catch (IllegalStateException e) {
-			Preconditions.checkState(false,e.toString());
-		}
-		this.numeroAerolineas = this.codigosAerolineas.size();
+		this.aeroLineas = aeroLineas;
 	}
 	
-	public void addAerolinea(Aerolinea v) {
-		Preconditions.checkArgument(!this.codigosAerolineas.containsKey(v.codigo()),
-				String.format("La aerolina %s ya existe",v.toString()));
-		this.aeroLineas.add(v);
-		this.codigosAerolineas.put(v.codigo(),v);
-		this.numeroAerolineas +=1;
-	}
-	
-	public void removeAerolinea(Aerolinea v) {	
-		if (this.codigosAerolineas.containsKey(v.codigo())) {
-			this.aeroLineas.remove(v);
-			this.codigosAerolineas.remove(v.codigo());
-			this.numeroAerolineas -= 1;
-		}
+	@Override
+	public String toString() {
+		return String.format("Aerolineas\n\t%s",this.aeroLineas.stream()
+				.map(a->a.toString())
+				.collect(Collectors.joining("\n\t")));
 	}
 
 }
