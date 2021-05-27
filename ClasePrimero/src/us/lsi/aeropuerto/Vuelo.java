@@ -114,7 +114,7 @@ public record Vuelo(
 		Vuelo v2 = Vuelo.parse(s);
 		Aeropuertos.leeAeropuertos("ficheros/aeropuertos.csv");
 		Aerolineas.leeAerolineas("ficheros/aerolineas.csv");
-		Vuelo v3 = Vuelo.random();
+//		Vuelo v3 = Vuelo.random();
 		System.out.println(v2);
 	}
 

@@ -4,6 +4,7 @@ package us.lsi.libro;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Set;
@@ -93,6 +94,13 @@ public class Libro {
 				.mapToInt(ln->ln.length())
 				.average()
 				.getAsDouble();		
+	}
+	
+	public static Double longitudMediaDeLineas3(String file) {
+		return FileTools.streamFromFile(file)
+				.mapToDouble(ln->ln.length())
+				.sum()/
+				FileTools.streamFromFile(file).count();
 	}
 	
 	public static Double longitudMediaDeLineas2(String file) {
@@ -262,13 +270,15 @@ public class Libro {
 //		Set<String> s = Libro.palabrasHuecas("ficheros/palabras_huecas.txt");
 //		System.out.println(CollectionsTools.collectionToString(s));
 //		Integer n = numeroDePalabrasDistintasNoHuecas("ficheros/quijote.txt");
-//		System.out.println(n);
-		System.out.println(Libro.primeraLineaConPalabra2("ficheros/quijote.txt","calzas"));
+		Double m1 = Libro.longitudMediaDeLineas("ficheros/quijote.txt");
+		Double m3 = Libro.longitudMediaDeLineas3("ficheros/quijote.txt");
+		System.out.println(m1+","+m3);
+//		System.out.println(Libro.primeraLineaConPalabra2("ficheros/quijote.txt","calzas"));
 //		System.out.println(linea);
 //		System.out.println(CollectionsTools.mapToString(Libro.frecuenciasDePalabras("ficheros/quijote.txt")));
 //		System.out.println(Libro.lineaMasLarga("ficheros/quijote.txt"));
 //		System.out.println((Libro.lineasDePalabra("ficheros/quijote.txt")).get("calzas"));
-		System.out.println(CollectionsTools.mapToString(Libro.lineasDePalabra("ficheros/quijote.txt")));
+//		System.out.println(CollectionsTools.mapToString(Libro.lineasDePalabra("ficheros/quijote.txt")));
 	}
 
 }
