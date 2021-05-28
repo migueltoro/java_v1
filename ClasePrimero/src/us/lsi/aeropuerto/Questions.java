@@ -1,8 +1,5 @@
 package us.lsi.aeropuerto;
 
-import static us.lsi.tools.StreamTools.counting;
-import static us.lsi.tools.StreamTools.toSet;
-
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -51,7 +48,7 @@ public class Questions {
 			Stream<String> st = OcupacionesVuelos.datos().ocupaciones().stream()
 					.filter(ocp -> ocp.fecha().toLocalDate().equals(f))
 					.map(ocp -> ocp.vuelo().ciudadDestino());
-			return 	toSet(st);
+			return 	st.collect(Collectors.toSet());
 		}
 
 		// Dado un anyo devuelve un SortedMap que relacione cada destino con el
@@ -100,9 +97,12 @@ public class Questions {
 		// Devuelve un Map tal que dado un entero n haga corresponder
 		// a cada fecha la lista de los n destinos con los vuelos de mayor duración.
 		
+		private static Comparator<OcupacionVuelo> cmp = 
+				Comparator.comparing((OcupacionVuelo ocp) -> ocp.vuelo().duracion().getSeconds()).reversed();
+		
 		private static List<String> mayorDuracion(List<OcupacionVuelo> ls,Integer n){
 			Stream<String> st = ls.stream()
-					.sorted(Comparator.comparing(ocp -> ocp.vuelo().duracion()))
+					.sorted(cmp)
 					.limit(n)
 					.map(ocp -> ocp.vuelo().ciudadDestino());
 			
@@ -143,8 +143,9 @@ public class Questions {
 		//Devuelve el destino con mayor número de vuelos
 		
 		public static String destinoConMasVuelos() {	
-			Map<String,Integer> numVuelosDeDestino = counting(Vuelos.datos().vuelos().stream(),Vuelo::codigoDestino);
-			
+			Map<String,Integer> numVuelosDeDestino = Vuelos.datos().vuelos().stream()
+					 .collect(Collectors.groupingBy(Vuelo::codigoDestino,
+							  Collectors.collectingAndThen(Collectors.counting(),Long::intValue)));
 			return 	numVuelosDeDestino.keySet().stream()
 					.max(Comparator.comparing(d->numVuelosDeDestino.get(d)))
 					.get();	
