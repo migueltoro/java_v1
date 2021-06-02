@@ -4,6 +4,8 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -127,6 +129,20 @@ public class Questions {
 			return	st.average()
 					.orElse(0.0);
 		}
+		
+		public static Double precioMedio2(LocalDateTime f) {
+			List<OcupacionVuelo> ls = OcupacionesVuelos.datos().ocupaciones();
+			Double sum = 0.;
+			Integer n = 0;
+			for(OcupacionVuelo ocp: ls) {
+				if(ocp.fecha().isAfter(f)) {
+					Double precio = ocp.vuelo().precio();
+					sum = sum +precio;
+					n= n+1;
+				}
+			}
+			return n==0?sum/n:0.0;
+		}
 
 		// Devuelve un Map que haga corresponder a cada destino un conjunto con las
 		// fechas de los vuelos a ese destino.
@@ -137,7 +153,23 @@ public class Questions {
 			return st.collect(Collectors.groupingBy(ocp -> ocp.vuelo().ciudadDestino(),
 					Collectors.mapping(OcupacionVuelo::fechaSalida,Collectors.toSet())));
 		}
-
+		
+		public static Map<String, Set<LocalDate>> fechasADestino2() {
+			List<OcupacionVuelo> ls = OcupacionesVuelos.datos().ocupaciones();
+			Map<String, Set<LocalDate>> a = new HashMap<>();
+			for(OcupacionVuelo ocp: ls) {
+				String key = ocp.vuelo().ciudadDestino();
+				LocalDate fecha = ocp.fechaSalida();
+				if(a.containsKey(key)) {
+					a.get(key).add(fecha);
+				} else {
+					Set<LocalDate> s = new HashSet<>();
+					s.add(fecha);
+					a.put(key, s);
+				}
+			}
+			return a;
+		}
 
 		
 		//Devuelve el destino con mayor número de vuelos
@@ -180,23 +212,26 @@ public class Questions {
 		
 		//13. Dado un número n devuelve un conjunto con los n destinos con más vuelos
 		
-		public static Set<String> entreLosMasVuelos(Integer n) {
-			Map<String,List<Vuelo>> vuelosADestino = Vuelos.datos().vuelos().stream().collect(Collectors.groupingBy(Vuelo::codigoDestino));
+		public static Set<String> entreLosMasVuelos(Integer n) {			
+			Map<String,Long> vuelosADestino = Vuelos.datos().vuelos().stream()
+					.collect(Collectors.groupingBy(Vuelo::codigoDestino, Collectors.counting()));
 			
 			return vuelosADestino.keySet().stream()
-					.sorted(Comparator.comparing(d->vuelosADestino.get(d).size()))
+					.sorted(Comparator.comparing(d->vuelosADestino.get(d)).reversed())
 					.limit(n)
 					.collect(Collectors.toSet());
 		}
 		
 		
+		
 		// 14. Dado un número entero n devuelve una lista con los destinos que tienen más de n vuelos
 		
 		public static List<String> masDeNVuelos(Integer n) {
-			Map<String,List<Vuelo>> vuelosADestino = Vuelos.datos().vuelos().stream().collect(Collectors.groupingBy(Vuelo::codigoDestino));
+			Map<String,Long> vuelosADestino = Vuelos.datos().vuelos().stream()
+					.collect(Collectors.groupingBy(Vuelo::codigoDestino,Collectors.counting()));
 			
 			return vuelosADestino.keySet().stream()
-					.filter(d->vuelosADestino.get(d).size() > n)
+					.filter(d->vuelosADestino.get(d) > n)
 					.collect(Collectors.toList());
 		}
 		
@@ -208,6 +243,15 @@ public class Questions {
 			
 			return Vuelos.datos().vuelos().stream().collect(Collectors.groupingBy(Vuelo::codigoDestino,
 					Collectors.collectingAndThen(Collectors.toList(),g->(1.0*g.size())/n)));
+		}
+		
+		public static Map<String,Double>  procentajeADestinoOcupacionesVuelos() {
+			Integer n = OcupacionesVuelos.datos().ocupaciones().size();
+			
+			return OcupacionesVuelos.datos().ocupaciones().stream()
+					.map(ocp->ocp.vuelo())
+					.collect(Collectors.groupingBy(Vuelo::codigoDestino,
+					    Collectors.collectingAndThen(Collectors.toList(),g->(1.0*g.size())/n)));
 		}
 		
 		// 16. Devuelve un Map que haga corresponder a cada ciudad destino el vuelo de más barato
