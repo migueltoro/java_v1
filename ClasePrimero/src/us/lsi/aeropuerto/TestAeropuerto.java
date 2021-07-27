@@ -2,8 +2,8 @@ package us.lsi.aeropuerto;
 
 import java.time.format.DateTimeFormatter;
 
-import us.lsi.tools.CollectionsTools;
 import us.lsi.tools.FileTools;
+import us.lsi.tools.Map2;
 
 public class TestAeropuerto {
 
@@ -20,7 +20,7 @@ public class TestAeropuerto {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		System.out.println(ocp.fecha().format(formatter));
 //		System.out.println(CollectionsTools.mapToString(OcupacionesVuelos.fechasADestino()));
-		System.out.println(CollectionsTools.mapToString(Questions.destinosConMayorDuracion(2)));
+		System.out.println(Map2.toString(Questions.destinosConMayorDuracion(2)));
 	}
 
 }

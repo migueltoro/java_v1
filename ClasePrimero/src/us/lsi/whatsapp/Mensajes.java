@@ -11,9 +11,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import us.lsi.tools.CollectionsTools;
 import us.lsi.tools.FileTools;
 import us.lsi.tools.Graphics;
+import us.lsi.tools.List2;
 import us.lsi.tools.Preconditions;
 
 public class Mensajes {
@@ -38,7 +38,7 @@ public class Mensajes {
 
 	@Override
 	public String toString() {
-		return CollectionsTools.collectionToString(mensajes);
+		return List2.toString(mensajes);
 	}
 	
 	private Map<String,List<Mensaje>> mensajesPorUsuario = null;

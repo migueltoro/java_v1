@@ -2,7 +2,7 @@ package us.lsi.libro;
 
 
 import java.util.Locale;
-import us.lsi.tools.CollectionsTools;
+import us.lsi.tools.Map2;
 
 
 public class Test {
@@ -19,7 +19,7 @@ public class Test {
 //		System.out.println(CollectionsTools.mapToString(Libro.frecuenciasDePalabras("ficheros/quijote.txt")));
 //		System.out.println(Libro.lineaMasLarga("ficheros/quijote.txt"));
 //		System.out.println((Libro.lineasDePalabra("ficheros/quijote.txt")).get("calzas"));
-		System.out.println(CollectionsTools.mapToString(Libro.lineasDePalabra("ficheros/quijote.txt")));
+		System.out.println(Map2.toString(Libro.lineasDePalabra("ficheros/quijote.txt")));
 	}
 
 }
