@@ -179,12 +179,12 @@ public class StreamTools {
 		return st.collect(Collectors.groupingBy(key,Collectors.toCollection(TreeSet::new)));
 	}
 	
-	public static <E,K> Map<K,Integer> counting(Stream<E> st,Function<E,K> key){
+	public static <E,K> Map<K,Integer> groupsSize(Stream<E> st,Function<E,K> key){
 		return st.collect(Collectors.groupingBy(key,
 				Collectors.collectingAndThen(Collectors.counting(),Long::intValue)));
 	}
 	
-	public static <E> Map<E,Integer> counting(Stream<E> st){
+	public static <E> Map<E,Integer> groupsSize(Stream<E> st){
 		return st.collect(Collectors.groupingBy(x->x,
 				Collectors.collectingAndThen(Collectors.counting(),Long::intValue)));
 	}
