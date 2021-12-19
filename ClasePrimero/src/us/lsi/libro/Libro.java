@@ -50,17 +50,17 @@ public class Libro {
 		return s;
 	}
 	
-	public static Integer numeroDePalabrasDistintasNoHuecas(String file) {
+	public static Set<String> palabrasDistintasNoHuecas(String file) {
 		Set<String> palabrasHuecas = Libro.palabrasHuecas("ficheros/palabras_huecas.txt");
-		return (int) FileTools.streamFromFile(file)
+		return FileTools.streamFromFile(file)
 				.filter(ln->!ln.isEmpty())
 				.flatMap(ln->Arrays.stream(ln.split(Libro.separadores)))
 				.filter(p->!palabrasHuecas.contains(p))
 				.distinct()
-				.count();		
+				.collect(Collectors.toSet());
 	}
 	
-	public static Integer numeroDePalabrasDistintasNoHuecas2(String file) {
+	public static Set<String> palabrasDistintasNoHuecas2(String file) {
 		Set<String> palabrasHuecas = Libro.palabrasHuecas("ficheros/palabras_huecas.txt");
 		List<String> lineas = FileTools.lineasFromFile(file);
 		Set<String> palabrasDistintas = new HashSet<>();
@@ -73,18 +73,21 @@ public class Libro {
 				}
 			}
 		}
-		return palabrasDistintas.size();
+		return palabrasDistintas;
 	}
 	
-	public static Set<String> palabrasDistintasNoHuecas(String file) {
+	public static Integer numeroDePalabrasDistintasNoHuecas(String file) {
 		Set<String> palabrasHuecas = Libro.palabrasHuecas("ficheros/palabras_huecas.txt");
-		return FileTools.streamFromFile(file)
+		return (int) FileTools.streamFromFile(file)
 				.filter(ln->!ln.isEmpty())
 				.flatMap(ln->Arrays.stream(ln.split(Libro.separadores)))
-//				.filter(p->!Libro.palabrasHuecas("ficheros/palabras_huecas.txt").contains(p))
 				.filter(p->!palabrasHuecas.contains(p))
 				.distinct()
-				.collect(Collectors.toSet());
+				.count();
+	}
+	
+	public static Integer numeroDePalabrasDistintasNoHuecas2(String file) {
+		return 	palabrasDistintasNoHuecas2(file).size();
 	}
 	
 	public static Double longitudMediaDeLineas(String file) {
@@ -92,13 +95,6 @@ public class Libro {
 				.mapToInt(ln->ln.length())
 				.average()
 				.getAsDouble();		
-	}
-	
-	public static Double longitudMediaDeLineas3(String file) {
-		return FileTools.streamFromFile(file)
-				.mapToDouble(ln->ln.length())
-				.sum()/
-				FileTools.streamFromFile(file).count();
 	}
 	
 	public static Double longitudMediaDeLineas2(String file) {
@@ -182,13 +178,11 @@ public class Libro {
 	public static SortedMap<String,Integer> frecuenciasDePalabras2(String file) {
 		Set<String> palabrasHuecas = Libro.palabrasHuecas("ficheros/palabras_huecas.txt");
 		List<String> lineas = FileTools.lineasFromFile(file);
-//		Set<String> palabrasDistintas = new HashSet<>();
 		SortedMap<String,Integer> m = new TreeMap<>();
 		for(String linea: lineas) {
 			if(!linea.isEmpty()) {
 				for(String p: linea.split(separadores)) {
 					if(!palabrasHuecas.contains(p)) {
-//						palabrasDistintas.add(p);
 						if(!m.containsKey(p)) {
 							m.put(p,1);
 						} else {
@@ -269,7 +263,7 @@ public class Libro {
 //		System.out.println(CollectionsTools.collectionToString(s));
 //		Integer n = numeroDePalabrasDistintasNoHuecas("ficheros/quijote.txt");
 		Double m1 = Libro.longitudMediaDeLineas("ficheros/quijote.txt");
-		Double m3 = Libro.longitudMediaDeLineas3("ficheros/quijote.txt");
+		Double m3 = Libro.longitudMediaDeLineas2("ficheros/quijote.txt");
 		System.out.println(m1+","+m3);
 //		System.out.println(Libro.primeraLineaConPalabra2("ficheros/quijote.txt","calzas"));
 //		System.out.println(linea);

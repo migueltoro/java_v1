@@ -3,6 +3,7 @@ package us.lsi.aeropuerto;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import us.lsi.tools.FileTools;
 public class Aerolineas {
@@ -11,41 +12,33 @@ public class Aerolineas {
 		List<Aerolinea> datos = FileTools.streamFromFile(fichero)
 				.map(x ->Aerolinea.parse(x))
 				.toList();
-		Aerolineas.datos = new Aerolineas(datos);
+		Aerolineas.aeroLineas = datos;
 	}
 	
-	private List<Aerolinea> aeroLineas;
+	private static List<Aerolinea> aeroLineas;
 	
-	public List<Aerolinea> getAeroLineas() {
-		return aeroLineas;
-	}
-	
-	private Map<String,Aerolinea> codigosAerolineas = null;
+	private static Map<String,Aerolinea> codigosAerolineas = null;
 
-	public Map<String, Aerolinea> getCodigosAerolineas() {
+	public static Aerolinea aerolinea(String codigo) {
 		if(codigosAerolineas == null)
-		   this.codigosAerolineas = this.aeroLineas.stream().collect(Collectors.toMap(a->a.codigo(),a->a));
-		return this.codigosAerolineas;
+			Aerolineas.codigosAerolineas = Aerolineas.aeroLineas.stream().collect(Collectors.toMap(a->a.codigo(),a->a));
+		return Aerolineas.codigosAerolineas.get(codigo);
 	}
 	
-	public Integer getNumeroAerolineas() {
-		return this.aeroLineas.size();
+	public static Integer size() {
+		return Aerolineas.aeroLineas.size();
 	}
 	
-	private static Aerolineas datos;
-
-	public static Aerolineas getDatos() {
-		return datos;
-	}
-
-	public Aerolineas(List<Aerolinea> aeroLineas) {
-		super();
-		this.aeroLineas = aeroLineas;
+	public static Stream<Aerolinea> stream() {
+		return Aerolineas.aeroLineas.stream();
 	}
 	
-	@Override
-	public String toString() {
-		return String.format("Aerolineas\n\t%s",this.aeroLineas.stream()
+	public static Aerolinea get(Integer i) {
+		return Aerolineas.aeroLineas.get(i);
+	}
+	
+	public static String string() {
+		return String.format("Aerolineas\n\t%s",Aerolineas.aeroLineas.stream()
 				.map(a->a.toString())
 				.collect(Collectors.joining("\n\t")));
 	}

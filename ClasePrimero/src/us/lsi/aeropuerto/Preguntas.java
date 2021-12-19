@@ -20,7 +20,7 @@ import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class Questions {
+public class Preguntas {
 	
 	//1. Dada una cadena de caracteres s devuelve el número total de pasajeros a
 		// ciudades destino que tienen
@@ -29,14 +29,14 @@ public class Questions {
 		
 
 		public static Integer numeroDepasajeros(String prefix) {
-			IntStream st = OcupacionesVuelos.datos().ocupaciones().stream()
+			IntStream st = OcupacionesVuelos.stream()
 					.filter(ocp -> ocp.vuelo().ciudadDestino().startsWith(prefix))
 					.mapToInt(v -> v.numPasajeros());
 			return 	st.sum();
 		}
 		
 		public static Integer numeroDepasajeros2(String prefix) {
-			List<OcupacionVuelo> ls = OcupacionesVuelos.datos().ocupaciones();
+			List<OcupacionVuelo> ls = OcupacionesVuelos.stream().toList();
 			Integer sum = 0;
 			for(OcupacionVuelo ocp:ls) {
 				if(ocp.vuelo().ciudadDestino().startsWith(prefix)) {
@@ -53,13 +53,13 @@ public class Questions {
 		// existe un vuelo en la fecha f con destino en s.
 
 		public static Boolean hayDestino(Set<String> destinos, LocalDate f) {
-			Stream<OcupacionVuelo> st = OcupacionesVuelos.datos().ocupaciones().stream()
+			Stream<OcupacionVuelo> st = OcupacionesVuelos.stream()
 					.filter(ocp -> ocp.fecha().toLocalDate().equals(f));
 			return st.anyMatch(ocp -> destinos.contains(ocp.vuelo().ciudadDestino()));
 		}
 		
 		public static Boolean hayDestino2(Set<String> destinos, LocalDate f) {
-			List<OcupacionVuelo> ls = OcupacionesVuelos.datos().ocupaciones();
+			List<OcupacionVuelo> ls = OcupacionesVuelos.stream().toList();
 			Boolean a = false;
 			for(OcupacionVuelo ocp:ls) {
 				if(ocp.fecha().toLocalDate().equals(f)) {
@@ -76,14 +76,14 @@ public class Questions {
 		// los vuelos de fecha f
 
 		public static Set<String> destinosDiferentes(LocalDate f) {
-			Stream<String> st = OcupacionesVuelos.datos().ocupaciones().stream()
+			Stream<String> st = OcupacionesVuelos.stream()
 					.filter(ocp -> ocp.fecha().toLocalDate().equals(f))
 					.map(ocp -> ocp.vuelo().ciudadDestino());
 			return 	st.collect(Collectors.toSet());
 		}
 		
 		public static Set<String> destinosDiferentes2(LocalDate f) {
-			List<OcupacionVuelo> ls = OcupacionesVuelos.datos().ocupaciones();
+			List<OcupacionVuelo> ls = OcupacionesVuelos.stream().toList();
 			Set<String> a = new HashSet<>();
 			for(OcupacionVuelo ocp:ls) {
 				if(ocp.fecha().toLocalDate().equals(f)) {
@@ -98,7 +98,7 @@ public class Questions {
 		// total de pasajeros a ese destino en el año anyo
 
 		public static SortedMap<String, Integer> totalPasajerosADestino(Integer a) {
-			Stream<OcupacionVuelo> st = OcupacionesVuelos.datos().ocupaciones().stream()
+			Stream<OcupacionVuelo> st = OcupacionesVuelos.stream()
 					.filter(ocp -> ocp.fecha().getYear() == a);
 			
 			return	st.collect(Collectors.groupingBy(ocp -> ocp.vuelo().ciudadDestino(),
@@ -107,7 +107,7 @@ public class Questions {
 		}
 		
 		public static SortedMap<String, Integer> totalPasajerosADestino2(Integer any) {
-			List<OcupacionVuelo> ls = OcupacionesVuelos.datos().ocupaciones();
+			List<OcupacionVuelo> ls = OcupacionesVuelos.stream().toList();
 			SortedMap<String,Integer> a = new TreeMap<String, Integer>(Comparator.reverseOrder());
 			for(OcupacionVuelo ocp:ls) {
 				if(ocp.fecha().getYear() == any) {
@@ -127,7 +127,7 @@ public class Questions {
 		// destino
 
 		public static String primerVuelo(String destino) {
-			Stream<OcupacionVuelo> st = OcupacionesVuelos.datos().ocupaciones().stream()
+			Stream<OcupacionVuelo> st = OcupacionesVuelos.stream()
 					.filter(ocp -> ocp.vuelo().ciudadDestino().equals(destino))
 				    .filter(ocp->ocp.vuelo().numPlazas() > ocp.numPasajeros())
 					.filter(ocp -> ocp.fecha().isAfter(LocalDateTime.now()));
@@ -140,7 +140,7 @@ public class Questions {
 		}
 		
 		public static String primerVuelo2(String destino) {
-			List<OcupacionVuelo> ls = OcupacionesVuelos.datos().ocupaciones();
+			List<OcupacionVuelo> ls = OcupacionesVuelos.stream().toList();
 			OcupacionVuelo a = null;
 			for(OcupacionVuelo ocp:ls) {
 				if(ocp.vuelo().ciudadDestino().equals(destino) &&
@@ -163,7 +163,7 @@ public class Questions {
 		}
 
 		public static Map<String, Double> precioMedio() {
-			Stream<OcupacionVuelo> st = OcupacionesVuelos.datos().ocupaciones().stream()
+			Stream<OcupacionVuelo> st = OcupacionesVuelos.stream()
 					.filter(ocp -> ocp.numPasajeros().equals(ocp.vuelo().numPlazas()));
 			
 			return st.collect(Collectors.groupingBy(ocp -> ocp.vuelo().ciudadDestino(),
@@ -183,7 +183,7 @@ public class Questions {
 		}
 		
 		public static Map<String, Double> precioMedio2() {
-			List<OcupacionVuelo> ls = OcupacionesVuelos.datos().ocupaciones();
+			List<OcupacionVuelo> ls = OcupacionesVuelos.stream().toList();
 			Map<String, List<OcupacionVuelo>> a = new HashMap<>();
 			for(OcupacionVuelo ocp:ls) {
 				if(ocp.numPasajeros().equals(ocp.vuelo().numPlazas())) {
@@ -199,7 +199,7 @@ public class Questions {
 			}
 			Map<String, Double> r = new HashMap<>();
 			for(String key:a.keySet()) {
-				r.put(key,Questions.preM2(a.get(key)));
+				r.put(key,Preguntas.preM2(a.get(key)));
 			}
 			return r;
 		}
@@ -221,7 +221,7 @@ public class Questions {
 		}
 
 		public static Map<LocalDate, List<String>> destinosConMayorDuracion(Integer n) {
-			Stream<OcupacionVuelo> st =  OcupacionesVuelos.datos().ocupaciones().stream();
+			Stream<OcupacionVuelo> st =  OcupacionesVuelos.stream();
 			
 			return st.collect(Collectors.groupingBy(oc -> oc.fecha().toLocalDate(),
 					Collectors.collectingAndThen(Collectors.toList(),ls->mayorDuracion(ls,n))));
@@ -231,7 +231,7 @@ public class Questions {
 		// a f. Si no hubiera vuelos devuelve 0.0
 
 		public static Double precioMedio(LocalDateTime f) {
-			DoubleStream st = OcupacionesVuelos.datos().ocupaciones().stream()
+			DoubleStream st = OcupacionesVuelos.stream()
 					.filter(ocp -> ocp.fecha().isAfter(f))
 					.mapToDouble(ocp -> ocp.vuelo().precio());
 			
@@ -240,7 +240,7 @@ public class Questions {
 		}
 		
 		public static Double precioMedio2(LocalDateTime f) {
-			List<OcupacionVuelo> ls = OcupacionesVuelos.datos().ocupaciones();
+			List<OcupacionVuelo> ls = OcupacionesVuelos.stream().toList();
 			Double sum = 0.;
 			Integer n = 0;
 			for(OcupacionVuelo ocp: ls) {
@@ -257,14 +257,14 @@ public class Questions {
 		// fechas de los vuelos a ese destino.
 
 		public static Map<String, Set<LocalDate>> fechasADestino() {
-			Stream<OcupacionVuelo> st = OcupacionesVuelos.datos().ocupaciones().stream();
+			Stream<OcupacionVuelo> st = OcupacionesVuelos.stream();
 			
 			return st.collect(Collectors.groupingBy(ocp -> ocp.vuelo().ciudadDestino(),
 					Collectors.mapping(OcupacionVuelo::fechaSalida,Collectors.toSet())));
 		}
 		
 		public static Map<String, Set<LocalDate>> fechasADestino2() {
-			List<OcupacionVuelo> ls = OcupacionesVuelos.datos().ocupaciones();
+			List<OcupacionVuelo> ls = OcupacionesVuelos.stream().toList();
 			Map<String, Set<LocalDate>> a = new HashMap<>();
 			for(OcupacionVuelo ocp: ls) {
 				String key = ocp.vuelo().ciudadDestino();
@@ -347,17 +347,17 @@ public class Questions {
 		
 		// 15. Devuelve un Map que relación cada destino con el porcentaje de los vuelos del total que van a ese destino.
 		
-		public static Map<String,Double>  procentajeADestino() {
+		public static Map<String,Double>  porcentajeADestino() {
 			Integer n = Vuelos.datos().numVuelos();
 			
 			return Vuelos.datos().vuelos().stream().collect(Collectors.groupingBy(Vuelo::codigoDestino,
 					Collectors.collectingAndThen(Collectors.toList(),g->(1.0*g.size())/n)));
 		}
 		
-		public static Map<String,Double>  procentajeADestinoOcupacionesVuelos() {
-			Integer n = OcupacionesVuelos.datos().ocupaciones().size();
+		public static Map<String,Double>  porcentajeADestinoOcupacionesVuelos() {
+			Integer n = OcupacionesVuelos.size();
 			
-			return OcupacionesVuelos.datos().ocupaciones().stream()
+			return OcupacionesVuelos.stream()
 					.map(ocp->ocp.vuelo())
 					.collect(Collectors.groupingBy(Vuelo::codigoDestino,
 					    Collectors.collectingAndThen(Collectors.toList(),g->(1.0*g.size())/n)));
@@ -378,7 +378,7 @@ public class Questions {
 		// distintas en las que hay vuelos a ese destino.
 
 		public static Map<String, Integer> fechasDistintas() {
-			Stream<OcupacionVuelo> st = OcupacionesVuelos.datos().ocupaciones().stream();
+			Stream<OcupacionVuelo> st = OcupacionesVuelos.stream();
 	
 			return st.collect(Collectors.groupingBy(ocp -> ocp.vuelo().ciudadDestino(),
 					Collectors.mapping(OcupacionVuelo::fecha,

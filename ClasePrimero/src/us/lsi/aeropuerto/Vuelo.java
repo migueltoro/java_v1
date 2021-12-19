@@ -75,16 +75,16 @@ public record Vuelo(
 	private static Random rnd = new Random(System.nanoTime());
 	
 	public static Vuelo random() {
-		Integer e = rnd.nextInt(Aerolineas.getDatos().getNumeroAerolineas());
-		String codigo = Aerolineas.getDatos().getAeroLineas().get(e).codigo();
+		Integer e = rnd.nextInt(Aerolineas.size());
+		String codigo = Aerolineas.get(e).codigo();
 		String numero = String.format("%04d",rnd.nextInt(1000));
-		Integer ad = rnd.nextInt(Aeropuertos.getDatos().getNumAeropuertos());
-		String codeDestino = Aeropuertos.getDatos().getAeropuertos().get(ad).codigo();
+		Integer ad = rnd.nextInt(Aeropuertos.size());
+		String codeDestino = Aeropuertos.get(ad).codigo();
 		Integer ao;
 		do {
-			ao = rnd.nextInt(Aeropuertos.getDatos().getNumAeropuertos());
+			ao = rnd.nextInt(Aeropuertos.size());
 		} while (ao == ad);
-		String codeOrigen = Aeropuertos.getDatos().getAeropuertos().get(ao).codigo();
+		String codeOrigen = Aeropuertos.get(ao).codigo();
 		Double precio = 1000*rnd.nextDouble();
 		Integer numPlazas = rnd.nextInt(300);
 		Duration duracion = Duration.of(rnd.nextInt(360), ChronoUnit.MINUTES);
@@ -94,11 +94,11 @@ public record Vuelo(
 	}
 	
 	public String ciudadDestino() {
-		return Aeropuertos.getDatos().getCiudadDeAeropuerto().get(this.codigoDestino);
+		return Aeropuertos.ciudadDeAeropuerto(this.codigoDestino);
 	}
 	
 	public String ciudadOrigen() {
-		return Aeropuertos.getDatos().getCiudadDeAeropuerto().get(this.codigoOrigen);
+		return Aeropuertos.ciudadDeAeropuerto(this.codigoOrigen);
 	}	
 	
 	public String codigo() {
