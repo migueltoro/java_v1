@@ -2,8 +2,6 @@ package us.lsi.aeropuerto;
 
 public record Aerolinea(String codigo, String nombre) {
 	
-	
-	
 	public static Aerolinea parse(String text) {
 		String[] campos = text.split(",");
 		String codigo = campos[0];

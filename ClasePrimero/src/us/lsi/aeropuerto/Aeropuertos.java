@@ -29,16 +29,22 @@ public class Aeropuertos {
 	
 	
 	public static void addAeropuerto(Aeropuerto a) {
+		Aeropuertos.aeropuertosEnCiudad = null;
+		Aeropuertos.ciudadDeAeropuerto = null;
+		Aeropuertos.codigosAeropuertos = null;
 		Aeropuertos.aeropuertos.add(a);
 	}
 	
 	public static void removeAeropuerto(Aeropuerto a) {
+		Aeropuertos.aeropuertosEnCiudad = null;
+		Aeropuertos.ciudadDeAeropuerto = null;
+		Aeropuertos.codigosAeropuertos = null;
 		Aeropuertos.aeropuertos.remove(a);
 	}
 	
 	private static Map<String,Aeropuerto> codigosAeropuertos = null;
 	
-	public static Aeropuerto aeropuertos(String codigo) { //codigoAropueto, Aeropuerto
+	public static Aeropuerto aeropuerto(String codigo) { //codigoAropueto, Aeropuerto
 		if(codigosAeropuertos == null)
 			codigosAeropuertos = Aeropuertos.aeropuertos.stream().collect(Collectors.toMap(a->a.codigo(),a->a));
 		return codigosAeropuertos.get(codigo);
@@ -52,7 +58,7 @@ public class Aeropuertos {
 		return ciudadDeAeropuerto.get(codigo);
 	}
 	
-	public static Map<String,Set<Aeropuerto>> aeropuertosEnCiudad= null;
+	private static Map<String,Set<Aeropuerto>> aeropuertosEnCiudad= null;
 	
 	public static Set<Aeropuerto> aeropuertosEnCiudad(String ciudad) { //ciudad, {codigosAeropuerto, ...} 
 		if(aeropuertosEnCiudad == null)
