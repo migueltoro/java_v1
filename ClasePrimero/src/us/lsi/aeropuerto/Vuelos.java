@@ -38,7 +38,7 @@ public class Vuelos {
 	
 	public static Vuelo vuelo(String codigo) {
 		if(codigosVuelos == null)
-			Vuelos.codigosVuelos = Vuelos.vuelos.stream().collect(Collectors.toMap(Vuelo::codigo,x->x));
+			Vuelos.codigosVuelos = Vuelos.stream().collect(Collectors.toMap(Vuelo::codigo,x->x));
 		return codigosVuelos.get(codigo);
 	}
 	

@@ -33,9 +33,9 @@ public record OcupacionVuelo(String codigoVuelo, LocalDateTime fecha, Integer nu
 	
 	public static OcupacionVuelo random(Vuelo v, Integer anyo) {
 		String codeVuelo = v.codigo();
-		Integer np = Vuelos.vuelo(codeVuelo).numPlazas();
-		LocalTime t = Vuelos.vuelo(codeVuelo).hora();
-		DayOfWeek dw = Vuelos.vuelo(codeVuelo).diaSemana();
+		Integer np = v.numPlazas();
+		LocalTime t = v.hora();
+		DayOfWeek dw = v.diaSemana();
 		LocalDate d = Stream.iterate(LocalDate.of(anyo,1,1),dt->dt.plus(1,ChronoUnit.DAYS))
 				.filter(dt->dt.getDayOfWeek().equals(dw))
 				.findFirst()
