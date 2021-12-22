@@ -123,7 +123,7 @@ public class Preguntas {
 			return a;
 		}
 
-		//5. Dado un destino devuelve el código del primer vuelo con plazas libres a ese
+		//5. Dado un destino devuelve el código de la aerolinea del primer vuelo con plazas libres a ese
 		// destino
 
 		public static String primerVuelo(String destino) {
