@@ -5,65 +5,62 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import us.lsi.tools.FileTools;
-import us.lsi.tools.Preconditions;
 
 import static us.lsi.tools.StreamTools.*;
 
 public class Vuelos {
 	
-	private static Vuelos datos;
-	
-	public static Vuelos datos() {
-		return datos;
-	}
 
 	public static void random(Integer numVuelos) {
 		List<Vuelo> vuelos = toList(IntStream.range(0,numVuelos).boxed().map(e->Vuelo.random()));
-		Vuelos.datos = new Vuelos(vuelos);
+		Vuelos.vuelos = vuelos;
+		Vuelos.numVuelos = Vuelos.vuelos.size();
 	}
 
 	public static void leeFicheroVuelos(String fichero) {
 		List<Vuelo>  vuelos = FileTools.streamFromFile(fichero)
 				.map(x -> Vuelo.parse(x))
 				.collect(Collectors.toList());
-		Vuelos.datos = new Vuelos(vuelos);
+		Vuelos.vuelos = vuelos;
+		Vuelos.numVuelos = Vuelos.vuelos.size();
 	}
 	
-	private List<Vuelo> vuelos;
-	private Map<String, Vuelo> codigosVuelos;
-	private Integer numVuelos;
+	private static List<Vuelo> vuelos;
+
+	public static Stream<Vuelo> stream() {
+		return vuelos.stream();
+	}
+
+	private static Map<String, Vuelo> codigosVuelos;
 	
-	private Vuelos(List<Vuelo> vuelos) {
-		super();
-		this.vuelos = vuelos;
-		this.codigosVuelos = this.vuelos.stream().collect(Collectors.toMap(Vuelo::codigo,x->x));
-		this.numVuelos = this.codigosVuelos.size();
+	public static Vuelo vuelo(String codigo) {
+		if(codigosVuelos == null)
+			Vuelos.codigosVuelos = Vuelos.vuelos.stream().collect(Collectors.toMap(Vuelo::codigo,x->x));
+		return codigosVuelos.get(codigo);
+	}
+	
+	public static Vuelo get(Integer index) {
+		return vuelos.get(index);
 	}
 
-	public List<Vuelo> vuelos() {
-		return vuelos;
-	}
-
-	public Map<String, Vuelo> codigosVuelos() {
-		return codigosVuelos;
-	}
-
-	public Integer numVuelos() {
+	private static Integer numVuelos;
+	public static Integer size() {
 		return numVuelos;
 	}
 
 	public void addVuelo(Vuelo v) {
-		Preconditions.checkArgument(!this.codigosVuelos.containsKey(v.codigoAerolinea()),
-				String.format("La aerolina %s ya existe",v.toString()));
-		this.vuelos.add(v);
-		this.codigosVuelos.put(v.codigoAerolinea(),v);
-		this.numVuelos +=1;
+		Vuelos.codigosVuelos = null;
+		Vuelos.vuelos.add(v);
+		Vuelos.numVuelos +=1;
 	}
 	
 	public void removeVuelo(Vuelo v) {
-		this.vuelos.remove(v);
+		Vuelos.codigosVuelos = null;
+		Vuelos.vuelos.remove(v);
+		Vuelos.numVuelos -=1;
 	}
 
 	

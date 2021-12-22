@@ -16,10 +16,10 @@ public class OcupacionesVuelos {
 
 
 	public static void random(Integer numOcupaciones, Integer anyo) {
-		Integer n = Vuelos.datos().numVuelos();
+		Integer n = Vuelos.size();
 		List<OcupacionVuelo> r = toList(
 				IntStream.range(0, numOcupaciones).boxed()
-				.map(e -> OcupacionVuelo.random(Vuelos.datos().vuelos().get(rnd.nextInt(n)), anyo)));
+				.map(e -> OcupacionVuelo.random(Vuelos.get(rnd.nextInt(n)), anyo)));
 		 OcupacionesVuelos.ocupaciones = r;
 	}
 
