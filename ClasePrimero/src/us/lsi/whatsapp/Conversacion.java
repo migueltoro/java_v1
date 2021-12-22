@@ -16,16 +16,16 @@ import us.lsi.tools.Graphics;
 import us.lsi.tools.List2;
 import us.lsi.tools.Preconditions;
 
-public class Mensajes {
+public class Conversacion {
 	
-	public static Mensajes ofFile(String file) {
-		return new Mensajes(file);
+	public static Conversacion ofFile(String file) {
+		return new Conversacion(file);
 	}
 
 	private List<Mensaje> mensajes;
 	private Set<String> palabrasHuecas;
 
-	private Mensajes(String file) {
+	private Conversacion(String file) {
 		super();	
 		this.mensajes = FileTools.lineasFromFile(file).stream()
 				.filter(x->x.length()>0)
@@ -147,10 +147,10 @@ public class Mensajes {
 			this.frecuenciasDePalabrasPorUsuario = this.mensajes
 					.stream()
 					.map(m->PalabraUsuario.of(m.texto(),m.usuario()))
-					.flatMap(p->Arrays.stream(p.palabra.split("[ \".,:();¿?¡!\\\"]"))
+					.flatMap(p->Arrays.stream(p.palabra().split("[ \".,:();¿?¡!\\\"]"))
 							.filter(x->x.length()>0)
 							.filter(x->!this.palabrasHuecas.contains(x))
-							.map(x->PalabraUsuario.of(x,p.usuario)))
+							.map(x->PalabraUsuario.of(x,p.usuario())))
 					.collect(Collectors.groupingBy(x->x,Collectors.summingInt((x->1))));
 		}
 		return frecuenciasDePalabrasPorUsuario;
@@ -161,7 +161,7 @@ public class Mensajes {
 	public Map<String,Integer> getNumeroDePalabrasPorUsuario(){
 		if(numeroDePalabrasPorUsuario==null) {
 			numeroDePalabrasPorUsuario = this.getFrecuenciasDePalabrasPorUsuario().entrySet().stream()
-				.collect(Collectors.groupingBy(e->e.getKey().usuario,
+				.collect(Collectors.groupingBy(e->e.getKey().usuario(),
 									Collectors.summingInt(e->e.getValue())));
 		}
 		return numeroDePalabrasPorUsuario;
@@ -174,7 +174,7 @@ public class Mensajes {
 			this.frecuenciasDePalabrasPorRestoDeUsuarios = new HashMap<>();
 			this.getFrecuenciasDePalabrasPorUsuario().entrySet().stream()
 			.forEach(e->this.frecuenciasDePalabrasPorRestoDeUsuarios
-				.put(e.getKey(),getFrecuenciasDePalabras().get(e.getKey().palabra)
+				.put(e.getKey(),getFrecuenciasDePalabras().get(e.getKey().palabra())
 						-getFrecuenciasDePalabrasPorUsuario().get(e.getKey())
 					));
 		}
@@ -186,7 +186,7 @@ public class Mensajes {
 	public Map<String,Integer> getNumeroDePalabrasPorRestoDeUsuarios(){
 		if(numeroDePalabrasPorRestoDeUsuarios==null) {
 			numeroDePalabrasPorRestoDeUsuarios = this.getFrecuenciasDePalabrasPorRestoDeUsuarios().entrySet().stream()
-				.collect(Collectors.groupingBy(e->e.getKey().usuario,
+				.collect(Collectors.groupingBy(e->e.getKey().usuario(),
 									Collectors.summingInt(e->e.getValue())));
 		}
 		return numeroDePalabrasPorRestoDeUsuarios;
@@ -201,32 +201,19 @@ public class Mensajes {
 	
 	public Map<String,Double> palabrasCaracteristicasDeUsuario(String usuario, Integer umbral){
 		return this.getFrecuenciasDePalabrasPorUsuario().entrySet().stream()
-				.filter(e->e.getKey().usuario.equals(usuario))
-				.filter(x->this.getFrecuenciasDePalabras().get(x.getKey().palabra)>umbral)
+				.filter(e->e.getKey().usuario().equals(usuario))
+				.filter(x->this.getFrecuenciasDePalabras().get(x.getKey().palabra())>umbral)
 				.filter(x->x.getValue()>umbral)
 				.filter(e->this.getFrecuenciasDePalabrasPorRestoDeUsuarios().getOrDefault(e.getKey(),0)>umbral)
-				.collect(Collectors.groupingBy(e->e.getKey().palabra,
-						Collectors.summingDouble(e->this.importanciaDePalabrasDeUsuario(e.getKey().palabra,e.getKey().usuario))));
+				.collect(Collectors.groupingBy(e->e.getKey().palabra(),
+						Collectors.summingDouble(e->this.importanciaDePalabrasDeUsuario(e.getKey().palabra(),e.getKey().usuario()))));
 				
 	}
 	
 	
 	
 	
-	public static record PalabraUsuario(String palabra,String usuario) {
-		
-		public static PalabraUsuario of(String palabra, String usuario){
-			return new PalabraUsuario(palabra,usuario);
-		}
-		
-		
-		@Override
-		public String toString() {
-			return String.format("(%s,%s)",palabra, usuario);
-		}	
-		
-		
-	}
+	
 
 }
 

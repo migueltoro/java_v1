@@ -3,12 +3,10 @@ package us.lsi.whatsapp;
 import java.util.Comparator;
 import java.util.Map;
 
-import us.lsi.whatsapp.Mensajes.PalabraUsuario;
-
 public class TestWhatsapp {
 
 	public static void main(String[] args) {
-		Mensajes m = Mensajes.ofFile("resources/bigbangtheory_es.txt");
+		Conversacion m = Conversacion.ofFile("resources/bigbangtheory_es.txt");
 //		System.out.println(m);
 		Comparator<Map.Entry<PalabraUsuario,Integer>> cmp = Comparator.comparing(e->e.getKey().usuario());
 		var cmp2 = cmp.thenComparing(Comparator.comparing(e->e.getValue()));

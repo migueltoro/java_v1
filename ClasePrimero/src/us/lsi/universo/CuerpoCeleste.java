@@ -34,7 +34,6 @@ public abstract class CuerpoCeleste {
 		return nombre;
 	}
 	
-	
 	public abstract Punto2D coordenadas();
 	public abstract void unPaso();
 	public abstract void cambiaPropiedades();
@@ -49,17 +48,17 @@ public abstract class CuerpoCeleste {
 		return d;
 	}
 	
-	public Boolean visible() {
+	public Boolean esVisible() {
 		return this.location().equals(Location.Inside);
 	}
 
 	public void mover() {
-		if (this.visible()) {
+		if (this.esVisible()) {
 			universo.borrarCuerpoCeleste(this);	
 		}	
         this.unPaso();
         this.cambiaPropiedades();
-        if (this.visible()) {
+        if (this.esVisible()) {
 			universo.pintarCuerpoCeleste(this);
 		}  
 	}

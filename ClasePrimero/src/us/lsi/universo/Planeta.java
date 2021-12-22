@@ -52,7 +52,7 @@ public class Planeta extends CuerpoCeleste {
 		this.planeta = planeta;
 		this.velocidadGiro = dextrogiro ? velocidadGiro : -velocidadGiro;
 		this.angulo = angulo;
-		this.orbita = Orbita2D.ofExcentricidad(a,excentricidad, anguloEjeMayor);
+		this.orbita = Orbita2D.of(a,excentricidad, anguloEjeMayor);
 		this.last =  this.planeta.coordenadas().add(this.orbita.radioVector(this.angulo));
 	}
 	
