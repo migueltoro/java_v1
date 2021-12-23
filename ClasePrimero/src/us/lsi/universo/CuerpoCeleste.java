@@ -3,10 +3,13 @@ package us.lsi.universo;
 import java.awt.Color;
 
 import us.lsi.geometria.Punto2D;
-import us.lsi.universo.Universo2D.Location;
-
+import us.lsi.tools.Preconditions;
 
 public abstract class CuerpoCeleste {
+	public static enum Location {
+		Inside, Left, Right, Up, Down, OutSide
+	}
+
 	protected final String nombre;
 	protected final Integer diametro;
 	protected Color color;
@@ -27,20 +30,20 @@ public abstract class CuerpoCeleste {
 	}
 
 	public int diametro() {
-		return diametro;
+		return this.diametro;
 	}
 
 	public String nombre() {
-		return nombre;
+		return this.nombre;
+	}
+	
+	public Universo2D universo() {
+		return this.universo;
 	}
 	
 	public abstract Punto2D coordenadas();
 	public abstract void unPaso();
 	public abstract void cambiaPropiedades();
-
-	public Location location() {
-		return this.universo.location(this);
-	}
 
 	public double distanciaA(CuerpoCeleste cuerpo) {
 		Double distanciaCentros = this.coordenadas().distanciaA(cuerpo.coordenadas());
@@ -48,18 +51,55 @@ public abstract class CuerpoCeleste {
 		return d;
 	}
 	
+	public void mostrarCuerpoCeleste() {
+		this.universo.ventana().setForegroundColor(this.color);
+		this.universo.ventana.fillCircle(this.coordenadas().x().intValue() - (this.diametro / 2),
+				this.coordenadas().y().intValue() - (this.diametro / 2), this.diametro);
+	}
+   
+	public void ocultarCuerpoCeleste() {
+		this.universo.ventana.eraseCircle(this.coordenadas().x().intValue() - (this.diametro / 2),
+				this.coordenadas().y().intValue() - (this.diametro / 2), this.diametro);
+	}
+    
+	public Location location() {
+		Integer minimoX = this.coordenadas().x().intValue() - (this.diametro / 2);
+		Integer maximoX = this.coordenadas().x().intValue() + (this.diametro / 2);
+		Integer minimoY = this.coordenadas().y().intValue() - (this.diametro / 2);
+		Integer maximoY = this.coordenadas().y().intValue() + (this.diametro / 2);
+		CuerpoCeleste.Location r = null;
+		if (minimoX > 0 && maximoX < this.universo.xMax() && minimoY > 0 && maximoY < this.universo.yMax())
+			r = CuerpoCeleste.Location.Inside;
+		else if (minimoX < 0 && minimoY > 0 && maximoY < this.universo.yMax())
+			r = CuerpoCeleste.Location.Left;
+		else if (maximoX > this.universo.xMax() && minimoY > 0 && maximoY < this.universo.yMax())
+			r = CuerpoCeleste.Location.Right;
+		else if (minimoX > 0 && maximoX < this.universo.xMax() && minimoY < 0)
+			r = CuerpoCeleste.Location.Up;
+		else if (minimoX > 0 && maximoX < this.universo.xMax() && maximoY > this.universo.yMax())
+			r = CuerpoCeleste.Location.Down;
+		else
+			r = CuerpoCeleste.Location.OutSide;
+		return r;
+	}
+    
+	public void comprobarPosicion() {
+		CuerpoCeleste.Location p = this.location();
+		Preconditions.checkState(p.equals(CuerpoCeleste.Location.Inside), String.format("El cuerpo está fuera de la ventana %s", p));
+	}
+	
 	public Boolean esVisible() {
-		return this.location().equals(Location.Inside);
+		return this.location().equals(CuerpoCeleste.Location.Inside);
 	}
 
 	public void mover() {
 		if (this.esVisible()) {
-			universo.borrarCuerpoCeleste(this);	
+			this.ocultarCuerpoCeleste();	
 		}	
         this.unPaso();
         this.cambiaPropiedades();
         if (this.esVisible()) {
-			universo.pintarCuerpoCeleste(this);
+			this.mostrarCuerpoCeleste();
 		}  
 	}
 }

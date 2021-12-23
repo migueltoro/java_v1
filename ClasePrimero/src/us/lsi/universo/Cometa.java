@@ -4,16 +4,15 @@ import java.awt.Color;
 
 import us.lsi.geometria.Punto2D;
 import us.lsi.geometria.Vector2D;
-import us.lsi.universo.Universo2D.Location;
 
 
 public class Cometa extends CuerpoCeleste {
 	
 	
 	public static Cometa of(String nombre,Universo2D universo) {
-		Punto2D coordenadas = Orbita2D.puntoAleatorio(0., (double)universo.xMax,0.,(double)universo.yMax);
+		Punto2D coordenadas = Universo2D.puntoAleatorio(0., (double)universo.xMax,0.,(double)universo.yMax);
 		Integer diametro = 10;
-		Vector2D direccion = Vector2D.of(1.,Orbita2D.valorAleatorioEntre(0.,Math.PI/2));
+		Vector2D direccion = Vector2D.of(1.,Universo2D.valorAleatorioEntre(0.,Math.PI/2));
 		Double velocidad = 5.;
 		return new Cometa(nombre,coordenadas, diametro, direccion, velocidad, universo);
 	}
@@ -36,7 +35,7 @@ public class Cometa extends CuerpoCeleste {
     }
     
     public void cambiaPropiedades() {
-    	 Location p = super.location();
+    	 CuerpoCeleste.Location p = super.location();
 	     switch(p) {
 	     case Down: this.direccion = Vector2D.of(this.direccion.x(), -this.direccion.y()); break;
 	     case Inside: break;
@@ -62,8 +61,5 @@ public class Cometa extends CuerpoCeleste {
 	public String toString() {
 		return nombre;
 	}
-	
-	
-	
     
 }
