@@ -11,7 +11,7 @@ public class CometaErratico extends Cometa {
 	public static CometaErratico of(String nombre, Universo2D universo) {
 		Punto2D coordenadas = Universo2D.puntoAleatorio(0., (double)universo.xMax,0.,(double)universo.yMax);
 		Integer diametro = 10;
-		Vector2D direccion = Vector2D.of(1.,Universo2D.valorAleatorioEntre(0.,Math.PI/2));
+		Vector2D direccion = Vector2D.of(1.,Universo2D.valorAleatorioEntre(0.,Math.PI));
 		Double velocidad = 5.;
 		return new CometaErratico(nombre,coordenadas, diametro, direccion, velocidad, universo);
 	}
@@ -26,18 +26,13 @@ public class CometaErratico extends Cometa {
     private CometaErratico(String nombre,Punto2D coordenadas, Integer diametro, 
 			Vector2D direccion,Double velocidad, Universo2D universo) {
         super(nombre,coordenadas, diametro, direccion, velocidad,universo);
-        super.color = Color.WHITE;
+        super.color = Color.BLACK;
     }
-    
-   
-    
-    
-	public void cambiaPropiedades() {
-		super.cambiaPropiedades();
-		if (!this.location().equals(CuerpoCeleste.Location.Inside)) {
-			Double angulo = this.direccion.angulo();
-			angulo = angulo + Universo2D.valorAleatorioEntre(-Math.PI / 9, Math.PI / 9);
-			this.direccion = Vector2D.ofRadianes(1., angulo);
-		}
+	
+	@Override
+	public void unPaso() {
+		Double angulo = Universo2D.valorAleatorioEntre(0., Math.PI);
+		this.direccion = Vector2D.ofRadianes(1., angulo);		
+		this.coordenadas = this.coordenadas.traslada(this.direccion.multiply(this.velocidad));
 	}
 }

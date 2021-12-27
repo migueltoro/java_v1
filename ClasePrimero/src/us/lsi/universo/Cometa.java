@@ -53,9 +53,7 @@ public class Cometa extends CuerpoCeleste {
 	}
 
 	@Override
-	public void unPaso() {
-		this.coordenadas = this.coordenadas.traslada(this.direccion.multiply(this.velocidad));
-	}
+	public void unPaso() {}
 
 	@Override
 	public String toString() {

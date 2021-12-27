@@ -19,13 +19,15 @@ public class Mano implements Comparable<Mano>{
 	
 	private static Random rnd   = new Random(System.nanoTime()); 
 	
+	private List<Card> cartas;
 	public static Mano of(List<Card> cartas) {
 		return new Mano(cartas);
 	}
-	public static Mano of(String txt) {
+	
+	public static Mano parse(String txt) {
 		txt = txt.substring(1,txt.length()-1);
 		String[] partes = txt.split(",");		
-		List<Card> cartas = Arrays.stream(partes).map(x->Card.of(x)).collect(Collectors.toList());
+		List<Card> cartas = Arrays.stream(partes).map(x->Card.parse(x)).collect(Collectors.toList());
 		return Mano.of(cartas);
 	}
 	
@@ -35,12 +37,10 @@ public class Mano implements Comparable<Mano>{
 			Integer n = Mano.rnd.nextInt(52);
 			Card card = Card.of(n);
 			cartas.add(card);
-		}
-		
+		}		
 		return new Mano(cartas);
 	}
 
-	private List<Card> cartas;
 	private Map<Integer,Long> frecuenciasDeValores = null;
 	private List<Integer> valoresOrdenadosPorFrecuencias = null;
 	private Boolean son5ValoresConsecutivos = null;
@@ -182,13 +182,9 @@ public class Mano implements Comparable<Mano>{
 		Integer empata = 0;
 		for(int i=0;i<n;i++) {
 			Mano mr = Mano.random();
-			if(mano.compareTo(mr)<0) {
-				pierde++;
-			} else if(mano.compareTo(mr)>0) {
-				gana++;
-			} else {
-				empata++;
-			}
+			if(mano.compareTo(mr)<0) pierde++;
+			else if(mano.compareTo(mr)>0) gana++;
+			else empata++;
 		}
 		return ((double)gana)/(gana+pierde+empata);
 	}

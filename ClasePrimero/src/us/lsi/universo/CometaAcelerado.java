@@ -13,7 +13,7 @@ public class CometaAcelerado extends Cometa {
 		Integer diametro = 10;
 		Vector2D direccion = Vector2D.of(1.,Universo2D.valorAleatorioEntre(0.,Math.PI/2));
 		Double velocidad = 5.;
-		Double aceleracion = 0.1;
+		Double aceleracion = 0.5;
 		return new CometaAcelerado(nombre,coordenadas, diametro, direccion, velocidad, aceleracion, universo);
 	}
 	
@@ -32,11 +32,12 @@ public class CometaAcelerado extends Cometa {
         this.aceleracion = aceleracion;
         super.color = Color.WHITE;
     }
-
-    public void cambiaPropiedades() {
-    	super.cambiaPropiedades();
+    
+    @Override
+	public void unPaso() {
     	if (!this.location().equals(CuerpoCeleste.Location.Inside)) {
 			this.velocidad = this.velocidad * (1 + this.aceleracion);
-		}   	
-    }
+		} 
+		this.coordenadas = this.coordenadas.traslada(this.direccion.multiply(this.velocidad));
+	}
 }

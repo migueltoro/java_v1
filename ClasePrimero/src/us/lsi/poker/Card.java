@@ -7,7 +7,7 @@ import us.lsi.tools.Preconditions;
 
 public record Card(Integer id, Integer palo, Integer valor) implements Comparable<Card> {
 	
-	public static Card of(String text) {
+	public static Card parse(String text) {
 		Character pc = text.charAt(text.length()-1);
 		String ind = text.substring(0,text.length()-1);
 		Integer palo = Card.symbolsPalos.indexOf(pc);

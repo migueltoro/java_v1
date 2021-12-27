@@ -95,7 +95,7 @@ public abstract class CuerpoCeleste {
 	public void mover() {
 		if (this.esVisible()) {
 			this.ocultarCuerpoCeleste();	
-		}	
+		}		
         this.unPaso();
         this.cambiaPropiedades();
         if (this.esVisible()) {
