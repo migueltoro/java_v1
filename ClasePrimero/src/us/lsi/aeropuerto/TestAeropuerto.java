@@ -20,7 +20,8 @@ public class TestAeropuerto {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		System.out.println(ocp.fecha().format(formatter));
 //		System.out.println(CollectionsTools.mapToString(OcupacionesVuelos.fechasADestino()));
-		System.out.println(Map2.toString(Preguntas.destinosConMayorDuracion(2)));
+		Preguntas p = Preguntas.funcional();
+		System.out.println(Map2.toString(p.destinosConMayorDuracion(2)));
 	}
 
 }
