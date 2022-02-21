@@ -1,5 +1,6 @@
 package us.lsi.calculos;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -33,6 +34,16 @@ public record Persona(String nombre, String apellidos, LocalDateTime fechaNacimi
 		return String.format("%s %s",this.nombre(),this.apellidos());
 	}
 	
+	public LocalDate siguienteCumple() {
+		Integer edad = this.edad();
+		LocalDateTime nc = this.fechaNacimiento().plusYears(edad+1);
+		return nc.toLocalDate();
+	}
+	
+	public DayOfWeek diaSemanaSiguienteCumple() {
+		return siguienteCumple().getDayOfWeek();
+	}
+	
 	public String toString() {
 		String fs = fechaNacimiento().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 		String hs = fechaNacimiento().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
@@ -47,6 +58,8 @@ public record Persona(String nombre, String apellidos, LocalDateTime fechaNacimi
 		System.out.println(p.edad());
 		System.out.println(p2);
 		System.out.println(p2.edad());
+		System.out.println(p2.diaSemanaSiguienteCumple());
+		System.out.println(p2.siguienteCumple().getDayOfMonth());
 	}
 
 }

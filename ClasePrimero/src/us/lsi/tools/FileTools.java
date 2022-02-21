@@ -28,7 +28,7 @@ public class FileTools {
 	public static List<String> lineasFromFile(String file) {
 		List<String> lineas = null;
 		try {		
-			lineas = Files.lines(Paths.get(file), Charset.defaultCharset()).collect(Collectors.toList());
+			lineas = Files.readAllLines(Paths.get(file), Charset.defaultCharset());
 		} catch (IOException e) {
 			System.out.println(e.toString());
 		}
