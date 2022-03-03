@@ -65,14 +65,20 @@ public class Universo2D  {
 		return tiempo;
 	}
 	
-	public Canvas ventana() {
-		return ventana;
+	public void mostrarCuerpoCeleste(CuerpoCeleste c) {
+		this.ventana.setForegroundColor(c.color());
+		this.ventana.fillCircle(c.coordenadas().x().intValue() - (c.diametro() / 2),
+				c.coordenadas().y().intValue() - (c.diametro / 2), c.diametro());
+	}
+   
+	public void ocultarCuerpoCeleste(CuerpoCeleste c) {
+		this.ventana.eraseCircle(c.coordenadas().x().intValue() - (c.diametro() / 2),
+				c.coordenadas().y().intValue() - (c.diametro() / 2), c.diametro());
 	}
 
 	public List<CuerpoCeleste> cuerposCelestes() {
 		return cuerposCelestes;
 	}
-
 
 	private IntPair choque;
 

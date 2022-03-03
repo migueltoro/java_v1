@@ -41,6 +41,10 @@ public abstract class CuerpoCeleste {
 		return this.universo;
 	}
 	
+	public Color color() {
+		return this.color;
+	}
+	
 	public abstract Punto2D coordenadas();
 	public abstract void unPaso();
 	public abstract void cambiaPropiedades();
@@ -52,14 +56,11 @@ public abstract class CuerpoCeleste {
 	}
 	
 	public void mostrarCuerpoCeleste() {
-		this.universo.ventana().setForegroundColor(this.color);
-		this.universo.ventana.fillCircle(this.coordenadas().x().intValue() - (this.diametro / 2),
-				this.coordenadas().y().intValue() - (this.diametro / 2), this.diametro);
+		this.universo().mostrarCuerpoCeleste(this);
 	}
    
 	public void ocultarCuerpoCeleste() {
-		this.universo.ventana.eraseCircle(this.coordenadas().x().intValue() - (this.diametro / 2),
-				this.coordenadas().y().intValue() - (this.diametro / 2), this.diametro);
+		this.universo().ocultarCuerpoCeleste(this);
 	}
     
 	public Location location() {
