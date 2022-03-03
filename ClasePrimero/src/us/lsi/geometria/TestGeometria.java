@@ -42,12 +42,14 @@ public class TestGeometria {
 		System.out.println(p3);
 		System.out.println(Vector2D.of(2.0, 1.0).proyectaSobre(Vector2D.of(0.,2.)).toString());
 		Segmento2D pc = c3.proyectaSobre(r);
-		AgregadoGeometrico2D a1 = AgregadoGeometrico2D.of(c1,pl,s);
+		AgregadoGeometrico2D a1 = AgregadoGeometrico2D.of(c1,pl,s,tr,cd);
 		AgregadoGeometrico2D a2 = AgregadoGeometrico2D.of(c2,c3,pl2);
-		Ventana v = Ventana.of("Geometria", 0.5, Color.WHITE, Color.RED);
+		AgregadoGeometrico2D a3 = a2.traslada(Vector2D.of(0., -100.));
+		Ventana v = Ventana.of("Geometria", 600, 600, 0.5, Color.WHITE, Color.RED);
 		a1.show(v);
 		v.setForegroundColor(Color.GREEN);
 		a2.show(v);
+		a3.show(v);
 	}
 
 }

@@ -3,6 +3,9 @@ package us.lsi.tools;
 
 
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.BasicStroke;
 import java.util.function.Function;
 
 import us.lsi.geometria.Vector2D;
@@ -14,7 +17,7 @@ public class Ventana {
 	}
 	
 	public static Ventana of(String title, Double escala, Color bg, Color fg) {
-		return new Ventana(title, 1200, 600, escala, bg, fg);
+		return new Ventana(title, 1000, 600, escala, bg, fg);
 	}
 
 	
@@ -57,7 +60,15 @@ public class Ventana {
 	
 	public Function<Double,Double> yt;
 	
-	public Canvas canvas;
+	public void draw(Shape sp) {
+		this.canvas.draw(sp);
+	}
+	
+	public void fill(Shape sp) {
+		this.canvas.fill(sp);
+	}
+	
+	private Canvas canvas;
 	
 	private Ventana(String title,Integer xMax, Integer yMax, Double escala, Color bg, Color fg) {
 		this.canvas = Canvas.of(title,xMax,yMax,bg);
@@ -71,6 +82,8 @@ public class Ventana {
 		this.yt = y->-this.escala*y+this.yCentro;
 		axes();
 		this.canvas.setForegroundColor(fg);
+		Graphics2D gc = this.canvas.graphic();
+		gc.setStroke(new BasicStroke(2));	
 	}
 	
 	public DoublePair transform(Double x, Double y) {
@@ -85,8 +98,6 @@ public class Ventana {
         this.canvas.setForegroundColor(newColor);
     }
 
-    
-
     /**
      * Sets the background color of the Canvas.
      * @param  newColor   the new color for the background 
@@ -100,7 +111,6 @@ public class Ventana {
 		this.canvas.drawString(String.format("%.0f", -(this.yMax - this.yCentro)/this.escala), this.xCentro+2, this.yMax - 10);
 		this.canvas.drawString(String.format("%.0f", (this.xMax - this.xCentro)/ this.escala), this.xMax - 40,this.yCentro - 2);
 		this.canvas.drawString(String.format("%.0f", -this.xCentro / this.escala), 2, this.yCentro - 2);
-
 		this.canvas.drawLine(this.xCentro,0,this.xCentro,this.yMax);
 		this.canvas.drawLine(0,this.yCentro,this.xMax,this.yCentro);
 	}
@@ -111,7 +121,4 @@ public class Ventana {
 				+ ", escala=" + escala + ", centro=" + centro + "]";
 	}
 
-	
-	
-	
 }

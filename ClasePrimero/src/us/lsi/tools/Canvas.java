@@ -78,6 +78,10 @@ public class Canvas {
         frame.pack();
         setVisible(true);
     }
+    
+    public Graphics2D graphic() {
+    	return this.graphic;
+    }
 
     /**
      * Set the canvas visibility and brings canvas to the front of screen

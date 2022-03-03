@@ -126,7 +126,7 @@ public record Poligono2D(List<Punto2D> vertices) implements ObjetoGeometrico2D {
 
 	@Override
 	public void show(Ventana v) {
-		v.canvas.draw(this.shape(v));
+		v.draw(this.shape(v));
 	}
 
 	public Shape shape(Ventana v) {

@@ -58,7 +58,7 @@ public record Circulo2D(Punto2D centro,Double radio)  implements ObjetoGeometric
 	
 	@Override
 	public void show(Ventana v) {
-		v.canvas.draw(this.shape(v));
+		v.draw(this.shape(v));
 	}
 	
 	

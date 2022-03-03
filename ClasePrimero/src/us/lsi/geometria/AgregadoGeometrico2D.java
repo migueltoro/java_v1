@@ -65,7 +65,7 @@ public class AgregadoGeometrico2D implements ObjetoGeometrico2D {
 	}
 
 	@Override
-	public ObjetoGeometrico2D traslada(Vector2D v) {
+	public AgregadoGeometrico2D traslada(Vector2D v) {
 		return new AgregadoGeometrico2D(objetos.stream().map(x->x.traslada(v)).collect(Collectors.toSet()));
 	}
 	

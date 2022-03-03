@@ -104,7 +104,7 @@ public record Punto2D(Double x,Double y) implements ObjetoGeometrico2D, Comparab
 	
 	@Override
 	public void show(Ventana v) {
-		v.canvas.fill(this.shape(v));
+		v.fill(this.shape(v));
 	}
 	
 	@Override

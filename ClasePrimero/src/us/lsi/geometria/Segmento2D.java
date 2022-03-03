@@ -51,7 +51,7 @@ public record Segmento2D(Punto2D p1, Punto2D p2) implements ObjetoGeometrico2D, 
 
 	@Override
 	public void show(Ventana v) {
-		v.canvas.draw(this.shape(v));
+		v.draw(this.shape(v));
 	}
 
 	@Override
