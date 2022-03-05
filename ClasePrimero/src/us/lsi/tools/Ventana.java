@@ -56,9 +56,9 @@ public class Ventana {
 	
 	public Vector2D centro;
 	
-	public Function<Double,Double> xt;
+	private Function<Double,Double> xt;
 	
-	public Function<Double,Double> yt;
+	private Function<Double,Double> yt;
 	
 	public void draw(Shape sp) {
 		this.canvas.draw(sp);
@@ -67,7 +67,7 @@ public class Ventana {
 	public void fill(Shape sp) {
 		this.canvas.fill(sp);
 	}
-	
+
 	private Canvas canvas;
 	
 	private Ventana(String title,Integer xMax, Integer yMax, Double escala, Color bg, Color fg) {

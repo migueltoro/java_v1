@@ -50,6 +50,7 @@ public class TestGeometria {
 		v.setForegroundColor(Color.GREEN);
 		a2.show(v);
 		a3.show(v);
+		AgregadoGeometrico2D s4 = AgregadoGeometrico2D.of(c1,pl,s,tr,cd,c2,c3,pl2);
 	}
 
 }

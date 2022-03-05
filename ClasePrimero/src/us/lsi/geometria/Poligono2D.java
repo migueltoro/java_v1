@@ -70,6 +70,13 @@ public record Poligono2D(List<Punto2D> vertices) implements ObjetoGeometrico2D {
 				.mapToDouble(i -> this.diagonal(0, i).multiplicaVectorial(this.lado(i))).sum();
 		return area / 2;
 	}
+	
+	public Double perimetro() {
+		Integer n = this.numeroDeVertices();
+		Double ln = IntStream.range(0, n)
+				.mapToDouble(i -> this.lado(i).modulo()).sum();
+		return ln;
+	}
 
 	public int numeroDeVertices() {
 		return vertices.size();

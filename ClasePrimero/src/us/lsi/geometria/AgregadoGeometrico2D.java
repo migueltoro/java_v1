@@ -30,7 +30,7 @@ public class AgregadoGeometrico2D implements ObjetoGeometrico2D {
 		this.objetos = new HashSet<>();
 	}	
 
-	public AgregadoGeometrico2D(Set<ObjetoGeometrico2D> objetos) {
+	private AgregadoGeometrico2D(Set<ObjetoGeometrico2D> objetos) {
 		super();
 		this.objetos = objetos;
 	}	

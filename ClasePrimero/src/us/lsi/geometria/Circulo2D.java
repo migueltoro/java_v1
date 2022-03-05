@@ -50,9 +50,8 @@ public record Circulo2D(Punto2D centro,Double radio)  implements ObjetoGeometric
 	
 	@Override
 	public Circulo2D transform(Ventana v) {
-		Punto2D p = this.centro.add(Vector2D.of(1.,0.).multiply(this.radio)).transform(v);
 		Punto2D c = this.centro.transform(v);
-		return Circulo2D.of(c,p.x()-c.x());
+		return Circulo2D.of(c,this.radio()*v.escala);
 	}
 
 	

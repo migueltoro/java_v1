@@ -25,17 +25,12 @@ public record Punto2D(Double x,Double y) implements ObjetoGeometrico2D, Comparab
 	}
     
     public Cuadrante cuadrante(){
-		Cuadrante c;
-		if(this.x() >=0 && this.y() >=0){
-			c = Cuadrante.PRIMER_CUADRANTE;
-		} else if(this.x() <=0 && this.y() >=0){
-			c = Cuadrante.SEGUNDO_CUADRANTE;
-		} else if(this.x() <=0 && this.y() <=0){
-			c = Cuadrante.TERCER_CUADRANTE;
-		} else {
-			c = Cuadrante.CUARTO_CUADRANTE;
-		}
-		return c;
+    	Cuadrante c;
+		if(this.x() >=0 && this.y() >=0) c = Cuadrante.PRIMER_CUADRANTE;
+		else if(this.x() <=0 && this.y() >=0) c = Cuadrante.SEGUNDO_CUADRANTE;
+		else if(this.x() <=0 && this.y() <=0) c =  Cuadrante.TERCER_CUADRANTE;
+		else c = Cuadrante.CUARTO_CUADRANTE;
+    	return c;
 	}
     
     public static Double distanciaA(Punto2D p1, Punto2D p2) {
@@ -69,13 +64,14 @@ public record Punto2D(Double x,Double y) implements ObjetoGeometrico2D, Comparab
     public Vector2D vector() {
 		return Vector2D.of(this.x, this.y);
 	}	
-	
+    @Override
 	public Punto2D traslada(Vector2D v){
-		return add(v);
+		return this.add(v);
 	}
     
+	@Override
 	public Punto2D rota(Punto2D p, Double angulo){
-		Vector2D v = minus(p).rota(angulo);
+		Vector2D v = this.minus(p).rota(angulo);
 		return p.add(v);
 	}	
 	
@@ -132,6 +128,7 @@ public record Punto2D(Double x,Double y) implements ObjetoGeometrico2D, Comparab
 		Punto2D p1 = Punto2D.of(200.00,100.00);
 		Punto2D p2 = Punto2D.of(1000.00,400.00);
 		System.out.println(p1.distanciaA(p2));
+//		System.out.println(p1.cuadrante());
 		Double distanciaCentros = Math.sqrt(
 				Math.pow(p1.x()-p2.x(),2)+
 				Math.pow(p1.y()-p2.y(),2));
