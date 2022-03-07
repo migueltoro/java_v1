@@ -17,10 +17,14 @@ public class RedF extends RedA implements Red {
 	public static Red parse(String fichero) {
 		List<Estacion> estaciones = FileTools.streamFromFile("ficheros/estaciones.csv").skip(1)
 				.map(linea -> Estacion.parse(linea)).collect(Collectors.toList());
+		return of(estaciones);
+	}
+
+	public static RedF of(List<Estacion> estaciones) {
 		return new RedF(estaciones);
 	}
 
-	public RedF(List<Estacion> estaciones) {
+	private RedF(List<Estacion> estaciones) {
 		super(estaciones);
 	}
 	

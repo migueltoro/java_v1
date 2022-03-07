@@ -8,6 +8,20 @@ import us.lsi.coordenadas.Coordenadas2D;
 
 public interface Red {
 	
+	public static Red of(List<Estacion> marcas) {
+		return switch(RedA.tipo) {
+		case Funcional->RedF.of(marcas);
+		case Imperativa->RedI.of(marcas);
+		};
+	}
+	
+	public static Red parse(String fichero) {
+		return switch(RedA.tipo) {
+		case Funcional->RedF.parse(fichero);
+		case Imperativa->RedI.parse(fichero);
+		};
+	}
+	
 	void add(Estacion e);
 	
 	void remove(Estacion e);

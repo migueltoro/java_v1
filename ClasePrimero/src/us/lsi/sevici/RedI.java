@@ -19,6 +19,10 @@ public class RedI extends RedA implements Red{
 			Estacion e = Estacion.parse(ln);
 			estaciones.add(e);
 		}
+		return of(estaciones);
+	}
+
+	public static RedI of(List<Estacion> estaciones) {
 		return new RedI(estaciones);
 	}
 
