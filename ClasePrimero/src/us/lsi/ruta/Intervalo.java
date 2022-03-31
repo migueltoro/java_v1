@@ -4,6 +4,8 @@ import java.time.temporal.ChronoUnit;
 
 public record Intervalo(Marca principio, Marca fin) {
 	
+	public static enum Type {Llano, Ascendente, Descendente}
+	
 	public static Intervalo of(Marca principio, Marca fin) {
 		return new Intervalo(principio, fin);
 	}
@@ -29,5 +31,12 @@ public record Intervalo(Marca principio, Marca fin) {
 		return this.longitud()/this.tiempo();
 	}
 
-
+	public Type type() {
+		Type r;
+		if(this.desnivel() == 0.) r = Type.Llano;
+		else if(this.desnivel() > 0.) r = Type.Ascendente;
+		else r = Type.Descendente;
+		return r;
+	}
+	
 }

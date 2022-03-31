@@ -6,7 +6,15 @@ public abstract class RutaA implements Ruta {
 	
 	public static enum TipoImplementacion{Imperativa,Funcional}
 	
-	public static TipoImplementacion tipo = TipoImplementacion.Funcional;
+	private static TipoImplementacion tipo = TipoImplementacion.Funcional;
+	
+	public static void setTipoImplementacion(TipoImplementacion t) {
+		tipo = t;
+	}
+	
+	public static TipoImplementacion getTipoImplementacion() {
+		return tipo;
+	}
 
 	protected List<Marca> marcas;
 	
@@ -27,6 +35,11 @@ public abstract class RutaA implements Ruta {
 	@Override
 	public Intervalo getIntervalo(Integer i) {
 		return Intervalo.of(this.marcas.get(i),this.marcas.get(i+1));
+	}
+	
+	@Override
+	public Integer gerNumMarcas() {
+		return this.marcas.size();
 	}
 
 }

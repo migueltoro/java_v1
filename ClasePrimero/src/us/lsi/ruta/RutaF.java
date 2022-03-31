@@ -1,9 +1,12 @@
 package us.lsi.ruta;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import us.lsi.ruta.Intervalo.Type;
 import us.lsi.tools.FileTools;
 
 public class RutaF extends RutaA implements Ruta {
@@ -23,20 +26,20 @@ public class RutaF extends RutaA implements Ruta {
 
 	@Override
 	public Double getTiempo() {
-		Integer n = this.marcas.size();
+		Integer n = super.marcas.size();
 		return IntStream.range(0,n-1).boxed().map(i->this.getIntervalo(i)).mapToDouble(x->x.tiempo()).sum();
 	}
 	
 	@Override
 	public Double getLongitud() {
-		Integer n = this.marcas.size();
+		Integer n = super.marcas.size();
 		return IntStream.range(0,n-1).boxed().map(i->this.getIntervalo(i)).mapToDouble(x->x.longitud()).sum();
 	}
 	
 	
 	@Override
 	public Double getDesnivelCrecienteAcumulado() {
-		Integer n = this.marcas.size();		
+		Integer n = super.marcas.size();		
 		return IntStream.range(0, n-1)
 				.boxed()
 				.map(i->this.getIntervalo(i))
@@ -48,7 +51,7 @@ public class RutaF extends RutaA implements Ruta {
 	
 	@Override
 	public Double getDesnivelDecrecienteAcumulado() {
-		Integer n = this.marcas.size();		
+		Integer n = super.marcas.size();		
 		return IntStream.range(0, n-1)
 				.boxed()
 				.map(i->this.getIntervalo(i))
@@ -59,7 +62,23 @@ public class RutaF extends RutaA implements Ruta {
 	
 	@Override
 	public String toString() {
-		return marcas.stream().map(m->m.toString()).collect(Collectors.joining("\n"));
+		return super.marcas.stream().map(m->m.toString()).collect(Collectors.joining("\n"));
+	}
+
+	@Override
+	public Map<Type,Integer> getFrecuencias() {
+		return IntStream.range(0,super.gerNumMarcas()-1).boxed()
+				.map(i->super.getIntervalo(i))
+				.collect(Collectors.groupingBy(in->in.type(),
+						Collectors.collectingAndThen(Collectors.toList(),ls->ls.size())));
+	}
+
+	@Override
+	public Set<Intervalo> getLLanos() {
+		return IntStream.range(0,super.gerNumMarcas()-1).boxed()
+				.map(i->super.getIntervalo(i))
+				.filter(in->in.type().equals(Type.Llano))
+				.collect(Collectors.toSet());
 	}
 
 }

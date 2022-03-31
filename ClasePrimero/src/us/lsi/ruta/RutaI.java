@@ -1,8 +1,13 @@
 package us.lsi.ruta;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import us.lsi.ruta.Intervalo.Type;
 import us.lsi.tools.FileTools;
 
 public class RutaI extends RutaA implements Ruta {
@@ -83,5 +88,36 @@ public class RutaI extends RutaA implements Ruta {
 		}
 		return r;
 	}
+	
+	@Override
+	public Map<Type, Integer> getFrecuencias() {
+		Map<Type,Integer> m = new HashMap<>();
+		Integer n = this.marcas.size();
+		for(Integer i=0; i< n-1; i++) {
+			Intervalo in = this.getIntervalo(i);
+			Type key = in.type();
+			if(m.containsKey(key)) {
+				Integer v = m.get(key);
+				m.put(key, v+1);
+			} else {
+				m.put(key, 1);
+			}				
+		}
+		return m;
+	}
+
+	@Override
+	public Set<Intervalo> getLLanos() {
+		Set<Intervalo> s = new HashSet<>();
+		Integer n = this.marcas.size();
+		for(Integer i=0; i< n-1; i++) {
+			Intervalo in = this.getIntervalo(i);
+			if (in.type().equals(Type.Llano)) {
+				s.add(in);
+			}
+		}
+		return s;
+	}
+
 	
 }
