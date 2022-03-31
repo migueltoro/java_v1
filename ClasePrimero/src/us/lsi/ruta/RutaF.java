@@ -3,7 +3,7 @@ package us.lsi.ruta;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
+import static java.util.stream.Collectors.*;
 import java.util.stream.IntStream;
 
 import us.lsi.ruta.Intervalo.Type;
@@ -20,7 +20,7 @@ public class RutaF extends RutaA implements Ruta {
 	}
 
 	public static Ruta leeDeFichero(String fichero) {
-		List<Marca> marcas = FileTools.streamFromFile("ficheros/ruta.csv").map(x->Marca.parse(x)).collect(Collectors.toList());
+		List<Marca> marcas = FileTools.streamFromFile("ficheros/ruta.csv").map(x->Marca.parse(x)).collect(toList());
 		return of(marcas);
 	}
 
@@ -62,15 +62,15 @@ public class RutaF extends RutaA implements Ruta {
 	
 	@Override
 	public String toString() {
-		return super.marcas.stream().map(m->m.toString()).collect(Collectors.joining("\n"));
+		return super.marcas.stream().map(m->m.toString()).collect(joining("\n"));
 	}
 
 	@Override
 	public Map<Type,Integer> getFrecuencias() {
 		return IntStream.range(0,super.gerNumMarcas()-1).boxed()
 				.map(i->super.getIntervalo(i))
-				.collect(Collectors.groupingBy(in->in.type(),
-						Collectors.collectingAndThen(Collectors.toList(),ls->ls.size())));
+				.collect(groupingBy(in->in.type(),
+						collectingAndThen(toList(),ls->ls.size())));
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class RutaF extends RutaA implements Ruta {
 		return IntStream.range(0,super.gerNumMarcas()-1).boxed()
 				.map(i->super.getIntervalo(i))
 				.filter(in->in.type().equals(Type.Llano))
-				.collect(Collectors.toSet());
+				.collect(toSet());
 	}
 
 }
