@@ -2,6 +2,7 @@ package us.lsi.tools;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,12 +14,58 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.mozilla.universalchardet.UniversalDetector;
+
+
 public class FileTools {
 	
+	public static String detectCharset(String file) {  
+	
+	    String encoding;  
+	  
+	    try {  
+	    	
+	        final FileInputStream fis = new FileInputStream(file);  
+	  
+	        final UniversalDetector detector = new UniversalDetector(null);  
+	        handleData(fis, detector);  
+	        encoding = getEncoding(detector);  
+	        detector.reset();  
+	          
+	        fis.close();  
+	  
+	    } catch (IOException e) {  
+	        encoding = "";  
+	    }  
+	  
+	    return encoding;  
+	}  
+	  
+	private static String getEncoding(UniversalDetector detector) {  
+	    if(detector.isDone()) {  
+	        return detector.getDetectedCharset();  
+	    }  
+	    return "";  
+	}  
+	  
+	private static void handleData(FileInputStream fis, UniversalDetector detector) throws IOException {  
+	    int nread;  
+	    final byte[] buf = new byte[4096];  
+	    while ((nread = fis.read(buf)) > 0 && !detector.isDone()) {  
+	        detector.handleData(buf, 0, nread);  
+	    }  
+	    detector.dataEnd();  
+	} 
+	
 	public static Stream<String> streamFromFile(String file) {
+		Charset charSet = Charset.defaultCharset();
+		return streamFromFile(file, charSet.toString());
+	}
+	
+	public static Stream<String> streamFromFile(String file, String charSet) {
 		Stream<String> r = null;
 		try {
-			r = Files.lines(Paths.get(file), Charset.defaultCharset());
+			r = Files.lines(Paths.get(file), Charset.forName(charSet));
 		} catch (IOException e) {
 			throw new IllegalArgumentException("No se ha encontrado el fichero " + file);
 		}
@@ -26,9 +73,14 @@ public class FileTools {
 	}
 	
 	public static List<String> lineasFromFile(String file) {
+		Charset charSet = Charset.defaultCharset();
+		return lineasFromFile(file, charSet.toString());
+	}
+	
+	public static List<String> lineasFromFile(String file, String charSet) {
 		List<String> lineas = null;
 		try {		
-			lineas = Files.readAllLines(Paths.get(file), Charset.defaultCharset());
+			lineas = Files.readAllLines(Paths.get(file), Charset.forName(charSet));
 		} catch (IOException e) {
 			System.out.println(e.toString());
 		}
@@ -66,6 +118,9 @@ public class FileTools {
 		return lineas.stream().collect(Collectors.joining("\n"));
 	}
 
-
+	public static void main(String[] args) {
+		String s = FileTools.detectCharset("ficheros/peliculas.csv");
+		System.out.println(s);
+	}
 
 }

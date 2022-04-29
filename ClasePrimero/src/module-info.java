@@ -12,4 +12,5 @@ module clase_primero {
 
 	requires transitive commons.math3;
 	requires transitive java.desktop;
+	requires juniversalchardet;
 }
