@@ -10,7 +10,6 @@ import java.util.stream.Stream;
 
 import us.lsi.coordenadas.Coordenadas2D;
 import us.lsi.tools.FileTools;
-import us.lsi.tools.Preconditions;
 
 public class RedF extends RedA implements Red {
 	
@@ -33,13 +32,6 @@ public class RedF extends RedA implements Red {
 		if(super.indices == null) 
 			super.indices= estaciones.stream().collect(Collectors.toMap(e->e.numero(),e->e));
 		return super.indices;
-	}
-
-	@Override
-	public Estacion porNumero(Integer numero) {
-		Estacion e = this.indices().getOrDefault(numero,null);
-		Preconditions.checkNotNull(e);
-		return e;
 	}
 
 	@Override
@@ -92,7 +84,7 @@ public class RedF extends RedA implements Red {
 	
 	@Override
 	public void escribe(Integer n, String file) {
-		Stream<String> s = this.estaciones.subList(0,n).stream().map(e->e.toString());
+		Stream<String> s = this.estaciones().subList(0,n).stream().map(e->e.toString());
 		FileTools.writeStream(s,file);
 	}
 

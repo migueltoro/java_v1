@@ -2,6 +2,7 @@ package us.lsi.sevici;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,69 +34,131 @@ public class RedI extends RedA implements Red{
 	@Override
 	public Map<Integer, Estacion> indices() {
 		if (super.indices == null) {
-			super.indices = new HashMap<>();
-			for (Estacion e : estaciones) {
-				Preconditions.checkArgument(!indices.containsKey(e.numero()),
-						String.format("El numero %d de estacion esta repetido", e.numero()));
-				super.indices.put(e.numero(), e);
+			Map<Integer, Estacion> m = new HashMap<>();
+			for (Estacion e : super.estaciones()) {
+				Integer key = e.numero();
+				if (m.containsKey(key)) {
+					Preconditions.checkArgument(false,
+							String.format("El numero %d de estacion esta repetido", e.numero()));
+				} else {
+					m.put(key, e);
+				}
 			}
+			super.indices = m;
 		}
 		return super.indices;
 	}
 
 	@Override
-	public Estacion porNumero(Integer numero) {
-		return null;
-	}
-
-	@Override
 	public Set<Estacion> porName(String nombre) {
-		return null;
+		Set<Estacion> s = new HashSet<>();
+		for(Estacion e:super.estaciones()) {
+			if(e.name().equals(nombre))
+				s.add(e);
+		}
+		return s;
 	}
 
 	@Override
 	public Set<Estacion> estacionesConBicisDisponibles() {
-		return null;
+		Set<Estacion> s = new HashSet<>();
+		for(Estacion e:super.estaciones()) {
+			if(e.free_bikes() > 0)
+				s.add(e);
+		}
+		return s;
 	}
 
 	@Override
 	public Set<Estacion> estacionesConBicisDisponibles(Integer n) {
-		return null;
+		Set<Estacion> s = new HashSet<>();
+		for(Estacion e:super.estaciones()) {
+			if(e.free_bikes() >= n)
+				s.add(e);
+		}
+		return s;
 	}
 
 	@Override
 	public List<Coordenadas2D> ubicaciones() {
-		return null;
+		List<Coordenadas2D> s = new ArrayList<>();
+		for(Estacion e:super.estaciones()) {
+			Coordenadas2D c = e.coordenadas();
+			s.add(c);
+		}
+		return s;
 	}
 
 	@Override
 	public List<Coordenadas2D> ubicacionEstacionesDisponibles(Integer k) {
-		return null;
+		List<Coordenadas2D> s = new ArrayList<>();
+		for(Estacion e:super.estaciones()) {
+			if (e.free_bikes() >= k) {
+				Coordenadas2D c = e.coordenadas();
+				s.add(c);
+			}
+		}
+		return s;
 	}
 
 	@Override
 	public Estacion estacionMasBicisDisponibles() {
-		return null;
+		Estacion em = null;
+		for(Estacion e:super.estaciones()) {
+			if(em == null || e.free_bikes() > em.free_bikes())
+				em = e;
+		}
+		return em;
 	}
 
 	@Override
 	public Map<Integer, List<Estacion>> estacionesPorBicisDisponibles() {
-		return null;
+		Map<Integer, List<Estacion>> m = new HashMap<>();
+		for (Estacion e : super.estaciones()) {
+			Integer key = e.free_bikes();
+			if (m.containsKey(key)) {
+				m.get(key).add(e);
+			} else {
+				List<Estacion> ls = new ArrayList<>();
+				ls.add(e);
+				m.put(key, ls);
+			}
+		}
+		return m;
 	}
 
 	@Override
 	public Map<Integer, Integer> numeroDeEstacionesPorBicisDisponibles() {
-		return null;
-	}
+		Map<Integer, Integer> m = new HashMap<>();
+		for (Estacion e : super.estaciones()) {
+			Integer key = e.free_bikes();
+			if (m.containsKey(key)) {
+				Integer n = m.get(key);
+				n++;
+				m.put(key,n);
+			} else {
+				m.put(key,1);
+			}
+		}
+		return m;
+	}	
 
 	@Override
-	public void escribe(Integer n, String file) {
-		
+	public void escribe(Integer n, String file) {		
+		String r = "";
+		for(int i=0;i<n;i++) {
+			r = r+this.estaciones().get(i).toString()+"\n";
+		}
+		FileTools.write(file, r);
 	}
 	
 	@Override
 	public String toString() {
-		return null;
+		String r = "";
+		for(Estacion e: this.estaciones()) {
+			r += e.toString()+"\n";
+		}
+		return r;
 	}
 
 }
