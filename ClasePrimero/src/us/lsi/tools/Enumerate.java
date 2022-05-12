@@ -5,8 +5,8 @@ import java.util.stream.Stream;
 
 public record Enumerate<E>(Integer counter, E value) {
 
-	public static <E> Enumerate<E> of(Integer num, E value) {
-		return new Enumerate<E>(num, value);
+	public static <E> Enumerate<E> of(Integer counter, E value) {
+		return new Enumerate<E>(counter, value);
 	}
 	
 	public <R> Stream<Enumerate<R>> expand(Function<E, Stream<R>> f){
