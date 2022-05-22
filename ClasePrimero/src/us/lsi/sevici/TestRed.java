@@ -1,7 +1,7 @@
 package us.lsi.sevici;
 import java.util.Locale;
 
-import us.lsi.ruta.RutaA.TipoImplementacion;
+import us.lsi.sevici.RedA.TipoImplementacion;
 import us.lsi.tools.Map2;
 
 public class TestRed {

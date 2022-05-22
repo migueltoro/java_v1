@@ -5,7 +5,8 @@ import java.util.Map;
 import java.util.Set;
 
 import us.lsi.coordenadas.Coordenadas2D;
-import us.lsi.ruta.RutaA.TipoImplementacion;
+import us.lsi.sevici.RedA.TipoImplementacion;
+
 
 public interface Red {
 	
@@ -26,9 +27,7 @@ public interface Red {
 		case Imperativa->RedI.parse(fichero);
 		};
 	}
-	
-	
-	
+		
 	void add(Estacion e);
 	
 	void remove(Estacion e);

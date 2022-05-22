@@ -2,11 +2,11 @@ package us.lsi.sevici;
 
 import java.util.List;
 import java.util.Map;
-
-import us.lsi.ruta.RutaA.TipoImplementacion;
 import us.lsi.tools.Preconditions;
 
 public abstract class RedA implements Red{
+	
+	public static enum TipoImplementacion{Imperativa,Funcional}
 	
 	public static TipoImplementacion tipo = TipoImplementacion.Funcional;
 	

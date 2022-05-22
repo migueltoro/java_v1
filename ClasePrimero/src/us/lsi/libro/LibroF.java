@@ -3,9 +3,11 @@ package us.lsi.libro;
 import java.util.stream.Collectors;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.function.BinaryOperator;
 
 import us.lsi.tools.FileTools;
 import us.lsi.tools.StreamTools;
@@ -111,12 +113,22 @@ public class LibroF implements Libro {
 	public SortedMap<String,Set<Integer>> lineasDePalabra(String file){
 		Set<String> palabrasHuecas = LibroF.of().palabrasHuecas("ficheros/palabras_huecas.txt");
 		 return StreamTools.enumerate(FileTools.streamFromFile(file))
-				 .filter(pp->!pp.value().isEmpty())
-				 .flatMap(pp->pp.expand(ln->Arrays.stream(ln.split(separadores))))
-				 .filter(pp->!palabrasHuecas.contains(pp.value()))
-				 .collect(Collectors.groupingBy(pp->pp.value(),
+				 .filter(p->!p.value().isEmpty())
+				 .flatMap(p->p.expand(ln->Arrays.stream(ln.split(separadores))))
+				 .filter(p->!palabrasHuecas.contains(p.value()))
+				 .collect(Collectors.groupingBy(p->p.value(),
 						 ()->new TreeMap<>(),
-						 Collectors.mapping(pp->pp.counter(),Collectors.toSet())));		 
+						 Collectors.mapping(p->p.counter(),Collectors.toSet())));		 
+	}
+
+	@Override
+	public Map<Character, String> lineaMasLargaQueComienzaCon(String file) {
+		return FileTools.streamFromFile(file)
+				.filter(ln->!ln.isEmpty())
+				.collect(Collectors.groupingBy(ln->ln.charAt(0),
+						Collectors.reducing("",BinaryOperator.maxBy(Comparator.comparing(ln->ln.length())))));
+//						Collectors.collectingAndThen(Collectors.maxBy(Comparator.comparing(ln->ln.length())),
+//								r->r.get())));
 	}
 
 }

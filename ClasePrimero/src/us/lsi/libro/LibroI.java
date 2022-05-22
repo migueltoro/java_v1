@@ -1,8 +1,10 @@
 package us.lsi.libro;
 
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -178,6 +180,26 @@ public class LibroI implements Libro {
 			nl++;
 		}
 		return r;
+	}
+
+	@Override
+	public Map<Character, String> lineaMasLargaQueComienzaCon(String file) {
+		Map<Character, String> m = new HashMap<>();
+		List<String> lineas = FileTools.lineasFromFile(file);
+		for(String linea: lineas) {
+			if(!linea.isEmpty()) {
+				Character key = linea.charAt(0);
+				String value;
+				if(m.containsKey(key)) {
+					value = m.get(key);
+				}else {
+					value = "";
+				}
+				value = linea.length() > value.length() ? linea :value;
+				m.put(key, value);
+			}
+		}
+		return m;
 	}
 
 	
