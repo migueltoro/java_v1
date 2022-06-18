@@ -1,4 +1,4 @@
-module clase_primero {
+module java_v1 {
 	exports us.lsi.geometria;
 	exports us.lsi.libro;
 	exports us.lsi.tools;
@@ -6,11 +6,13 @@ module clase_primero {
 	exports us.lsi.ruta;
 	exports us.lsi.sevici;
 	exports us.lsi.coordenadas;
+	exports us.lsi.universo;
 	exports us.lsi.poker;
 	exports us.lsi.aeropuerto;
+	exports us.lsi.whatsapp;
 	exports us.lsi.calculos;
-
+	
 	requires transitive commons.math3;
 	requires transitive java.desktop;
-	requires juniversalchardet;
+	requires transitive juniversalchardet;
 }

@@ -1,6 +1,7 @@
 package us.lsi.biblioteca;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import us.lsi.tools.Preconditions;
 
@@ -18,7 +19,7 @@ public record Libro(String ISBN, String titulo, String autor, Integer numeroDePa
 	
 	public Libro {
 		Preconditions.checkArgument(numeroDePaginas > 0,
-				String.format("El número de páginas debe ser positivo y es %d", numeroDePaginas));
+				String.format("El nï¿½mero de paginas debe ser positivo y es %d", numeroDePaginas));
 		Preconditions.checkArgument(precio > 0, String.format("El precio debe ser positivo y es %.2f", precio));
 		Preconditions.checkArgument(estimacionDeVentas > 0,
 				String.format("La estimacion de ventas debe ser positiva y es %d", estimacionDeVentas));
@@ -33,18 +34,34 @@ public record Libro(String ISBN, String titulo, String autor, Integer numeroDePa
 	}
 
 	public Integer diasDePrestamo() {
-		Integer r = null;
-		switch (this.tipoDePrestamo) {
-		case DIARIO:r = 1;break;
-		case SEMANAL:r = 7;break;
-		case MENSUAL:r = 30;break;
-		default:break;
-		}
-		return r;
+		return switch (this.tipoDePrestamo) {
+		case DIARIO -> 1;
+		case SEMANAL -> 7;
+		case MENSUAL -> 30;
+		};
 	}
 
 	@Override
 	public int compareTo(Libro libro) {
 		return this.ISBN.compareTo(libro.ISBN());
 	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(ISBN);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Libro other = (Libro) obj;
+		return Objects.equals(ISBN, other.ISBN);
+	}
+
+	
 }

@@ -1,7 +1,10 @@
 package us.lsi.biblioteca;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import us.lsi.tools.Preconditions;
@@ -12,22 +15,23 @@ public class Biblioteca {
 		return new Biblioteca(nombre, codigPostal, email);
 	}
 
-
 	private String nombre;
 	private String codigoPostal;
 	private String email; 
-	private List<Libro> libros;
+	private Map<String,Libro> libros;
+	private Map<String,Integer> numCopias;
 	
 	
 	private Biblioteca(String nombre, String codigoPostal, String email) {
 		super();
 		Preconditions.checkNotNull(nombre);
-		Preconditions.checkArgument(compruebaCodigoPostal(codigoPostal),String.format("El codigo postal debe contener 5 dígitos y es %s",codigoPostal));
+		Preconditions.checkArgument(compruebaCodigoPostal(codigoPostal),String.format("El codigo postal debe contener 5 dï¿½gitos y es %s",codigoPostal));
 		Preconditions.checkArgument(compruebaEmail(email),String.format("El email debe tener un solo @ y un solo . y es %s",email));
 		this.nombre = nombre;
 		this.codigoPostal = codigoPostal;
 		this.email = email;
-		this.libros = new ArrayList<>();
+		this.libros = new HashMap<>();
+		this.numCopias = new HashMap<>();
 	}
 
 	private Boolean compruebaEmail(String email) {
@@ -46,7 +50,6 @@ public class Biblioteca {
 		return codigoPostal;
 	}
 
-
 	public void setCodigPostal(String codigoPostal) {
 		this.codigoPostal = codigoPostal;
 	}
@@ -55,35 +58,42 @@ public class Biblioteca {
 		return email;
 	}
 
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 
 	public String getNombre() {
 		return nombre;
 	}
 
-	public List<Libro> getLibros() {
-		return libros;
+	public Set<Libro> getLibros() {
+		return libros.values().stream().collect(Collectors.toSet());
 	}
 	
-	public void añadeLibro(Libro libro) {
-		if(libro != null)
-			this.libros.add(libro);
-	}
-	
-	public void eliminaLibro(Libro libro) {
-//		Preconditions.checkArgument(libros.contains(libro),String.format("El libro %s no existe en la bilbioteca",libro));
-//		this.libros.remove(libro);
-		if(!libros.contains(libro)) {
-			throw new IllegalArgumentException(String.format("El libro %s no existe en la bilbioteca",libro));
+	public void add(Libro libro) {
+		Preconditions.checkNotNull(libro);
+		if(this.libros.containsKey(libro.ISBN())) {
+			this.numCopias.put(libro.ISBN(),this.numCopias.get(libro.ISBN())+1);
 		} else {
-			this.libros.remove(libro);
+			this.libros.put(libro.ISBN(),libro);
+			this.numCopias.put(libro.ISBN(),1);
 		}
-		
 	}
+	
+	public void eliminaLibro(Libro libro) {	
+		this.libros.remove(libro.ISBN());
+	}
+	
+	public void eliminaCopiaLibro(Libro libro) {
+		this.libros.remove(libro.ISBN());
+	}
+	
+	public Set<Libro> librosDeAutor(String autor) {
+		return this.libros.values().stream()
+				.filter(lb->lb.autor().equals(autor))
+				.collect(Collectors.toSet());
+	}
+	
 	
 	
 	@Override
