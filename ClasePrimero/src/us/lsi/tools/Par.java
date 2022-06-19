@@ -1,4 +1,4 @@
-package us.lsi.calculos;
+package us.lsi.tools;
 
 public record Par<A, B> (A a, B b) {
 	
