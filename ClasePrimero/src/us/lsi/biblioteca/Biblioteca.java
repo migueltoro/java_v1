@@ -14,8 +14,8 @@ import us.lsi.tools.Preconditions;
 
 public class Biblioteca {
 	
-	public static Biblioteca of(String nombre, String codigPostal, String email) {
-		return new Biblioteca(nombre, codigPostal, email);
+	public static Biblioteca of(String nombre, String codigoPostal, String email) {
+		return new Biblioteca(nombre, codigoPostal, email);
 	}
 
 	private String nombre;
@@ -55,16 +55,8 @@ public class Biblioteca {
 		return codigoPostal;
 	}
 
-	public void setCodigPostal(String codigoPostal) {
-		this.codigoPostal = codigoPostal;
-	}
-
 	public String getEmail() {
 		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getNombre() {
@@ -137,17 +129,19 @@ public class Biblioteca {
 		.anyMatch(p->this.libros.get(p.ejemplar().isbn()).equals(libro));
 	}
 	
-	public void eliminaLibro(Libro libro) {	
+	public Libro eliminaLibro(Libro libro) {	
 		this.libros.remove(libro.isbn());
 		Preconditions.checkArgument(!this.algunEjemplarPrestado(libro));
 		Set<Par<String,Integer>> s = 
 				this.getEjemplares(libro).stream().map(ej->Par.of(ej.isbn(),ej.codigo()))
 				.collect(Collectors.toSet());
 		s.stream().forEach(p->this.ejemplares.remove(p));
+		return libro;
 	}
 	
-	public void eliminaEjemplar(Ejemplar ejemplar) {	
+	public Ejemplar eliminaEjemplar(Ejemplar ejemplar) {	
 		this.ejemplares.remove(Par.of(ejemplar.isbn(), ejemplar.codigo()));
+		return ejemplar;
 	}
 	
 	public Set<Libro> getLibrosDeAutor(String autor) {
