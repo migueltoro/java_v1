@@ -6,39 +6,54 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import us.lsi.tools.FileTools;
+
 public class Aerolineas {
 	
-	public static void leeAerolineas(String fichero) {
+	private static Aerolineas faerolineas = null;
+	
+	public static Aerolineas get() {
+		return faerolineas;
+	}
+	
+	public static Aerolineas leeAerolineas(String fichero) {
 		List<Aerolinea> datos = FileTools.streamFromFile(fichero)
 				.map(x ->Aerolinea.parse(x))
 				.toList();
-		Aerolineas.aeroLineas = datos;
+		Aerolineas aerolineas = new Aerolineas(datos,null);
+		return aerolineas;
 	}
 	
-	private static List<Aerolinea> aeroLineas;
-	
-	private static Map<String,Aerolinea> codigosAerolineas = null;
+	public Aerolineas(List<Aerolinea> aeroLineas, Map<String, Aerolinea> codigosAerolineas) {
+		super();
+		this.aeroLineas = aeroLineas;
+		this.codigosAerolineas = codigosAerolineas;
+	}
 
-	public static Aerolinea aerolinea(String codigo) {
+	
+	private List<Aerolinea> aeroLineas;
+	
+	private Map<String,Aerolinea> codigosAerolineas = null;
+
+	public Aerolinea aerolinea(String codigo) {
 		if(codigosAerolineas == null)
-			Aerolineas.codigosAerolineas = Aerolineas.aeroLineas.stream().collect(Collectors.toMap(a->a.codigo(),a->a));
-		return Aerolineas.codigosAerolineas.get(codigo);
+			this.codigosAerolineas = this.aeroLineas.stream().collect(Collectors.toMap(a->a.codigo(),a->a));
+		return this.codigosAerolineas.get(codigo);
 	}
 	
-	public static Integer size() {
-		return Aerolineas.aeroLineas.size();
+	public Integer size() {
+		return this.aeroLineas.size();
 	}
 	
-	public static Stream<Aerolinea> stream() {
-		return Aerolineas.aeroLineas.stream();
+	public Stream<Aerolinea> stream() {
+		return this.aeroLineas.stream();
 	}
 	
-	public static Aerolinea get(Integer i) {
-		return Aerolineas.aeroLineas.get(i);
+	public Aerolinea get(Integer i) {
+		return this.aeroLineas.get(i);
 	}
 	
-	public static String string() {
-		return String.format("Aerolineas\n\t%s",Aerolineas.aeroLineas.stream()
+	public String string() {
+		return String.format("Aerolineas\n\t%s",this.aeroLineas.stream()
 				.map(a->a.toString())
 				.collect(Collectors.joining("\n\t")));
 	}

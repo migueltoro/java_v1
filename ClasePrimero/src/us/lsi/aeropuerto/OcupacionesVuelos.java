@@ -13,36 +13,46 @@ import us.lsi.tools.FileTools;
 public class OcupacionesVuelos {
 
 	private static Random rnd = new Random(System.nanoTime());
-
-
-	public static void random(Integer numOcupaciones, Integer anyo) {
-		Integer n = Vuelos.size();
-		List<OcupacionVuelo> r = toList(
-				IntStream.range(0, numOcupaciones).boxed()
-				.map(e -> OcupacionVuelo.random(Vuelos.get(rnd.nextInt(n)), anyo)));
-		 OcupacionesVuelos.ocupaciones = r;
+	
+	private static OcupacionesVuelos focupacionesVuelos = null;
+	
+	public static OcupacionesVuelos get() {
+		return OcupacionesVuelos.focupacionesVuelos;
 	}
 
-	public static void leeFicheroOcupaciones(String fichero) {
+	public static OcupacionesVuelos random(Integer numOcupaciones, Integer anyo) {
+		Integer n = Vuelos.get().size();
+		List<OcupacionVuelo> r = toList(
+				IntStream.range(0, numOcupaciones).boxed()
+				.map(e -> OcupacionVuelo.random(Vuelos.get().get(rnd.nextInt(n)), anyo)));
+		OcupacionesVuelos.focupacionesVuelos =  new OcupacionesVuelos(r);
+		return OcupacionesVuelos.focupacionesVuelos;
+	}
+
+	public static OcupacionesVuelos leeFicheroOcupaciones(String fichero) {
 		List<OcupacionVuelo> r = FileTools.streamFromFile(fichero)
 				.map(x -> OcupacionVuelo.parse(x))
 				.collect(Collectors.toList());
-		OcupacionesVuelos.ocupaciones = r;
+		return new OcupacionesVuelos(r);
 	}
 
-	private static List<OcupacionVuelo> ocupaciones;
+	private List<OcupacionVuelo> ocupaciones;
 
-	
-	public static Stream<OcupacionVuelo> stream() {
-		return ocupaciones.stream();
+	public OcupacionesVuelos(List<OcupacionVuelo> ocupaciones) {
+		super();
+		this.ocupaciones = ocupaciones;
+	}
+
+	public Stream<OcupacionVuelo> stream() {
+		return this.ocupaciones.stream();
 	}
 	
-	public static OcupacionVuelo get(Integer i) {
-		return ocupaciones.get(i);
+	public OcupacionVuelo get(Integer i) {
+		return this.ocupaciones.get(i);
 	}
 	
-	public static Integer size() {
-		return ocupaciones.size();
+	public Integer size() {
+		return this.ocupaciones.size();
 	}
 	
 }

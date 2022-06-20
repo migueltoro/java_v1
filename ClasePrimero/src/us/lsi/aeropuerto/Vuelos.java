@@ -13,54 +13,63 @@ import static us.lsi.tools.StreamTools.*;
 
 public class Vuelos {
 	
-
-	public static void random(Integer numVuelos) {
+	private static Vuelos fvuelos = null;
+	
+	public static Vuelos get() {
+		return Vuelos.fvuelos;
+	}
+	public static Vuelos random(Integer numVuelos) {
 		List<Vuelo> vuelos = toList(IntStream.range(0,numVuelos).boxed().map(e->Vuelo.random()));
-		Vuelos.vuelos = vuelos;
-		Vuelos.numVuelos = Vuelos.vuelos.size();
+		return new Vuelos(vuelos);
 	}
 
-	public static void leeFicheroVuelos(String fichero) {
+	public static Vuelos leeFicheroVuelos(String fichero) {
 		List<Vuelo>  vuelos = FileTools.streamFromFile(fichero)
 				.map(x -> Vuelo.parse(x))
 				.collect(Collectors.toList());
-		Vuelos.vuelos = vuelos;
-		Vuelos.numVuelos = Vuelos.vuelos.size();
+		return new Vuelos(vuelos);
 	}
 	
-	private static List<Vuelo> vuelos;
-
-	public static Stream<Vuelo> stream() {
-		return vuelos.stream();
-	}
-
-	private static Map<String, Vuelo> codigosVuelos;
+	private List<Vuelo> vuelos;
+	private Integer numVuelos;
+	private Map<String, Vuelo> codigosVuelos = null;
 	
-	public static Vuelo vuelo(String codigo) {
-		if(codigosVuelos == null)
-			Vuelos.codigosVuelos = Vuelos.stream().collect(Collectors.toMap(Vuelo::codigo,x->x));
-		return codigosVuelos.get(codigo);
-	}
-	
-	public static Vuelo get(Integer index) {
-		return vuelos.get(index);
+	public Vuelos(List<Vuelo> vuelos) {
+		super();
+		this.vuelos = vuelos;
+		this.numVuelos =  this.vuelos.size();
 	}
 
-	private static Integer numVuelos;
-	public static Integer size() {
-		return numVuelos;
+	public Stream<Vuelo> stream() {
+		return this.vuelos.stream();
+	}
+
+	
+	public Vuelo vuelo(String codigo) {
+		if(this.codigosVuelos == null)
+			this.codigosVuelos = this.stream().collect(Collectors.toMap(Vuelo::codigo,x->x));
+		return this.codigosVuelos.get(codigo);
+	}
+	
+	public Vuelo get(Integer index) {
+		return this.vuelos.get(index);
+	}
+
+	
+	public Integer size() {
+		return this.numVuelos;
 	}
 
 	public void addVuelo(Vuelo v) {
-		Vuelos.codigosVuelos = null;
-		Vuelos.vuelos.add(v);
-		Vuelos.numVuelos +=1;
+		this.codigosVuelos = null;
+		this.vuelos.add(v);
+		this.numVuelos +=1;
 	}
 	
 	public void removeVuelo(Vuelo v) {
-		Vuelos.codigosVuelos = null;
-		Vuelos.vuelos.remove(v);
-		Vuelos.numVuelos -=1;
+		this.codigosVuelos = null;
+		this.vuelos.remove(v);
+		this.numVuelos -=1;
 	}
 
 	

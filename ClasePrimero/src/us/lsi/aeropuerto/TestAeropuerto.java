@@ -11,11 +11,11 @@ public class TestAeropuerto {
 		Aeropuertos.leeAeropuertos("ficheros/aeropuertos.csv");
 		Aerolineas.leeAerolineas("ficheros/aerolineas.csv");
 		Vuelos.random(100);
-		FileTools.writeStream(Vuelos.stream().map(v->v.toString()),"ficheros/vuelos.csv");
+		FileTools.writeStream(Vuelos.get().stream().map(v->v.toString()),"ficheros/vuelos.csv");
 		OcupacionesVuelos.random(200, 2020);
-		FileTools.writeStream(OcupacionesVuelos.stream().map(oc->oc.toString()),"ficheros/ocupacionesVuelos.csv");
+		FileTools.writeStream(OcupacionesVuelos.get().stream().map(oc->oc.toString()),"ficheros/ocupacionesVuelos.csv");
 		System.out.println(Vuelo.random());
-		OcupacionVuelo ocp = OcupacionVuelo.random(Vuelos.get(0),2020);
+		OcupacionVuelo ocp = OcupacionVuelo.random(Vuelos.get().get(0),2020);
 		System.out.println(ocp);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		System.out.println(ocp.fecha().format(formatter));

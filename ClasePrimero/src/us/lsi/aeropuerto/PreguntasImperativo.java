@@ -19,12 +19,12 @@ public class PreguntasImperativo implements Preguntas {
 	PreguntasImperativo() {
 	}
 	
-	//1. Dada una cadena de caracteres s devuelve el número total de pasajeros a
+	//1. Dada una cadena de caracteres s devuelve el nï¿½mero total de pasajeros a
 	// ciudades destino que tienen
 	// como prefijo s (esto es, comienzan por s).
 	
 	public Integer numeroDepasajeros(String prefix) {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.stream().toList();
+		List<OcupacionVuelo> ls = OcupacionesVuelos.get().stream().toList();
 		Integer sum = 0;
 		for(OcupacionVuelo ocp:ls) {
 			if(ocp.vuelo().ciudadDestino().startsWith(prefix)) {
@@ -39,7 +39,7 @@ public class PreguntasImperativo implements Preguntas {
 	// existe un vuelo en la fecha f con destino en s.
 	
 	public Boolean hayDestino(Set<String> destinos, LocalDate f) {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.stream().toList();
+		List<OcupacionVuelo> ls = OcupacionesVuelos.get().stream().toList();
 		Boolean a = false;
 		for(OcupacionVuelo ocp:ls) {
 			if(ocp.fecha().toLocalDate().equals(f)) {
@@ -56,7 +56,7 @@ public class PreguntasImperativo implements Preguntas {
 	// los vuelos de fecha f
 	
 	public Set<String> destinosDiferentes(LocalDate f) {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.stream().toList();
+		List<OcupacionVuelo> ls = OcupacionesVuelos.get().stream().toList();
 		Set<String> a = new HashSet<>();
 		for(OcupacionVuelo ocp:ls) {
 			if(ocp.fecha().toLocalDate().equals(f)) {
@@ -68,10 +68,10 @@ public class PreguntasImperativo implements Preguntas {
 	}
 	
 	//4. Dado un anyo devuelve un SortedMap que relacione cada destino con el
-	// total de pasajeros a ese destino en el año anyo
+	// total de pasajeros a ese destino en el aï¿½o anyo
 	
 	public SortedMap<String, Integer> totalPasajerosADestino(Integer any) {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.stream().toList();
+		List<OcupacionVuelo> ls = OcupacionesVuelos.get().stream().toList();
 		SortedMap<String,Integer> a = new TreeMap<String, Integer>(Comparator.reverseOrder());
 		for(OcupacionVuelo ocp:ls) {
 			if(ocp.fecha().getYear() == any) {
@@ -87,11 +87,11 @@ public class PreguntasImperativo implements Preguntas {
 		return a;
 	}
 	
-	//5. Dado un destino devuelve el código de la aerolinea del primer vuelo con plazas libres a ese
+	//5. Dado un destino devuelve el cï¿½digo de la aerolinea del primer vuelo con plazas libres a ese
 	// destino
 	
 	public String primerVuelo(String destino) {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.stream().toList();
+		List<OcupacionVuelo> ls = OcupacionesVuelos.get().stream().toList();
 		OcupacionVuelo a = null;
 		for(OcupacionVuelo ocp:ls) {
 			if(ocp.vuelo().ciudadDestino().equals(destino) &&
@@ -102,7 +102,7 @@ public class PreguntasImperativo implements Preguntas {
 			   }
 			}
 		}
-		if(a==null) throw new IllegalArgumentException("La lista está vacía");
+		if(a==null) throw new IllegalArgumentException("La lista estï¿½ vacï¿½a");
 		return a.vuelo().codigoAerolinea();
 	}
 
@@ -116,15 +116,15 @@ public class PreguntasImperativo implements Preguntas {
 			sum = sum + ocp.vuelo().precio();
 			n = n +1;
 		}
-		if(n==0) throw new IllegalArgumentException("El grupo está vacío");
+		if(n==0) throw new IllegalArgumentException("El grupo estï¿½ vacï¿½o");
 		return sum/n;
 	}
 	
 	//7. Devuelve un Map tal que dado un entero n haga corresponder
-	// a cada fecha la lista de los n destinos con los vuelos de mayor duración.
+	// a cada fecha la lista de los n destinos con los vuelos de mayor duraciï¿½n.
 	
 	public Map<String, Double> precioMedio() {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.stream().toList();
+		List<OcupacionVuelo> ls = OcupacionesVuelos.get().stream().toList();
 		Map<String, List<OcupacionVuelo>> a = new HashMap<>();
 		for(OcupacionVuelo ocp:ls) {
 			if(ocp.numPasajeros().equals(ocp.vuelo().numPlazas())) {
@@ -149,7 +149,7 @@ public class PreguntasImperativo implements Preguntas {
 	// a f. Si no hubiera vuelos devuelve 0.0
 	
 	public Double precioMedio(LocalDateTime f) {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.stream().toList();
+		List<OcupacionVuelo> ls = OcupacionesVuelos.get().stream().toList();
 		Double sum = 0.;
 		Integer n = 0;
 		for(OcupacionVuelo ocp: ls) {
@@ -166,7 +166,7 @@ public class PreguntasImperativo implements Preguntas {
 	// fechas de los vuelos a ese destino.
 	
 	public Map<String, Set<LocalDate>> fechasADestino() {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.stream().toList();
+		List<OcupacionVuelo> ls = OcupacionesVuelos.get().stream().toList();
 		Map<String, Set<LocalDate>> a = new HashMap<>();
 		for(OcupacionVuelo ocp: ls) {
 			String key = ocp.vuelo().ciudadDestino();
@@ -182,7 +182,7 @@ public class PreguntasImperativo implements Preguntas {
 		return a;
 	}
 	
-	//10. Devuelve el destino con mayor número de vuelos
+	//10. Devuelve el destino con mayor nï¿½mero de vuelos
 	
 	@Override
 	public String destinoConMasVuelos() {
@@ -190,7 +190,7 @@ public class PreguntasImperativo implements Preguntas {
 		return null;
 	}
 	
-	//11. Dado un entero m devuelve un conjunto ordenado con las duraciones de todos los vuelos cuya duración es mayor que m minutos.
+	//11. Dado un entero m devuelve un conjunto ordenado con las duraciones de todos los vuelos cuya duraciï¿½n es mayor que m minutos.
 
 	@Override
 	public SortedSet<Duration> duraciones(Integer m) {
@@ -198,7 +198,7 @@ public class PreguntasImperativo implements Preguntas {
 		return null;
 	}
 	
-	//12. Dado un número n devuelve un conjunto con los destinos de los vuelos que están entre los n que más duración tienen.
+	//12. Dado un nï¿½mero n devuelve un conjunto con los destinos de los vuelos que estï¿½n entre los n que mï¿½s duraciï¿½n tienen.
 	
 	@Override
 	public Set<String> destinosMayorDuracion(Integer n) {
@@ -212,7 +212,7 @@ public class PreguntasImperativo implements Preguntas {
 		return null;
 	}
 	
-	//13. Dado un número n devuelve un conjunto con los n destinos con más vuelos
+	//13. Dado un nï¿½mero n devuelve un conjunto con los n destinos con mï¿½s vuelos
 	
 	@Override
 	public Set<String> entreLosMasVuelos(Integer n) {
@@ -220,7 +220,7 @@ public class PreguntasImperativo implements Preguntas {
 		return null;
 	}
 	
-	// 14. Dado un número entero n devuelve una lista con los destinos que tienen más de n vuelos
+	// 14. Dado un nï¿½mero entero n devuelve una lista con los destinos que tienen mï¿½s de n vuelos
 	
 	@Override
 	public List<String> masDeNVuelos(Integer n) {
@@ -228,7 +228,7 @@ public class PreguntasImperativo implements Preguntas {
 		return null;
 	}
 	
-	// 15. Devuelve un Map que relación cada destino con el porcentaje de los vuelos del total que van a ese destino.
+	// 15. Devuelve un Map que relaciï¿½n cada destino con el porcentaje de los vuelos del total que van a ese destino.
 	
 	@Override
 	public Map<String, Double> porcentajeADestino() {
@@ -241,7 +241,7 @@ public class PreguntasImperativo implements Preguntas {
 		return null;
 	}
 	
-	// 16. Devuelve un Map que haga corresponder a cada ciudad destino el vuelo de más barato
+	// 16. Devuelve un Map que haga corresponder a cada ciudad destino el vuelo de mï¿½s barato
 	
 	@Override
 	public Map<String, Vuelo> masBarato() {
@@ -249,7 +249,7 @@ public class PreguntasImperativo implements Preguntas {
 		return null;
 	}
 	
-	// 17. Devuelve un Map que haga corresponder a cada destino el número de fechas
+	// 17. Devuelve un Map que haga corresponder a cada destino el nï¿½mero de fechas
 	// distintas en las que hay vuelos a ese destino.
 	
 	@Override

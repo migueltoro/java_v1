@@ -15,7 +15,7 @@ public record OcupacionVuelo(String codigoVuelo, LocalDateTime fecha, Integer nu
 	public static OcupacionVuelo parse(String text) {
 		String[] campos = text.split(",");
 		String codeVuelo = campos[0];
-		LocalTime t = Vuelos.vuelo(codeVuelo).hora();
+		LocalTime t = Vuelos.get().vuelo(codeVuelo).hora();
 		LocalDate d = LocalDate.parse(campos[1], DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 		LocalDateTime fecha = LocalDateTime.of(d, t);
 		Integer numPasajeros = Integer.parseInt(campos[2]);		
@@ -40,18 +40,18 @@ public record OcupacionVuelo(String codigoVuelo, LocalDateTime fecha, Integer nu
 				.filter(dt->dt.getDayOfWeek().equals(dw))
 				.findFirst()
 				.get();
-		d = d.plus(7*rnd.nextInt(53),ChronoUnit.DAYS); //53 semanas en un año
+		d = d.plus(7*rnd.nextInt(53),ChronoUnit.DAYS); //53 semanas en un aï¿½o
 		LocalDateTime fecha = LocalDateTime.of(d, t);
 	    Integer numPasajeros = np>0?rnd.nextInt(np):0;
 		return new OcupacionVuelo(codeVuelo,fecha,numPasajeros);
 	}
 	
 	public Vuelo vuelo() {
-		return Vuelos.vuelo(this.codigoVuelo);
+		return Vuelos.get().vuelo(this.codigoVuelo);
 	}
 	
 	public LocalDateTime llegada() {
-		Vuelo vuelo = Vuelos.vuelo(this.codigoVuelo);
+		Vuelo vuelo = Vuelos.get().vuelo(this.codigoVuelo);
 		return LocalDateTime.of(fecha.toLocalDate(),vuelo.hora()).plus(vuelo.duracion());
 	}
 	
