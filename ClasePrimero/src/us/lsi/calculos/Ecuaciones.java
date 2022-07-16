@@ -1,8 +1,11 @@
 package us.lsi.calculos;
 
+import java.text.DecimalFormat;
 import java.util.Locale;
 
 import org.apache.commons.math3.complex.Complex;
+import org.apache.commons.math3.complex.ComplexFormat;
+
 import us.lsi.tools.Preconditions;
 
 public class Ecuaciones {
@@ -36,7 +39,9 @@ public class Ecuaciones {
 		}
 
 		public String toString() {
-			return String.format("(%s,%s)", this.a, this.b);
+			DecimalFormat df = new DecimalFormat("#0.00");
+			ComplexFormat cf = new ComplexFormat(df,df);
+			return String.format("(%s,%s)", cf.format(this.a), cf.format(this.b));
 		}
 	}
 

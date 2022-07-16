@@ -5,6 +5,8 @@ package us.lsi.calculos;
 import java.util.Locale;
 import java.util.Scanner;
 
+import org.apache.commons.math3.fraction.Fraction;
+
 public class Ejemplos {
 
 	// Integer, Float, Double, Boolean, String, int, float, double,
@@ -64,8 +66,8 @@ public class Ejemplos {
 	}
 
 	public static void fractions() {
-		Fraction2 f1 = Fraction2.of(6, 8);
-		Fraction2 f2 = Fraction2.of(1, 4);
+		Fraction f1 = Fraction.getReducedFraction(6, 8);
+		Fraction f2 = Fraction.getReducedFraction(1, 4);
 		System.out.println(f1);
 		System.out.println(f1.subtract(f2));
 		System.out.println(f1.multiply(f2));
