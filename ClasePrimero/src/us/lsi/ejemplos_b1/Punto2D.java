@@ -1,6 +1,6 @@
-package us.lsi.calculos;
+package us.lsi.ejemplos_b1;
 
-public record Punto2D(Double x,Double y) {
+public record Punto2D(Double x,Double y) implements Comparable<Punto2D> {
 	
 	private static Punto2D cero = Punto2D.of(0.,0.);
 	
@@ -47,6 +47,12 @@ public record Punto2D(Double x,Double y) {
 	public Double distanciaAlOrigen() {
 		return distanciaA(Punto2D.origen());
 	} 
+	
+	@Override
+	public int compareTo(Punto2D other) {
+		return this.distanciaAlOrigen().compareTo(other.distanciaAlOrigen());
+	}
+
 		
 	public String toString() {
     	return String.format("(%.2f,%.2f)",this.x(),this.y());
@@ -58,7 +64,7 @@ public record Punto2D(Double x,Double y) {
 		System.out.println(p1.distanciaA(p2));
 		System.out.println(distanciaA(p1,p2));
 	}
-
+	
 
 }
 

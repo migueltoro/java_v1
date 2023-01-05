@@ -1,14 +1,13 @@
-package us.lsi.calculos;
+package us.lsi.ejemplos_b1;
 
-import java.text.DecimalFormat;
+
 import java.util.Locale;
 
 import org.apache.commons.math3.complex.Complex;
-import org.apache.commons.math3.complex.ComplexFormat;
 
 import us.lsi.tools.Preconditions;
 
-public class Ecuaciones {
+public class Funciones_2 {
 	
 	public static Double solEcuacionPrimerGrado(Double a, Double b) {
 		Preconditions.checkArgument(a > 0, String.format("El coeficiente a debe ser distinto de cero y es %.2f", a));
@@ -33,22 +32,12 @@ public class Ecuaciones {
 	}
 	
 	public static record Solucion2G(Complex a, Complex b) {
-
-		public static Solucion2G of(Complex a, Complex b) {
-			return new Solucion2G(a, b);
-		}
-
-		public String toString() {
-			DecimalFormat df = new DecimalFormat("#0.00");
-			ComplexFormat cf = new ComplexFormat(df,df);
-			return String.format("(%s,%s)", cf.format(this.a), cf.format(this.b));
-		}
 	}
 
 	public static void main(String[] args) {
 		Locale.setDefault(new Locale("en", "US"));
-		System.out.println(Ecuaciones.solEcuacionSegundoGrado(4., 1., 1.));
-		System.out.println(Ecuaciones.solEcuacionPrimerGrado(4., 1.));
+		System.out.println(Funciones_2.solEcuacionSegundoGrado(4., 1., 1.));
+		System.out.println(Funciones_2.solEcuacionPrimerGrado(4., 1.));
 	}
 
 }

@@ -1,4 +1,4 @@
-package us.lsi.calculos;
+package us.lsi.ejemplos_b1;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
