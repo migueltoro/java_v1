@@ -4,12 +4,9 @@ package us.lsi.aeropuerto;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import us.lsi.tools.FileTools;
-
-import static us.lsi.tools.StreamTools.*;
 
 public class Vuelos {
 	
@@ -18,11 +15,6 @@ public class Vuelos {
 	public static Vuelos get() {
 		return Vuelos.fvuelos;
 	}
-	public static Vuelos random(Integer numVuelos) {
-		List<Vuelo> vuelos = toList(IntStream.range(0,numVuelos).boxed().map(e->Vuelo.random()));
-		return new Vuelos(vuelos);
-	}
-
 	public static Vuelos leeFicheroVuelos(String fichero) {
 		List<Vuelo>  vuelos = FileTools.streamFromFile(fichero)
 				.map(x -> Vuelo.parse(x))

@@ -18,7 +18,7 @@ public record Punto2D(Double x,Double y) implements Comparable<Punto2D> {
 		return new Punto2D(Double.parseDouble(campos[0]), Double.parseDouble(campos[1]));
 	}
     
-    public Cuadrante cuadrante(){
+    public Cuadrante cuadrante1(){
 		Cuadrante c;
 		if(this.x() >=0 && this.y() >=0){
 			c = Cuadrante.PRIMER_CUADRANTE;
@@ -30,6 +30,15 @@ public record Punto2D(Double x,Double y) implements Comparable<Punto2D> {
 			c = Cuadrante.CUARTO_CUADRANTE;
 		}
 		return c;
+	}
+    
+    public Cuadrante cuadrante2(){
+		return switch(this) {
+		case Punto2D x && this.x() >=0 && this.y() >=0 -> Cuadrante.PRIMER_CUADRANTE;
+		case Punto2D x && this.x() <=0 && this.y() >=0 -> Cuadrante.SEGUNDO_CUADRANTE;
+		case Punto2D x && this.x() <=0 && this.y() <=0 -> Cuadrante.TERCER_CUADRANTE;
+		default -> Cuadrante.CUARTO_CUADRANTE;
+		};
 	}
     
     public static Double distanciaA(Punto2D p1, Punto2D p2) {
@@ -63,6 +72,8 @@ public record Punto2D(Double x,Double y) implements Comparable<Punto2D> {
 		Punto2D p2 = Punto2D.of(1000.00,400.00);
 		System.out.println(p1.distanciaA(p2));
 		System.out.println(distanciaA(p1,p2));
+		Comparable<Punto2D> c1 = p1;
+		System.out.println(c1.compareTo(p2));
 	}
 	
 

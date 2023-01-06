@@ -6,7 +6,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
-import java.util.Random;
 
 public record Vuelo(
 		String codigoAerolinea,
@@ -72,26 +71,7 @@ public record Vuelo(
 	
 	// Vuelo.of(codigo,numero,codeDestino,codeOrigen,precio,numPlazas,duracion,hora,diaSemana);
 	
-	private static Random rnd = new Random(System.nanoTime());
 	
-	public static Vuelo random() {
-		Integer e = rnd.nextInt(Aerolineas.get().size());
-		String codigo = Aerolineas.get().get(e).codigo();
-		String numero = String.format("%04d",rnd.nextInt(1000));
-		Integer ad = rnd.nextInt(Aeropuertos.get().size());
-		String codeDestino = Aeropuertos.get().get(ad).codigo();
-		Integer ao;
-		do {
-			ao = rnd.nextInt(Aeropuertos.get().size());
-		} while (ao == ad);
-		String codeOrigen = Aeropuertos.get().get(ao).codigo();
-		Double precio = 1000*rnd.nextDouble();
-		Integer numPlazas = rnd.nextInt(300);
-		Duration duracion = Duration.of(rnd.nextInt(360), ChronoUnit.MINUTES);
-		LocalTime hora = LocalTime.of(rnd.nextInt(24),rnd.nextInt(60));
-		DayOfWeek diaSemana = DayOfWeek.of(1+rnd.nextInt(7));
-		return new Vuelo(codigo,numero,codeDestino,codeOrigen,precio,numPlazas,duracion,hora,diaSemana);
-	}
 	
 	public String ciudadDestino() {
 		return Aeropuertos.get().ciudadDeAeropuerto(this.codigoDestino);

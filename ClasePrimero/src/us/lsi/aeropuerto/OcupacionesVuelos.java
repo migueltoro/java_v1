@@ -1,31 +1,16 @@
 package us.lsi.aeropuerto;
 
-import static us.lsi.tools.StreamTools.*;
-
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import us.lsi.tools.FileTools;
 
 public class OcupacionesVuelos {
-
-	private static Random rnd = new Random(System.nanoTime());
 	
-	private static OcupacionesVuelos focupacionesVuelos = null;
+	static OcupacionesVuelos focupacionesVuelos = null;
 	
 	public static OcupacionesVuelos get() {
-		return OcupacionesVuelos.focupacionesVuelos;
-	}
-
-	public static OcupacionesVuelos random(Integer numOcupaciones, Integer anyo) {
-		Integer n = Vuelos.get().size();
-		List<OcupacionVuelo> r = toList(
-				IntStream.range(0, numOcupaciones).boxed()
-				.map(e -> OcupacionVuelo.random(Vuelos.get().get(rnd.nextInt(n)), anyo)));
-		OcupacionesVuelos.focupacionesVuelos =  new OcupacionesVuelos(r);
 		return OcupacionesVuelos.focupacionesVuelos;
 	}
 

@@ -9,7 +9,8 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-public record Persona(String nombre, String apellidos, LocalDateTime fechaNacimiento) {
+public record Persona(String nombre, String apellidos, LocalDateTime fechaNacimiento) 
+		implements Comparable<Persona> {
 	
 	public static Persona of(String nombre, String apellidos,LocalDateTime fechaNacimiento) {
 		return new Persona(nombre,apellidos,fechaNacimiento);
@@ -50,6 +51,13 @@ public record Persona(String nombre, String apellidos, LocalDateTime fechaNacimi
 		return String.format("%s, de %d, nacido el %s a las %s",nombre_completo(),edad(),fs,hs);
 	}
 	
+	@Override
+	public int compareTo(Persona other) {
+		int r = this.apellidos().compareTo(other.apellidos());
+		if(r==0) r = this.nombre().compareTo(other.nombre());
+		return r;
+	}
+	
 	public static void main(String[] args) {
 		Locale.setDefault(new Locale("es", "Es"));
 		Persona p = Persona.of("Antonio","Ramirez",LocalDateTime.of(1980,Month.APRIL,14,14,20));
@@ -61,5 +69,9 @@ public record Persona(String nombre, String apellidos, LocalDateTime fechaNacimi
 		System.out.println(p2.diaSemanaSiguienteCumple());
 		System.out.println(p2.siguienteCumple().getDayOfMonth());
 	}
+
+	
+
+	
 
 }

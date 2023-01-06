@@ -1,6 +1,8 @@
 package us.lsi.ejemplos_b2;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -45,9 +47,18 @@ public class Parametros {
 	    ls.set(n, e);
 	}
 	
+	
+	public static <E extends Comparable<? super E>> void ordena(List<E> ls) {
+	    Collections.sort(ls,Comparator.naturalOrder());
+	}
+	
+	public static <E> void ordena(List<E> ls, Comparator<E> cmp) {
+	    Collections.sort(ls,cmp);
+	}
+	
 	public static void main(String[] args) {
 		System.out.println(multiplicaPorDos.apply(45));
-	    List<Integer> ls = List.of(1, 2, 3, 4, 5);
+	    List<Integer> ls = List.of(1, 2, 3,-4, 4, 5);
 	    System.out.println(transforma(ls,e->Math.sqrt(e)));
 	    System.out.println(transforma(ls,y->y*y));
 	    System.out.println(filtra(ls,par));
@@ -55,6 +66,12 @@ public class Parametros {
 	    System.out.println(sumar(3,4,5,6,7,89));
 	    List<Integer> ml = new ArrayList<>(ls);
 	    actualiza(ml,4,7);
+	    System.out.println(ml);
+	    ordena(ml);
+	    System.out.println(ml);
+	    ordena(ml,Comparator.reverseOrder());
+	    System.out.println(ml);
+	    ordena(ml,Comparator.comparing(x->x*x));
 	    System.out.println(ml);
 	}
 

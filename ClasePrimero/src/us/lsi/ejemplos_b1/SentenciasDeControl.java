@@ -1,4 +1,4 @@
-package us.lsi.ejemplos_b2;
+package us.lsi.ejemplos_b1;
 
 import java.util.List;
 import java.util.Scanner;

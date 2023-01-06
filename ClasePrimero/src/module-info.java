@@ -1,4 +1,6 @@
 module java_v1 {
+	exports us.lsi.ejemplos_b1;
+	exports us.lsi.ejemplos_b2;
 	exports us.lsi.geometria;
 	exports us.lsi.libro;
 	exports us.lsi.tools;
@@ -10,7 +12,6 @@ module java_v1 {
 	exports us.lsi.poker;
 	exports us.lsi.aeropuerto;
 	exports us.lsi.whatsapp;
-	exports us.lsi.calculos;
 	
 	requires transitive commons.math3;
 	requires transitive java.desktop;
