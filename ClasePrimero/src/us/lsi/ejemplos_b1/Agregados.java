@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 public class Agregados {
@@ -23,6 +24,7 @@ public class Agregados {
 	}
 	
 	public static void listas() {
+		Random rnd = new Random(System.nanoTime());
 		List<Integer> temperaturas = List.of(32, 36, 35, 36, 32, 33); 
 		System.out.println(temperaturas);
 		System.out.println(temperaturas.get(0));
@@ -35,6 +37,10 @@ public class Agregados {
 		System.out.println(tm);
 		System.out.println(tm.get(0));
 		System.out.println(tm.size());
+		List<Integer> ls = new ArrayList<>();
+		for(int i=0;i<20;i++)
+			ls.add(rnd.nextInt(1000));
+		System.out.println(ls);
 		System.out.println("---------------");
 	}
 	
@@ -54,6 +60,7 @@ public class Agregados {
 	}
 	
 	public static void conjuntos() {
+		Random rnd = new Random(System.nanoTime());
 		Set<Integer> temperaturas_conjunto = Set.of(32,35,36,33,34); 
 		System.out.println(temperaturas_conjunto);
 		System.out.println(temperaturas_conjunto.size());
@@ -63,10 +70,15 @@ public class Agregados {
 		sm.remove(32);
 		System.out.println(sm);
 		System.out.println(sm.size());
-		System.out.println("---------------");
+		Set<Integer> st = new HashSet<>();
+		for(int i=0;i<20;i++)
+			st.add(rnd.nextInt(1000));
+		System.out.println(st);
+		System.out.println(1+ "---------------");
 	}
 	
 	public static void maps() {
+		Random rnd = new Random(System.nanoTime());
 		Map<String,Double> temperaturas_por_provincias = 
 			Map.of("Almeria",19.9, "Cadiz", 19.1, "Cordoba", 19.1, 
                 "Granada",16.6, "Jaen", 18.2, "Huelva", 19.0,  "Malaga", 19.8, "Sevilla", 20.0);
@@ -79,6 +91,10 @@ public class Agregados {
 		System.out.println(mm);
 		System.out.println(mm.size());
 		System.out.println(temperaturas_por_provincias.get("Malaga"));
+		Map<Integer,Integer> ht = new HashMap<>();
+		for(int i=0;i<20;i++)
+			ht.put(i,rnd.nextInt(1000));
+		System.out.println(ht);
 		System.out.println("---------------");
 	}
 

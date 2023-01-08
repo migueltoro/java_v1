@@ -48,7 +48,6 @@ public class Iterables {
 
 	public static void main(String[] args) {
 		ejemplos();
-
 	}
 
 }

@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 import us.lsi.ejemplos_b1.Persona;
 
-public class Ejemplos1 {
+public class Streams {
 	
 	public static record Vuelo(
 			String codigoAerolinea,
@@ -77,7 +77,6 @@ public class Ejemplos1 {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
 	}
 
 }
