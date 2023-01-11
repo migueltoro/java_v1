@@ -2,7 +2,7 @@ package us.lsi.biblioteca;
 
 
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -11,22 +11,45 @@ import java.util.stream.Stream;
 
 import us.lsi.tools.Par;
 import us.lsi.tools.Preconditions;
+import us.lsi.biblioteca.Prestamo.TipoPrestamo;
+import us.lsi.tools.FileTools;
 
 public class Biblioteca {
 	
 	public static Biblioteca of(String nombre, String codigoPostal, String email) {
-		return new Biblioteca(nombre, codigoPostal, email);
+		List<Usuario> usuarios = FileTools.streamFromFile("ficheros_biblioteca/usuarios.txt")
+				.map(line->Usuario.parse(line)).toList();
+		List<Libro> libros = FileTools.streamFromFile("ficheros_biblioteca/libros.txt")
+				.map(line->Libro.parse(line)).toList(); 
+		List<Ejemplar> ejemplares = FileTools.streamFromFile("ficheros_biblioteca/ejemplares.txt")
+				.map(line->Ejemplar.parse(line)).toList();
+		List<Prestamo> prestamos = FileTools.streamFromFile("ficheros_biblioteca/prestamos.txt")
+				.map(line->Prestamo.parse(line)).toList();
+		return new Biblioteca(nombre, codigoPostal, email, usuarios, libros, ejemplares, prestamos);
+	}
+	
+	public static Biblioteca of(String nombre, String codigoPostal, String email, List<Usuario> usuarios,
+			List<Libro> libros, List<Ejemplar> ejemplares, List<Prestamo> prestamos) {
+		return new Biblioteca(nombre, codigoPostal, email, usuarios, libros, ejemplares, prestamos);
 	}
 
 	private String nombre;
 	private String codigoPostal;
 	private String email; 
-	private Map<String,Libro> libros;
-	private Map<Par<String,Integer>,Ejemplar> ejemplares;
-	private Map<Integer,Prestamo> prestamos;
+	private List<Usuario> usuarios;
+	private List<Libro> libros;
+	private List<Ejemplar> ejemplares;
+	private List<Prestamo> prestamos;
+	private Map<String,Libro> libroId;
+	private Map<Par<String,Integer>,Ejemplar> ejemplarId;
+	private Map<Integer,Prestamo> prestamoId;
 	
 	
-	private Biblioteca(String nombre, String codigoPostal, String email) {
+	private Biblioteca(String nombre, String codigoPostal, String email, 
+			List<Usuario> usuarios,
+			List<Libro> libros,
+			List<Ejemplar> ejemplares,
+			List<Prestamo> prestamos) {
 		super();
 		Preconditions.checkNotNull(nombre);
 		Preconditions.checkArgument(compruebaCodigoPostal(codigoPostal),String.format("El codigo postal debe contener 5 d�gitos y es %s",codigoPostal));
@@ -34,9 +57,14 @@ public class Biblioteca {
 		this.nombre = nombre;
 		this.codigoPostal = codigoPostal;
 		this.email = email;
-		this.libros = new HashMap<>();
-		this.ejemplares = new HashMap<>();
-		this.prestamos = new HashMap<>();
+		this.usuarios = usuarios;
+		this.libros = libros;
+		this.ejemplares = ejemplares;
+		this.prestamos = prestamos;
+		this.libroId = this.libros.stream().collect(Collectors.toMap(lb->lb.isbn(),lb->lb));
+		this.ejemplarId = this.ejemplares.stream().collect(Collectors.toMap(ej->Par.of(ej.isbn(),ej.codigo()),ej->ej));
+		this.prestamoId = this.prestamos.stream().collect(Collectors.toMap(pt->pt.codigo(),pt->pt));
+		
 	}
 
 	private Boolean compruebaEmail(String email) {
@@ -63,27 +91,29 @@ public class Biblioteca {
 		return this.nombre;
 	}
 
-	public Set<Libro> getLibros() {
-		return this.libros.values().stream().collect(Collectors.toSet());
+	public List<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	public List<Libro> getLibros() {
+		return this.libros;
 	}
 	
-	public Set<Ejemplar> getEjemplares() {
-		return this.ejemplares.values().stream().collect(Collectors.toSet());
+	public List<Ejemplar> getEjemplares() {
+		return this.ejemplares;
 	}
 	
 	public Integer getNumEjemplares(Libro libro) {
-		return (int) this.ejemplares.keySet().stream().filter(p->p.a().equals(libro.isbn()))
-				.count();
+		return this.ejemplares.size();
 	}
 	
-	public Set<Ejemplar> getEjemplares(Libro libro) {
-		return this.ejemplares.values().stream().filter(ej->ej.isbn().equals(libro.isbn()))
-				.collect(Collectors.toSet());
+	public List<Ejemplar> getEjemplares(Libro libro) {
+		return this.ejemplares.stream().filter(ej->ej.isbn().equals(libro.isbn())).toList();
 	}
 	
-	private Integer codigoPrestamoLibre() {
+	public Integer codigoPrestamoLibre() {
 		return Stream.iterate(1,n->n+1)
-				.filter(i->!this.prestamos.keySet().contains(i))			
+				.filter(i->!this.prestamoId.keySet().contains(i))			
 				.findFirst()
 				.get();
 	}
@@ -91,61 +121,61 @@ public class Biblioteca {
 	private Integer codigoEjemplarLibre(Libro libro) {
 		return Stream.iterate(1,n->n+1)
 				.map(i->Par.of(libro.isbn(),i))
-				.filter(i->!this.ejemplares.keySet().contains(i))
+				.filter(lb->!this.ejemplarId.keySet().contains(lb))
 				.findFirst()
 				.get()
 				.b();
 	}
 	
-	
-	public Prestamo prestamo(Ejemplar ejemplar, LocalDate fecha, TipoPrestamo tipo) {
+	public Prestamo prestamo(Ejemplar ejemplar, Usuario usuario, LocalDate fecha, TipoPrestamo tipo) {
 		Integer codigo = codigoPrestamoLibre();
-		Prestamo p = Prestamo.of(codigo,ejemplar, fecha, tipo);
-		this.prestamos.put(codigo,p);
+		Prestamo p = Prestamo.of(codigo,ejemplar.isbn(),ejemplar.codigo(), usuario.getDni(), fecha, tipo);
+		this.prestamoId.put(codigo,p);
 		return p;
 	}
 	
 	public Libro devuelveLibro(Prestamo p) {
-		this.prestamos.remove(p.codigo());
-		return this.libros.get(p.ejemplar().isbn());
+		this.prestamos.remove(p);
+		return this.libroId.get(p.isbn());
 	}
 	
 	public Ejemplar addEjemplar(Libro libro, LocalDate fecha) {
 		Preconditions.checkNotNull(libro);
-		if (!this.libros.keySet().contains(libro.isbn()))
-			this.libros.put(libro.isbn(), libro);
+		if (!this.libroId.keySet().contains(libro.isbn()))
+			this.libroId.put(libro.isbn(), libro);
 		Preconditions.checkArgument(fecha.isBefore(LocalDate.now()),
 				String.format("La fecha debe ser anterior a hoy y s %s", fecha.toString()));
 		Integer n = this.codigoEjemplarLibre(libro);
 		Ejemplar ejemplar = Ejemplar.of(libro.isbn(), n, fecha);
-		Preconditions.checkArgument(this.libros.get(libro.isbn()).equals(libro),
+		Preconditions.checkArgument(this.libroId.get(libro.isbn()).equals(libro),
 				String.format("Los datos del libro con ISBN = %s no corresponden con el ISBN",libro.isbn()));
-		this.ejemplares.put(Par.of(libro.isbn(), n), ejemplar);
+		this.ejemplarId.put(Par.of(libro.isbn(), n), ejemplar);
 		return ejemplar;
 	}
 	
 	public Boolean algunEjemplarPrestado(Libro libro) {
-		return this.prestamos.values().stream()
-		.anyMatch(p->this.libros.get(p.ejemplar().isbn()).equals(libro));
+		return this.prestamoId.values().stream()
+		.anyMatch(p->this.libroId.get(p.isbn()).equals(libro));
 	}
 	
-	public Libro eliminaLibro(Libro libro) {	
-		this.libros.remove(libro.isbn());
+	public Libro eliminaLibro(Libro libro) {
+		this.libros.remove(libro);
 		Preconditions.checkArgument(!this.algunEjemplarPrestado(libro));
-		Set<Par<String,Integer>> s = 
-				this.getEjemplares(libro).stream().map(ej->Par.of(ej.isbn(),ej.codigo()))
+		Set<Ejemplar> s = this.getEjemplares(libro).stream()
+				.map(ej -> Par.of(ej.isbn(), ej.codigo()))
+				.map(p -> this.ejemplarId.get(p))
 				.collect(Collectors.toSet());
-		s.stream().forEach(p->this.ejemplares.remove(p));
+		s.stream().forEach(p -> this.ejemplares.remove(p));
 		return libro;
 	}
 	
 	public Ejemplar eliminaEjemplar(Ejemplar ejemplar) {	
-		this.ejemplares.remove(Par.of(ejemplar.isbn(), ejemplar.codigo()));
+		this.ejemplares.remove(ejemplar);
 		return ejemplar;
 	}
 	
 	public Set<Libro> getLibrosDeAutor(String autor) {
-		return this.libros.values().stream()
+		return this.libros.stream()
 				.filter(lb->lb.autor().equals(autor))
 				.collect(Collectors.toSet());
 	}
@@ -156,7 +186,7 @@ public class Biblioteca {
 	}
 	
 	private String ejemplaresFormat(Libro lb) {
-		return this.ejemplares.values().stream().filter(ej->ej.isbn().equals(lb.isbn()))
+		return this.ejemplares.stream().filter(ej->ej.isbn().equals(lb.isbn()))
 				.map(ej -> ej.fechaDeAdquisicion().toString())
 				.collect(Collectors.joining(","));
 	}
