@@ -11,8 +11,10 @@ public record OcupacionVuelo(String codigoVuelo, LocalDateTime fecha, Integer nu
 	public static OcupacionVuelo parse(String text) {
 		String[] campos = text.split(",");
 		String codeVuelo = campos[0];
-		LocalTime t = Vuelos.get().vuelo(codeVuelo).hora();
-		LocalDate d = LocalDate.parse(campos[1], DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		LocalTime t = Vuelos.of().vuelo(codeVuelo).hora();
+		LocalDate d = 
+				LocalDateTime.parse(campos[1], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+				.toLocalDate();
 		LocalDateTime fecha = LocalDateTime.of(d, t);
 		Integer numPasajeros = Integer.parseInt(campos[2]);		
 		return OcupacionVuelo.of(codeVuelo,fecha,numPasajeros);
@@ -25,11 +27,11 @@ public record OcupacionVuelo(String codigoVuelo, LocalDateTime fecha, Integer nu
 	}
 	
 	public Vuelo vuelo() {
-		return Vuelos.get().vuelo(this.codigoVuelo);
+		return Vuelos.of().vuelo(this.codigoVuelo);
 	}
 	
 	public LocalDateTime llegada() {
-		Vuelo vuelo = Vuelos.get().vuelo(this.codigoVuelo);
+		Vuelo vuelo = Vuelos.of().vuelo(this.codigoVuelo);
 		return LocalDateTime.of(fecha.toLocalDate(),vuelo.hora()).plus(vuelo.duracion());
 	}
 	

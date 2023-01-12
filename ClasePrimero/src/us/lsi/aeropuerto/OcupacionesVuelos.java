@@ -10,12 +10,14 @@ public class OcupacionesVuelos {
 	
 	static OcupacionesVuelos focupacionesVuelos = null;
 	
-	public static OcupacionesVuelos get() {
+	public static OcupacionesVuelos of() {
+		if(OcupacionesVuelos.focupacionesVuelos == null)
+			OcupacionesVuelos.focupacionesVuelos = OcupacionesVuelos.of("ficheros_aeropuertos/ocupacionesVuelos.csv");
 		return OcupacionesVuelos.focupacionesVuelos;
 	}
 
-	public static OcupacionesVuelos leeFicheroOcupaciones(String fichero) {
-		List<OcupacionVuelo> r = FileTools.streamFromFile(fichero)
+	public static OcupacionesVuelos of(String fichero) {
+		List<OcupacionVuelo> r = FileTools.streamDeFichero(fichero,"Windows-1252")
 				.map(x -> OcupacionVuelo.parse(x))
 				.collect(Collectors.toList());
 		return new OcupacionesVuelos(r);

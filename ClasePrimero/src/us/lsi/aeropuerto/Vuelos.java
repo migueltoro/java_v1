@@ -12,11 +12,13 @@ public class Vuelos {
 	
 	private static Vuelos fvuelos = null;
 	
-	public static Vuelos get() {
+	public static Vuelos of() {
+		if(Vuelos.fvuelos == null)
+			Vuelos.fvuelos = Vuelos.of("ficheros_aeropuertos/vuelos.csv");
 		return Vuelos.fvuelos;
 	}
-	public static Vuelos leeFicheroVuelos(String fichero) {
-		List<Vuelo>  vuelos = FileTools.streamFromFile(fichero)
+	public static Vuelos of(String fichero) {
+		List<Vuelo>  vuelos = FileTools.streamDeFichero(fichero,"Windows-1252")
 				.map(x -> Vuelo.parse(x))
 				.collect(Collectors.toList());
 		return new Vuelos(vuelos);
@@ -24,12 +26,13 @@ public class Vuelos {
 	
 	private List<Vuelo> vuelos;
 	private Integer numVuelos;
-	private Map<String, Vuelo> codigosVuelos = null;
+	private Map<String, Vuelo> codigosVuelos;
 	
 	public Vuelos(List<Vuelo> vuelos) {
 		super();
 		this.vuelos = vuelos;
 		this.numVuelos =  this.vuelos.size();
+		this.codigosVuelos = this.stream().collect(Collectors.toMap(Vuelo::codigo,x->x));
 	}
 
 	public Stream<Vuelo> stream() {
@@ -38,8 +41,6 @@ public class Vuelos {
 
 	
 	public Vuelo vuelo(String codigo) {
-		if(this.codigosVuelos == null)
-			this.codigosVuelos = this.stream().collect(Collectors.toMap(Vuelo::codigo,x->x));
 		return this.codigosVuelos.get(codigo);
 	}
 	
@@ -47,28 +48,15 @@ public class Vuelos {
 		return this.vuelos.get(index);
 	}
 
-	
 	public Integer size() {
 		return this.numVuelos;
 	}
 
-	public void addVuelo(Vuelo v) {
-		this.codigosVuelos = null;
-		this.vuelos.add(v);
-		this.numVuelos +=1;
-	}
-	
-	public void removeVuelo(Vuelo v) {
-		this.codigosVuelos = null;
-		this.vuelos.remove(v);
-		this.numVuelos -=1;
-	}
-
 	
 	public static void main(String[] args) {
-		Aeropuertos.leeAeropuertos("ficheros/aeropuertos.csv");
-		Aerolineas.leeAerolineas("ficheros/aerolineas.csv");
-		Vuelos.leeFicheroVuelos("ficheros/vuelos.csv");
+		Aeropuertos.of("ficheros/aeropuertos.csv");
+		Aerolineas.of("ficheros/aerolineas.csv");
+		Vuelos.of("ficheros/vuelos.csv");
 	}
 	
 }

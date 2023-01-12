@@ -7,6 +7,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
@@ -16,23 +17,26 @@ import java.util.stream.Stream;
 public class GenDatos {
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		System.out.println(GenDatos.random());
+		OcupacionVuelo ocp = GenDatos.random(Vuelos.of().get(0),2020);
+		System.out.println(ocp);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		System.out.println(ocp.fecha().format(formatter));
 	}
 	
 	public static Random rnd = new Random(System.nanoTime());
 
 	public static Vuelo random() {
-		Integer e = GenDatos.rnd.nextInt(Aerolineas.get().size());
-		String codigo = Aerolineas.get().get(e).codigo();
+		Integer e = GenDatos.rnd.nextInt(Aerolineas.of().size());
+		String codigo = Aerolineas.of().get(e).codigo();
 		String numero = String.format("%04d",GenDatos.rnd.nextInt(1000));
-		Integer ad = GenDatos.rnd.nextInt(Aeropuertos.get().size());
-		String codeDestino = Aeropuertos.get().get(ad).codigo();
+		Integer ad = GenDatos.rnd.nextInt(Aeropuertos.of().size());
+		String codeDestino = Aeropuertos.of().get(ad).codigo();
 		Integer ao;
 		do {
-			ao = GenDatos.rnd.nextInt(Aeropuertos.get().size());
+			ao = GenDatos.rnd.nextInt(Aeropuertos.of().size());
 		} while (ao == ad);
-		String codeOrigen = Aeropuertos.get().get(ao).codigo();
+		String codeOrigen = Aeropuertos.of().get(ao).codigo();
 		Double precio = 1000*GenDatos.rnd.nextDouble();
 		Integer numPlazas = GenDatos.rnd.nextInt(300);
 		Duration duracion = Duration.of(GenDatos.rnd.nextInt(360), ChronoUnit.MINUTES);
@@ -62,10 +66,10 @@ public class GenDatos {
 	}
 
 	public static OcupacionesVuelos random(Integer numOcupaciones, Integer anyo) {
-		Integer n = Vuelos.get().size();
+		Integer n = Vuelos.of().size();
 		List<OcupacionVuelo> r = toList(
 				IntStream.range(0, numOcupaciones).boxed()
-				.map(e -> random(Vuelos.get().get(GenDatos.rnd.nextInt(n)), anyo)));
+				.map(e -> random(Vuelos.of().get(GenDatos.rnd.nextInt(n)), anyo)));
 		OcupacionesVuelos.focupacionesVuelos =  new OcupacionesVuelos(r);
 		return OcupacionesVuelos.focupacionesVuelos;
 	}

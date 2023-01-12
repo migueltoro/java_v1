@@ -40,7 +40,7 @@ public class GraphicsGoogleMaps extends AbstractGraphicsMaps implements Graphics
 
 	@Override
 	public String getKey() {
-		return FileTools.lineasFromFile("C:/Users/migueltoro/OneDrive - UNIVERSIDAD DE SEVILLA/Escritorio/Jars/Keys/privateGoogle.txt").get(0);
+		return FileTools.lineasDeFichero("C:/Users/migueltoro/OneDrive - UNIVERSIDAD DE SEVILLA/Escritorio/Jars/Keys/privateGoogle.txt").get(0);
 	}
 	
 

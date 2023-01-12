@@ -9,7 +9,7 @@ import us.lsi.tools.FileTools;
 public class Ficheros {
 	
 	public static List<Integer> listaDeFichero(String file) {
-		List<String> lns = FileTools.lineasFromFile(file);
+		List<String> lns = FileTools.lineasDeFichero(file);
 		List<Integer> r = new ArrayList<>();
 	    for(String linea:lns) {
 	        for(String p: linea.split(",")) {
@@ -21,7 +21,7 @@ public class Ficheros {
 	}
 	
 	public static Integer sumaElementosFichero(String file) {
-		List<String> lns = FileTools.lineasFromFile(file);
+		List<String> lns = FileTools.lineasDeFichero(file);
 		Integer r = 0;
 	    for(String linea:lns) {
 	        for(String p: linea.split("[ ,]")) {
@@ -33,7 +33,7 @@ public class Ficheros {
 	}
 
 	public static Integer sumaElementosFicheroIf(String file,Predicate<Integer> pd) {
-		List<String> lns = FileTools.lineasFromFile(file);
+		List<String> lns = FileTools.lineasDeFichero(file);
 		Integer r = 0;
 	    for(String linea:lns) {
 	        for(String p: linea.split(",")) {

@@ -20,7 +20,7 @@ public class RutaF extends RutaA implements Ruta {
 	}
 
 	public static Ruta leeDeFichero(String fichero) {
-		List<Marca> marcas = FileTools.streamFromFile("ficheros/ruta.csv").map(x->Marca.parse(x)).collect(toList());
+		List<Marca> marcas = FileTools.streamDeFichero("ficheros/ruta.csv").map(x->Marca.parse(x)).collect(toList());
 		return of(marcas);
 	}
 

@@ -20,7 +20,7 @@ public interface Preguntas {
 		return new PreguntasImperativo();
 	}
 	
-	//1. Dada una cadena de caracteres s devuelve el número total de pasajeros a
+	//1. Dada una cadena de caracteres s devuelve el nï¿½mero total de pasajeros a
 	// ciudades destino que tienen
 	// como prefijo s (esto es, comienzan por s).		
 	public Integer numeroDepasajeros(String prefix);
@@ -37,11 +37,11 @@ public interface Preguntas {
 	public Set<String> destinosDiferentes(LocalDate f) ;
 	
 	//4. Dado un anyo devuelve un SortedMap que relacione cada destino con el
-	// total de pasajeros a ese destino en el año anyo
+	// total de pasajeros a ese destino en el aï¿½o anyo
 
 	public SortedMap<String, Integer> totalPasajerosADestino(Integer a);
 	
-	//5. Dado un destino devuelve el código de la aerolinea del primer vuelo con plazas libres a ese
+	//5. Dado un destino devuelve el cï¿½digo de la aerolinea del primer vuelo con plazas libres a ese
 	// destino
 
 	public String primerVuelo(String destino);
@@ -49,10 +49,10 @@ public interface Preguntas {
 	//6. Devuelve para los vuelos completos un Map que haga corresponder a cada ciudad
 	// destino la media de los precios de los vuelos a ese destino.
 	
-	public Map<String, Double> precioMedio();
+	public Map<String, Double> precioMedio(Integer n);
 	
 	//7. Devuelve un Map tal que dado un entero n haga corresponder
-	// a cada fecha la lista de los n destinos con los vuelos de mayor duración.
+	// a cada fecha la lista de los n destinos con los vuelos de mayor duraciï¿½n.
 	
 	public Map<LocalDate, List<String>> destinosConMayorDuracion(Integer n);
 	
@@ -66,36 +66,36 @@ public interface Preguntas {
 
 	public Map<String, Set<LocalDate>> fechasADestino();
 	
-	//10. Devuelve el destino con mayor número de vuelos
+	//10. Devuelve el destino con mayor nï¿½mero de vuelos
 	
 	public String destinoConMasVuelos();
 	
-	//11. Dado un entero m devuelve un conjunto ordenado con las duraciones de todos los vuelos cuya duración es mayor que m minutos.
+	//11. Dado un entero m devuelve un conjunto ordenado con las duraciones de todos los vuelos cuya duraciï¿½n es mayor que m minutos.
 	
 	public SortedSet<Duration> duraciones(Integer m);
 	
-	//12. Dado un número n devuelve un conjunto con los destinos de los vuelos que están entre los n que más duración tienen.
+	//12. Dado un nï¿½mero n devuelve un conjunto con los destinos de los vuelos que estï¿½n entre los n que mï¿½s duraciï¿½n tienen.
 	
 	public Set<String> destinosMayorDuracion(Integer n);
 	
-	//13. Dado un número n devuelve un conjunto con los n destinos con más vuelos
+	//13. Dado un nï¿½mero n devuelve un conjunto con los n destinos con mï¿½s vuelos
 	
 	public Set<String> entreLosMasVuelos(Integer n);
 	
-	// 14. Dado un número entero n devuelve una lista con los destinos que tienen más de n vuelos
+	// 14. Dado un nï¿½mero entero n devuelve una lista con los destinos que tienen mï¿½s de n vuelos
 	
 	public List<String> masDeNVuelos(Integer n);
 	
-	// 15. Devuelve un Map que relación cada destino con el porcentaje de los vuelos del total que van a ese destino.
+	// 15. Devuelve un Map que relaciï¿½n cada destino con el porcentaje de los vuelos del total que van a ese destino.
 	
 	public Map<String,Double>  porcentajeADestino();
 	public Map<String,Double>  porcentajeADestinoOcupacionesVuelos();
 	
-	// 16. Devuelve un Map que haga corresponder a cada ciudad destino el vuelo de más barato
+	// 16. Devuelve un Map que haga corresponder a cada ciudad destino el vuelo de mï¿½s barato
 	
 	public Map<String,Vuelo> masBarato();
 	
-	// 17. Devuelve un Map que haga corresponder a cada destino el número de fechas
+	// 17. Devuelve un Map que haga corresponder a cada destino el nï¿½mero de fechas
 	// distintas en las que hay vuelos a ese destino.
 
 	public Map<String, Integer> fechasDistintas();

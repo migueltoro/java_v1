@@ -11,22 +11,25 @@ public class Aerolineas {
 	
 	private static Aerolineas faerolineas = null;
 	
-	public static Aerolineas get() {
+	public static Aerolineas of() {
+		if(Aerolineas.faerolineas == null)
+			Aerolineas.faerolineas = Aerolineas.of("ficheros_aeropuertos/aerolineas.csv");
 		return faerolineas;
 	}
 	
-	public static Aerolineas leeAerolineas(String fichero) {
-		List<Aerolinea> datos = FileTools.streamFromFile(fichero)
+	public static Aerolineas of(String fichero) {
+		List<Aerolinea> datos = FileTools.streamDeFichero(fichero,"Windows-1252")
 				.map(x ->Aerolinea.parse(x))
 				.toList();
-		Aerolineas aerolineas = new Aerolineas(datos,null);
+		Aerolineas aerolineas = new Aerolineas(datos);
 		return aerolineas;
 	}
 	
-	public Aerolineas(List<Aerolinea> aeroLineas, Map<String, Aerolinea> codigosAerolineas) {
+	public Aerolineas(List<Aerolinea> aeroLineas) {
 		super();
 		this.aeroLineas = aeroLineas;
-		this.codigosAerolineas = codigosAerolineas;
+		this.codigosAerolineas = 
+				this.aeroLineas.stream().collect(Collectors.toMap(a->a.codigo(),a->a));
 	}
 
 	
@@ -35,8 +38,6 @@ public class Aerolineas {
 	private Map<String,Aerolinea> codigosAerolineas = null;
 
 	public Aerolinea aerolinea(String codigo) {
-		if(codigosAerolineas == null)
-			this.codigosAerolineas = this.aeroLineas.stream().collect(Collectors.toMap(a->a.codigo(),a->a));
 		return this.codigosAerolineas.get(codigo);
 	}
 	

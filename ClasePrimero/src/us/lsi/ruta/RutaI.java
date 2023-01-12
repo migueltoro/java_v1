@@ -18,7 +18,7 @@ public class RutaI extends RutaA implements Ruta {
 	
 	public static Ruta leeDeFichero(String fichero) {
 		List<Marca> marcas = new ArrayList<>();
-		for (String linea:FileTools.lineasFromFile("ficheros/ruta.csv")) {
+		for (String linea:FileTools.lineasDeFichero("ficheros/ruta.csv")) {
 			Marca m = Marca.parse(linea);
 			marcas.add(m);
 		}

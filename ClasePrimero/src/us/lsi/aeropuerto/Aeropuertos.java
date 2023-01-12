@@ -12,12 +12,14 @@ public class Aeropuertos {
 	
 	private static Aeropuertos faeropuertos = null;
 	
-	public static Aeropuertos get() {
+	public static Aeropuertos of() {
+		if(Aeropuertos.faeropuertos == null)
+			Aeropuertos.faeropuertos = Aeropuertos.of("ficheros_aeropuertos/aeropuertos.csv");
 		return faeropuertos;
 	}
 	
-	public static Aeropuertos leeAeropuertos(String fichero) {
-		List<Aeropuerto> aeropuertos = FileTools.streamFromFile(fichero)
+	public static Aeropuertos of(String fichero) {
+		List<Aeropuerto> aeropuertos = FileTools.streamDeFichero(fichero,"Windows-1252")
 				.map(x -> Aeropuerto.parse(x))
 				.collect(Collectors.toList());	
 		Aeropuertos.faeropuertos =  new Aeropuertos(aeropuertos);
@@ -32,6 +34,12 @@ public class Aeropuertos {
 	public Aeropuertos(List<Aeropuerto> aeropuertos) {
 		super();
 		this.aeropuertos = aeropuertos;
+		this.codigosAeropuertos = 
+				this.aeropuertos.stream().collect(Collectors.toMap(a->a.codigo(),a->a));;
+		this.ciudadDeAeropuerto = 
+				this.aeropuertos.stream().collect(Collectors.toMap(a->a.codigo(),a->a.ciudad()));
+		this.aeropuertosEnCiudad= this.aeropuertos.stream()
+			       .collect(Collectors.groupingBy(a->a.ciudad(),Collectors.toSet()));
 	}
 
 
@@ -41,41 +49,15 @@ public class Aeropuertos {
 				.collect(Collectors.joining("\n\t")));
 	}
 	
-	
-	public void addAeropuerto(Aeropuerto a) {
-		this.aeropuertosEnCiudad = null;
-		this.ciudadDeAeropuerto = null;
-		this.codigosAeropuertos = null;
-		this.aeropuertos.add(a);
-	}
-	
-	public void removeAeropuerto(Aeropuerto a) {
-		this.aeropuertosEnCiudad = null;
-		this.ciudadDeAeropuerto = null;
-		this.codigosAeropuertos = null;
-		this.aeropuertos.remove(a);
-	}
-
-	
 	public Aeropuerto aeropuerto(String codigo) { //codigoAropueto, Aeropuerto
-		if(this.codigosAeropuertos == null)
-			this.codigosAeropuertos = this.aeropuertos.stream().collect(Collectors.toMap(a->a.codigo(),a->a));
 		return this.codigosAeropuertos.get(codigo);
 	}
-	
-	
-	
+
 	public String ciudadDeAeropuerto(String codigo) {  //codigoAeropuerto, ciudad
-		if(this.ciudadDeAeropuerto == null)
-			this.ciudadDeAeropuerto = this.aeropuertos.stream().collect(Collectors.toMap(a->a.codigo(),a->a.ciudad()));
 		return ciudadDeAeropuerto.get(codigo);
 	}
 	
-	
 	public Set<Aeropuerto> aeropuertosEnCiudad(String ciudad) { //ciudad, {codigosAeropuerto, ...} 
-		if(this.aeropuertosEnCiudad == null)
-			this.aeropuertosEnCiudad = this.aeropuertos.stream()
-			       .collect(Collectors.groupingBy(a->a.ciudad(),Collectors.toSet()));
 		return this.aeropuertosEnCiudad.get(ciudad);
 	}
 	

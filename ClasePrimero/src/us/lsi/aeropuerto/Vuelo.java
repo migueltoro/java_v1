@@ -74,11 +74,11 @@ public record Vuelo(
 	
 	
 	public String ciudadDestino() {
-		return Aeropuertos.get().ciudadDeAeropuerto(this.codigoDestino);
+		return Aeropuertos.of().ciudadDeAeropuerto(this.codigoDestino);
 	}
 	
 	public String ciudadOrigen() {
-		return Aeropuertos.get().ciudadDeAeropuerto(this.codigoOrigen);
+		return Aeropuertos.of().ciudadDeAeropuerto(this.codigoOrigen);
 	}	
 	
 	public String codigo() {
@@ -92,8 +92,8 @@ public record Vuelo(
 		System.out.println(s);
 //		System.out.println(v1.toString2());
 		Vuelo v2 = Vuelo.parse(s);
-		Aeropuertos.leeAeropuertos("ficheros/aeropuertos.csv");
-		Aerolineas.leeAerolineas("ficheros/aerolineas.csv");
+		Aeropuertos.of("ficheros/aeropuertos.csv");
+		Aerolineas.of("ficheros/aerolineas.csv");
 //		Vuelo v3 = Vuelo.random();
 		System.out.println(v2);
 	}

@@ -19,7 +19,7 @@ import org.mozilla.universalchardet.UniversalDetector;
 
 public class FileTools {
 	
-	public static String detectCharset(String file) {  
+	public static String encoding(String file) {  
 	
 	    String encoding;  
 	  
@@ -57,12 +57,12 @@ public class FileTools {
 	    detector.dataEnd();  
 	} 
 	
-	public static Stream<String> streamFromFile(String file) {
+	public static Stream<String> streamDeFichero(String file) {
 		Charset charSet = Charset.defaultCharset();
-		return streamFromFile(file, charSet.toString());
+		return streamDeFichero(file, charSet.toString());
 	}
 	
-	public static Stream<String> streamFromFile(String file, String charSet) {
+	public static Stream<String> streamDeFichero(String file, String charSet) {
 		Stream<String> r = null;
 		try {
 			r = Files.lines(Paths.get(file), Charset.forName(charSet));
@@ -72,12 +72,12 @@ public class FileTools {
 		return r;
 	}
 	
-	public static List<String> lineasFromFile(String file) {
+	public static List<String> lineasDeFichero(String file) {
 		Charset charSet = Charset.defaultCharset();
-		return lineasFromFile(file, charSet.toString());
+		return lineasDeFichero(file, charSet.toString());
 	}
 	
-	public static List<String> lineasFromFile(String file, String charSet) {
+	public static List<String> lineasDeFichero(String file, String charSet) {
 		List<String> lineas = null;
 		try {		
 			lineas = Files.readAllLines(Paths.get(file), Charset.forName(charSet));
@@ -119,7 +119,7 @@ public class FileTools {
 	}
 
 	public static void main(String[] args) {
-		String s = FileTools.detectCharset("ficheros/peliculas.csv");
+		String s = FileTools.encoding("ficheros/peliculas.csv");
 		System.out.println(s);
 	}
 

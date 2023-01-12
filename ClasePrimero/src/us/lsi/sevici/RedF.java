@@ -14,7 +14,7 @@ import us.lsi.tools.FileTools;
 public class RedF extends RedA implements Red {
 	
 	public static Red parse(String fichero) {
-		List<Estacion> estaciones = FileTools.streamFromFile("ficheros/estaciones.csv").skip(1)
+		List<Estacion> estaciones = FileTools.streamDeFichero("ficheros/estaciones.csv").skip(1)
 				.map(linea -> Estacion.parse(linea)).collect(Collectors.toList());
 		return of(estaciones);
 	}

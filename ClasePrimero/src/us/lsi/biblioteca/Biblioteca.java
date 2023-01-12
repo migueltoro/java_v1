@@ -17,13 +17,13 @@ import us.lsi.tools.FileTools;
 public class Biblioteca {
 	
 	public static Biblioteca of(String nombre, String codigoPostal, String email) {
-		List<Usuario> usuarios = FileTools.streamFromFile("ficheros_biblioteca/usuarios.txt")
+		List<Usuario> usuarios = FileTools.streamDeFichero("ficheros_biblioteca/usuarios.txt")
 				.map(line->Usuario.parse(line)).toList();
-		List<Libro> libros = FileTools.streamFromFile("ficheros_biblioteca/libros.txt")
+		List<Libro> libros = FileTools.streamDeFichero("ficheros_biblioteca/libros.txt")
 				.map(line->Libro.parse(line)).toList(); 
-		List<Ejemplar> ejemplares = FileTools.streamFromFile("ficheros_biblioteca/ejemplares.txt")
+		List<Ejemplar> ejemplares = FileTools.streamDeFichero("ficheros_biblioteca/ejemplares.txt")
 				.map(line->Ejemplar.parse(line)).toList();
-		List<Prestamo> prestamos = FileTools.streamFromFile("ficheros_biblioteca/prestamos.txt")
+		List<Prestamo> prestamos = FileTools.streamDeFichero("ficheros_biblioteca/prestamos.txt")
 				.map(line->Prestamo.parse(line)).toList();
 		return new Biblioteca(nombre, codigoPostal, email, usuarios, libros, ejemplares, prestamos);
 	}

@@ -27,11 +27,11 @@ public class Conversacion {
 
 	private Conversacion(String file) {
 		super();	
-		this.mensajes = FileTools.lineasFromFile(file).stream()
+		this.mensajes = FileTools.lineasDeFichero(file).stream()
 				.filter(x->x.length()>0)
 				.map(m->Mensaje.parse(m))
 				.collect(Collectors.toList());
-		this.palabrasHuecas = FileTools.lineasFromFile("resources/palabras_huecas.txt").stream()
+		this.palabrasHuecas = FileTools.lineasDeFichero("resources/palabras_huecas.txt").stream()
 				.filter(x->x.length()>0)
 				.collect(Collectors.toSet());
 	}
@@ -123,7 +123,7 @@ public class Conversacion {
 		if(frecuenciasDePalabras==null) {
 			this.frecuenciasDePalabras = this.mensajes.stream()
 					.map(x->x.texto())
-					.flatMap(x->Arrays.stream(x.split("[ \".,:();¿?¡!\\\"]")))
+					.flatMap(x->Arrays.stream(x.split("[ \".,:();ï¿½?ï¿½!\\\"]")))
 					.filter(x->x.length()>0)
 					.filter(x->!this.palabrasHuecas.contains(x))
 					.collect(Collectors.groupingBy(x->x,Collectors.summingInt((x->1))));
@@ -147,7 +147,7 @@ public class Conversacion {
 			this.frecuenciasDePalabrasPorUsuario = this.mensajes
 					.stream()
 					.map(m->PalabraUsuario.of(m.texto(),m.usuario()))
-					.flatMap(p->Arrays.stream(p.palabra().split("[ \".,:();¿?¡!\\\"]"))
+					.flatMap(p->Arrays.stream(p.palabra().split("[ \".,:();ï¿½?ï¿½!\\\"]"))
 							.filter(x->x.length()>0)
 							.filter(x->!this.palabrasHuecas.contains(x))
 							.map(x->PalabraUsuario.of(x,p.usuario())))

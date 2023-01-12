@@ -24,7 +24,7 @@ public class PreguntasImperativo implements Preguntas {
 	// como prefijo s (esto es, comienzan por s).
 	
 	public Integer numeroDepasajeros(String prefix) {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.get().stream().toList();
+		List<OcupacionVuelo> ls = OcupacionesVuelos.of().stream().toList();
 		Integer sum = 0;
 		for(OcupacionVuelo ocp:ls) {
 			if(ocp.vuelo().ciudadDestino().startsWith(prefix)) {
@@ -39,7 +39,7 @@ public class PreguntasImperativo implements Preguntas {
 	// existe un vuelo en la fecha f con destino en s.
 	
 	public Boolean hayDestino(Set<String> destinos, LocalDate f) {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.get().stream().toList();
+		List<OcupacionVuelo> ls = OcupacionesVuelos.of().stream().toList();
 		Boolean a = false;
 		for(OcupacionVuelo ocp:ls) {
 			if(ocp.fecha().toLocalDate().equals(f)) {
@@ -56,7 +56,7 @@ public class PreguntasImperativo implements Preguntas {
 	// los vuelos de fecha f
 	
 	public Set<String> destinosDiferentes(LocalDate f) {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.get().stream().toList();
+		List<OcupacionVuelo> ls = OcupacionesVuelos.of().stream().toList();
 		Set<String> a = new HashSet<>();
 		for(OcupacionVuelo ocp:ls) {
 			if(ocp.fecha().toLocalDate().equals(f)) {
@@ -71,7 +71,7 @@ public class PreguntasImperativo implements Preguntas {
 	// total de pasajeros a ese destino en el a�o anyo
 	
 	public SortedMap<String, Integer> totalPasajerosADestino(Integer any) {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.get().stream().toList();
+		List<OcupacionVuelo> ls = OcupacionesVuelos.of().stream().toList();
 		SortedMap<String,Integer> a = new TreeMap<String, Integer>(Comparator.reverseOrder());
 		for(OcupacionVuelo ocp:ls) {
 			if(ocp.fecha().getYear() == any) {
@@ -91,7 +91,7 @@ public class PreguntasImperativo implements Preguntas {
 	// destino
 	
 	public String primerVuelo(String destino) {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.get().stream().toList();
+		List<OcupacionVuelo> ls = OcupacionesVuelos.of().stream().toList();
 		OcupacionVuelo a = null;
 		for(OcupacionVuelo ocp:ls) {
 			if(ocp.vuelo().ciudadDestino().equals(destino) &&
@@ -120,14 +120,11 @@ public class PreguntasImperativo implements Preguntas {
 		return sum/n;
 	}
 	
-	//7. Devuelve un Map tal que dado un entero n haga corresponder
-	// a cada fecha la lista de los n destinos con los vuelos de mayor duraci�n.
-	
-	public Map<String, Double> precioMedio() {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.get().stream().toList();
+	public Map<String, Double> precioMedio(Integer n) {
+		List<OcupacionVuelo> ls = OcupacionesVuelos.of().stream().toList();
 		Map<String, List<OcupacionVuelo>> a = new HashMap<>();
 		for(OcupacionVuelo ocp:ls) {
-			if(ocp.numPasajeros().equals(ocp.vuelo().numPlazas())) {
+			if(ocp.vuelo().numPlazas()-ocp.numPasajeros()==n) {
 				String key = ocp.vuelo().ciudadDestino();
 				if(a.containsKey(key)) {
 					a.get(key).add(ocp);
@@ -145,11 +142,20 @@ public class PreguntasImperativo implements Preguntas {
 		return r;
 	}
 	
+	//7. Devuelve un Map tal que dado un entero n haga corresponder
+	// a cada fecha la lista de los n destinos con los vuelos de mayor duraci�n.
+	
+	@Override
+	public Map<LocalDate, List<String>> destinosConMayorDuracion(Integer n) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	//8. Dada una fecha f devuelve el precio medio de los vuelos con salida posterior
 	// a f. Si no hubiera vuelos devuelve 0.0
 	
 	public Double precioMedio(LocalDateTime f) {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.get().stream().toList();
+		List<OcupacionVuelo> ls = OcupacionesVuelos.of().stream().toList();
 		Double sum = 0.;
 		Integer n = 0;
 		for(OcupacionVuelo ocp: ls) {
@@ -166,7 +172,7 @@ public class PreguntasImperativo implements Preguntas {
 	// fechas de los vuelos a ese destino.
 	
 	public Map<String, Set<LocalDate>> fechasADestino() {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.get().stream().toList();
+		List<OcupacionVuelo> ls = OcupacionesVuelos.of().stream().toList();
 		Map<String, Set<LocalDate>> a = new HashMap<>();
 		for(OcupacionVuelo ocp: ls) {
 			String key = ocp.vuelo().ciudadDestino();
@@ -206,11 +212,6 @@ public class PreguntasImperativo implements Preguntas {
 		return null;
 	}
 	
-	@Override
-	public Map<LocalDate, List<String>> destinosConMayorDuracion(Integer n) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	//13. Dado un n�mero n devuelve un conjunto con los n destinos con m�s vuelos
 	
