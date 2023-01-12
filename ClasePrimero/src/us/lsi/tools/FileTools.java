@@ -1,5 +1,6 @@
 package us.lsi.tools;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -19,44 +20,34 @@ import org.mozilla.universalchardet.UniversalDetector;
 
 public class FileTools {
 	
-	public static String encoding(String file) {  
-	
-	    String encoding;  
-	  
-	    try {  
-	    	
-	        final FileInputStream fis = new FileInputStream(file);  
-	  
-	        final UniversalDetector detector = new UniversalDetector(null);  
-	        handleData(fis, detector);  
-	        encoding = getEncoding(detector);  
-	        detector.reset();  
-	          
-	        fis.close();  
-	  
-	    } catch (IOException e) {  
-	        encoding = "";  
-	    }  
-	  
-	    return encoding;  
-	}  
-	  
-	private static String getEncoding(UniversalDetector detector) {  
-	    if(detector.isDone()) {  
-	        return detector.getDetectedCharset();  
-	    }  
-	    return "";  
-	}  
-	  
-	private static void handleData(FileInputStream fis, UniversalDetector detector) throws IOException {  
-	    int nread;  
-	    final byte[] buf = new byte[4096];  
-	    while ((nread = fis.read(buf)) > 0 && !detector.isDone()) {  
-	        detector.handleData(buf, 0, nread);  
-	    }  
-	    detector.dataEnd();  
-	} 
-	
+	public static String getFileCharset(String file) {
+		try {
+			byte[] buf = new byte[4096];
+			final UniversalDetector universalDetector;
+			try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file))) {
+				universalDetector = new UniversalDetector(null);
+				int numberOfBytesRead;
+				while ((numberOfBytesRead = bufferedInputStream.read(buf)) > 0 && !universalDetector.isDone()) {
+					universalDetector.handleData(buf, 0, numberOfBytesRead);
+				}
+			}
+			universalDetector.dataEnd();
+			String encoding = universalDetector.getDetectedCharset();
+
+//			if (encoding != null) {
+//				System.out.println(String.format("Detected encoding for %s is %s.", file, encoding));
+//			} else {
+//				System.out.println(String.format("No encoding detected for %s.", file));
+//			}
+
+			universalDetector.reset();
+
+			return encoding;
+		} catch (IOException e) {
+			throw new IllegalArgumentException("No se ha encontrado el fichero " + file);
+		}
+	}
+
 	public static Stream<String> streamDeFichero(String file) {
 		Charset charSet = Charset.defaultCharset();
 		return streamDeFichero(file, charSet.toString());
@@ -119,7 +110,7 @@ public class FileTools {
 	}
 
 	public static void main(String[] args) {
-		String s = FileTools.encoding("ficheros/peliculas.csv");
+		String s = FileTools.getFileCharset("ficheros_aeropuertos/aeropuertos.csv");
 		System.out.println(s);
 	}
 
