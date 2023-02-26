@@ -204,7 +204,8 @@ public class Stream2 {
 				Collectors.collectingAndThen(Collectors.reducing(op),e->e.get())));
 	}
 	
-	public static <E,K,T> Map<K,T> groupingReduce(Stream<E> st, Function<E,K> key, Function<E,T> value, BinaryOperator<T> op, T a0){
+	public static <E,K,T> Map<K,T> groupingReduce(Stream<E> st, Function<E,K> key, Function<E,T> value, 
+			BinaryOperator<T> op){
 		return st.collect(Collectors.groupingBy(key,
 				Collectors.mapping(value,
 						Collectors.collectingAndThen(Collectors.reducing(op),e->e.get()))));

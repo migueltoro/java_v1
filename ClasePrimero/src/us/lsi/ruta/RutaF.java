@@ -5,9 +5,11 @@ import java.util.Map;
 import java.util.Set;
 import static java.util.stream.Collectors.*;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import us.lsi.ruta.Intervalo.Type;
 import us.lsi.tools.File2;
+import us.lsi.tools.Stream2;
 
 public class RutaF extends RutaA implements Ruta {
 	
@@ -67,12 +69,11 @@ public class RutaF extends RutaA implements Ruta {
 
 	@Override
 	public Map<Type,Integer> getFrecuencias() {
-		return IntStream.range(0,super.gerNumMarcas()-1).boxed()
-				.map(i->super.getIntervalo(i))
-				.collect(groupingBy(in->in.type(),
-						collectingAndThen(toList(),ls->ls.size())));
+		Stream<Intervalo> st = IntStream.range(0,super.gerNumMarcas()-1).boxed()
+		.map(i->super.getIntervalo(i));
+		return Stream2.groupingReduce(st,it->it.type(),x->1,(x,y)->x+y);
 	}
-
+	
 	@Override
 	public Set<Intervalo> getLLanos() {
 		return IntStream.range(0,super.gerNumMarcas()-1).boxed()
