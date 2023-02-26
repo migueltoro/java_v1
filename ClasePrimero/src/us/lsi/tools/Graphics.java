@@ -13,7 +13,7 @@ public class Graphics {
 	/**
 	 * Muestra una grafica representando los datos proporcionados frente al primero
 	 * @pre Las listas de datos tienen todas la misma longitud
-	 * @pre Las listas de campos tiene de longitud el número de listas de datos 
+	 * @pre Las listas de campos tiene de longitud el nï¿½mero de listas de datos 
 	 * @param fileOut Ficheo de salida
 	 * @param title Titulo 
 	 * @param campos Campos 
@@ -21,7 +21,7 @@ public class Graphics {
 	 */
 	public static <E extends Number>void lineChart(String fileOut, String title, List<String> campos, @SuppressWarnings("unchecked") List<E>... datos) {
 		
-		String result = FileTools.text("resources/LineChartPattern.html");
+		String result = File2.text("resources/LineChartPattern.html");
 		String camposText = campos.stream().map(x->"'"+x+"'").collect(Collectors.joining(",","[","]"));
 		String dataText = IntStream.range(0,datos[0].size())
 									.boxed()
@@ -31,8 +31,8 @@ public class Graphics {
 		reglas.put("title","'"+title+"'");
 		reglas.put("campos",camposText);
 		reglas.put("data",dataText);
-		result = StringTools.transform(result,reglas);
-		FileTools.write(fileOut,result);
+		result = String2.transform(result,reglas);
+		File2.write(fileOut,result);
 	}
 
 	private static <E extends Number> String filaLineChart(Integer e, @SuppressWarnings("unchecked") List<E>... datos) {
@@ -52,7 +52,7 @@ public class Graphics {
 	 * @param datos Datos
 	 */
 	public static <E extends Number> void pieChart(String fileOut, String title, List<String> campos, List<String> nombres, List<E> datos) {
-		String result = FileTools.text("resources/PieChartPattern.html");
+		String result = File2.text("resources/PieChartPattern.html");
 		String camposText = campos.stream().map(x->"'"+x+"'").collect(Collectors.joining(",","[","]"));
 		String dataText = IntStream.range(0,datos.size())
 									.boxed()
@@ -62,8 +62,8 @@ public class Graphics {
 		reglas.put("title","'"+title+"'");
 		reglas.put("campos",camposText);
 		reglas.put("data",dataText);
-		result = StringTools.transform(result,reglas);
-		FileTools.write(fileOut,result);
+		result = String2.transform(result,reglas);
+		File2.write(fileOut,result);
 	}
 
 	private static <E extends Number> String filaPieChart(Integer e, List<String> nombres, List<E> datos) {
@@ -81,7 +81,7 @@ public class Graphics {
 	 * @param datos Datos
 	 */
 	public static <E extends Number> void columnsBarChart(String fileOut, String title, List<String> nombresDatos, List<String> nombresColumna, List<E> datos) {
-		String result = FileTools.text("resources/ColumnsBarPattern.html");
+		String result = File2.text("resources/ColumnsBarPattern.html");
 		String nombresDatosText = "["+"'"+title+"' ,"+nombresDatos.stream().map(x->"'"+x+"'").collect(Collectors.joining(",","","]"));
 		String columnasText = IntStream.range(0,datos.size())
 									.boxed()
@@ -91,8 +91,8 @@ public class Graphics {
 		reglas.put("title","'"+title+"'");
 		reglas.put("nombresDatos",nombresDatosText);
 		reglas.put("columnas",columnasText);
-		result = StringTools.transform(result,reglas);
-		FileTools.write(fileOut,result);
+		result = String2.transform(result,reglas);
+		File2.write(fileOut,result);
 	}
 
 	private static <E extends Number> String columnaBarChart(Integer e, List<String> nombresColumna, List<E> datos) {
@@ -100,7 +100,7 @@ public class Graphics {
 	}
 	
 	public static void cartas(String fileOut, List<Card> cartas, Double fuerza, String tipo) {
-		String result = FileTools.text("resources/CartasPattern.html");
+		String result = File2.text("resources/CartasPattern.html");
 		String cartasText = cartas.stream()
 				.map(c->String.format("<img src=\"../%s\" width=\"120px\" height=\"180px\">",c.nameFile()))
 				.collect(Collectors.joining("\n","\n","\n"));
@@ -108,8 +108,8 @@ public class Graphics {
 		reglas.put("cartas",cartasText);
 		reglas.put("fuerza",String.format("%.3f", fuerza));
 		reglas.put("tipo",tipo);
-		result = StringTools.transform(result,reglas);
-		FileTools.write(fileOut,result);
+		result = String2.transform(result,reglas);
+		File2.write(fileOut,result);
 	}
 
 }

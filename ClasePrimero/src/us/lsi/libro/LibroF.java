@@ -9,8 +9,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.BinaryOperator;
 
-import us.lsi.tools.FileTools;
-import us.lsi.tools.StreamTools;
+import us.lsi.tools.File2;
+import us.lsi.tools.Stream2;
 
 public class LibroF implements Libro {
 	
@@ -28,16 +28,16 @@ public class LibroF implements Libro {
 	}
 	
 	public Integer numeroDeLineas(String file) {
-		return (int) FileTools.streamDeFichero(file).count();
+		return (int) File2.streamDeFichero(file).count();
 	}
 	
 	public Set<String> palabrasHuecas(String file) {
-		return FileTools.streamDeFichero(file).collect(Collectors.toSet());
+		return File2.streamDeFichero(file).collect(Collectors.toSet());
 	}
 	
 	public Set<String> palabrasDistintasNoHuecas(String file) {
 		Set<String> palabrasHuecas = LibroF.of().palabrasHuecas("ficheros/palabras_huecas.txt");
-		return FileTools.streamDeFichero(file)
+		return File2.streamDeFichero(file)
 				.filter(ln->!ln.isEmpty())
 				.flatMap(ln->Arrays.stream(ln.split(LibroF.separadores)))
 				.filter(p->!palabrasHuecas.contains(p))
@@ -47,7 +47,7 @@ public class LibroF implements Libro {
 	
 	public Integer numeroDePalabrasDistintasNoHuecas(String file) {
 		Set<String> palabrasHuecas = LibroF.of().palabrasHuecas("ficheros/palabras_huecas.txt");
-		return (int) FileTools.streamDeFichero(file)
+		return (int) File2.streamDeFichero(file)
 				.filter(ln->!ln.isEmpty())
 				.flatMap(ln->Arrays.stream(ln.split(LibroF.separadores)))
 				.filter(p->!palabrasHuecas.contains(p))
@@ -56,26 +56,26 @@ public class LibroF implements Libro {
 	}
 	
 	public Double longitudMediaDeLineas(String file) {
-		return FileTools.streamDeFichero(file)
+		return File2.streamDeFichero(file)
 				.mapToInt(ln->ln.length())
 				.average()
 				.getAsDouble();		
 	}
 	
 	public Integer numeroDeLineasVacias(String file) {
-		return (int) FileTools.streamDeFichero(file)
+		return (int) File2.streamDeFichero(file)
 				.filter(ln->ln.isEmpty())
 				.count();
 	}
 	
 	public String lineaMasLarga(String file) {
-		return FileTools.streamDeFichero(file)
+		return File2.streamDeFichero(file)
 				.max(Comparator.comparing((String ln)->ln.length()))
 				.get();
 	}
 	
 	public Integer numeroDeLineaConPalabra(String file, String palabra) {
-		return StreamTools.enumerate(FileTools.streamDeFichero(file))
+		return Stream2.enumerate(File2.streamDeFichero(file))
 				.filter(p->p.value().contains(palabra))
 				.findFirst()
 				.get()
@@ -84,7 +84,7 @@ public class LibroF implements Libro {
 	
 	@Override
 	public String lineaNumero(String file, Integer n) {
-		return StreamTools.enumerate(FileTools.streamDeFichero(file))
+		return Stream2.enumerate(File2.streamDeFichero(file))
 				.filter(p->p.counter().equals(n))
 				.findFirst()
 				.get()
@@ -92,7 +92,7 @@ public class LibroF implements Libro {
 	}
 	
 	public SortedMap<String,Integer> frecuenciasDePalabras(String file){
-		return FileTools.streamDeFichero(file)
+		return File2.streamDeFichero(file)
 				.filter(ln->!ln.isEmpty())
 				.flatMap(ln->Arrays.stream(ln.split(separadores)))
 				.collect(Collectors.groupingBy(p->p,
@@ -112,7 +112,7 @@ public class LibroF implements Libro {
 	
 	public SortedMap<String,Set<Integer>> lineasDePalabra(String file){
 		Set<String> palabrasHuecas = LibroF.of().palabrasHuecas("ficheros/palabras_huecas.txt");
-		 return StreamTools.enumerate(FileTools.streamDeFichero(file))
+		 return Stream2.enumerate(File2.streamDeFichero(file))
 				 .filter(p->!p.value().isEmpty())
 				 .flatMap(p->p.expand(ln->Arrays.stream(ln.split(separadores))))
 				 .filter(p->!palabrasHuecas.contains(p.value()))
@@ -123,7 +123,7 @@ public class LibroF implements Libro {
 
 	@Override
 	public Map<Character, String> lineaMasLargaQueComienzaCon(String file) {
-		return FileTools.streamDeFichero(file)
+		return File2.streamDeFichero(file)
 				.filter(ln->!ln.isEmpty())
 				.collect(Collectors.groupingBy(ln->ln.charAt(0),
 						Collectors.reducing("",BinaryOperator.maxBy(Comparator.comparing(ln->ln.length())))));

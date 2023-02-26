@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import us.lsi.ruta.Intervalo.Type;
-import us.lsi.tools.FileTools;
+import us.lsi.tools.File2;
 
 public class RutaI extends RutaA implements Ruta {
 
@@ -18,7 +18,7 @@ public class RutaI extends RutaA implements Ruta {
 	
 	public static Ruta leeDeFichero(String fichero) {
 		List<Marca> marcas = new ArrayList<>();
-		for (String linea:FileTools.lineasDeFichero("ficheros/ruta.csv")) {
+		for (String linea:File2.lineasDeFichero("ficheros/ruta.csv")) {
 			Marca m = Marca.parse(linea);
 			marcas.add(m);
 		}

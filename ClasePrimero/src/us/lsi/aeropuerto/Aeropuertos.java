@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import us.lsi.tools.FileTools;
+import us.lsi.tools.File2;
 
 public class Aeropuertos {
 	
@@ -19,7 +19,7 @@ public class Aeropuertos {
 	}
 	
 	public static Aeropuertos of(String fichero) {
-		List<Aeropuerto> aeropuertos = FileTools.streamDeFichero(fichero,"Windows-1252")
+		List<Aeropuerto> aeropuertos = File2.streamDeFichero(fichero,"Windows-1252")
 				.map(x -> Aeropuerto.parse(x))
 				.collect(Collectors.toList());	
 		Aeropuertos.faeropuertos =  new Aeropuertos(aeropuertos);

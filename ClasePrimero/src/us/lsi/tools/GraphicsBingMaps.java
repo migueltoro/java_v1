@@ -36,17 +36,17 @@ public class GraphicsBingMaps extends AbstractGraphicsMaps implements GraphicsMa
 
 	@Override
 	public String getKey() {
-		return FileTools.lineasDeFichero("C:/Users/migueltoro/OneDrive - UNIVERSIDAD DE SEVILLA/Escritorio/Jars/Keys/privateBing.txt").get(0);
+		return File2.lineasDeFichero("C:/Users/migueltoro/OneDrive - UNIVERSIDAD DE SEVILLA/Escritorio/Jars/Keys/privateBing.txt").get(0);
 	}
 
 	@Override
 	protected String getPolylinePattern() {
-		return FileTools.text("resources/BingPolylinePattern.html");
+		return File2.text("resources/BingPolylinePattern.html");
 	}
 
 	@Override
 	protected String getMarkersPattern() {
-		return FileTools.text("resources/BingMarkersPattern.html");
+		return File2.text("resources/BingMarkersPattern.html");
 	}
 
 }

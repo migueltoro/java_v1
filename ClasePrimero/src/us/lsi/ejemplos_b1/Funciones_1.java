@@ -33,6 +33,8 @@ public class Funciones_1 {
 		System.out.println(digitoDecimal(82.345,4));
 		System.out.println(digitoParteEntera(82457.34509,3));
 	    System.out.println(areaCirculo(5.));
+	    String s = "1" + "2" + '3';
+	    System.out.println(s);
 	}
 
 }

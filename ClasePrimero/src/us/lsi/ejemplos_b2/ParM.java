@@ -2,8 +2,8 @@ package us.lsi.ejemplos_b2;
 
 import java.util.Objects;
 
-public class ParM<A, B> // implements Comparable<ParM<A,B>>
-	{
+public class ParM<A, B>  { // implements Comparable<ParM<A,B>>
+	
 
 	public static <A, B> ParM<A, B> of(A a, B b) {
 		return new ParM<A, B>(a, b);

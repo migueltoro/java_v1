@@ -14,8 +14,7 @@ public class Streams {
 			}
 		}
 		System.out.println(String.format("Hay %d temperaturas bajo cero", bajoCero));
-		bajoCero = temperaturas.stream()
-				.filter(x -> x < 0) .count(); 
+		bajoCero = temperaturas.stream().filter(x -> x < 0) .count(); 
 		System.out.println(String.format("Hay %d temperaturas bajo cero", bajoCero));
 	}
 	
@@ -43,8 +42,7 @@ public class Streams {
 				if(algunaPorEncima) break;
 		}
 		System.out.println(String.format("Hay alguna mayor de 40º %s",algunaPorEncima));
-		algunaPorEncima = temperaturas.stream()
-				.anyMatch(x -> x > 40); 
+		algunaPorEncima = temperaturas.stream().anyMatch(x -> x > 40); 
 		System.out.println(String.format("Hay alguna mayor de 40º %s",algunaPorEncima)); 
 	}
 	

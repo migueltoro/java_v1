@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import us.lsi.tools.FileTools;
+import us.lsi.tools.File2;
 
 public class Ficheros {
 	
 	public static List<Integer> listaDeFichero(String file) {
-		List<String> lns = FileTools.lineasDeFichero(file);
+		List<String> lns = File2.lineasDeFichero(file);
 		List<Integer> r = new ArrayList<>();
 	    for(String linea:lns) {
 	        for(String p: linea.split(",")) {
@@ -21,7 +21,7 @@ public class Ficheros {
 	}
 	
 	public static Integer sumaElementosFichero(String file) {
-		List<String> lns = FileTools.lineasDeFichero(file);
+		List<String> lns = File2.lineasDeFichero(file);
 		Integer r = 0;
 	    for(String linea:lns) {
 	        for(String p: linea.split("[ ,]")) {
@@ -33,7 +33,7 @@ public class Ficheros {
 	}
 
 	public static Integer sumaElementosFicheroIf(String file,Predicate<Integer> pd) {
-		List<String> lns = FileTools.lineasDeFichero(file);
+		List<String> lns = File2.lineasDeFichero(file);
 		Integer r = 0;
 	    for(String linea:lns) {
 	        for(String p: linea.split(",")) {

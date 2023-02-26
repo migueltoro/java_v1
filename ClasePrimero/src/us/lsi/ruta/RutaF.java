@@ -7,7 +7,7 @@ import static java.util.stream.Collectors.*;
 import java.util.stream.IntStream;
 
 import us.lsi.ruta.Intervalo.Type;
-import us.lsi.tools.FileTools;
+import us.lsi.tools.File2;
 
 public class RutaF extends RutaA implements Ruta {
 	
@@ -20,7 +20,7 @@ public class RutaF extends RutaA implements Ruta {
 	}
 
 	public static Ruta leeDeFichero(String fichero) {
-		List<Marca> marcas = FileTools.streamDeFichero("ficheros/ruta.csv").map(x->Marca.parse(x)).collect(toList());
+		List<Marca> marcas = File2.streamDeFichero("ficheros/ruta.csv").map(x->Marca.parse(x)).collect(toList());
 		return of(marcas);
 	}
 

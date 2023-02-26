@@ -34,8 +34,8 @@ public abstract class AbstractGraphicsMaps implements GraphicsMaps{
 		reglas.put("markercenter",markerCenterText);
 		reglas.put("polyline",polylineText);
 		reglas.put("key",keyText);
-		result = StringTools.transform(result,reglas);
-		FileTools.write(fileOut,result);
+		result = String2.transform(result,reglas);
+		File2.write(fileOut,result);
 	}
 
 	@Override
@@ -51,8 +51,8 @@ public abstract class AbstractGraphicsMaps implements GraphicsMaps{
 		reglas.put("markercenter",centerMarkerText);
 		reglas.put("markers",markersText);
 		reglas.put("key",keyText);
-		result = StringTools.transform(result,reglas);
-		FileTools.write(fileOut,result);
+		result = String2.transform(result,reglas);
+		File2.write(fileOut,result);
 	}
 
 }

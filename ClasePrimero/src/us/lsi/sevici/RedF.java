@@ -9,12 +9,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import us.lsi.coordenadas.Coordenadas2D;
-import us.lsi.tools.FileTools;
+import us.lsi.tools.File2;
 
 public class RedF extends RedA implements Red {
 	
 	public static Red parse(String fichero) {
-		List<Estacion> estaciones = FileTools.streamDeFichero("ficheros/estaciones.csv").skip(1)
+		List<Estacion> estaciones = File2.streamDeFichero("ficheros/estaciones.csv").skip(1)
 				.map(linea -> Estacion.parse(linea)).collect(Collectors.toList());
 		return of(estaciones);
 	}
@@ -85,7 +85,7 @@ public class RedF extends RedA implements Red {
 	@Override
 	public void escribe(Integer n, String file) {
 		Stream<String> s = this.estaciones().subList(0,n).stream().map(e->e.toString());
-		FileTools.writeStream(s,file);
+		File2.writeStream(s,file);
 	}
 
 }

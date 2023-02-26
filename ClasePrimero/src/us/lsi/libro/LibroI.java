@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import us.lsi.tools.FileTools;
+import us.lsi.tools.File2;
 
 public class LibroI implements Libro {
 
@@ -26,13 +26,13 @@ public class LibroI implements Libro {
 	}
 	
 	public Integer numeroDeLineas(String file) {
-		List<String> ls = FileTools.lineasDeFichero(file);
+		List<String> ls = File2.lineasDeFichero(file);
 		return ls.size();
 	}
 	
 	public Set<String> palabrasHuecas(String file) {
 		Set<String> s = new HashSet<>();
-		for(String p: FileTools.lineasDeFichero(file)) {
+		for(String p: File2.lineasDeFichero(file)) {
 			s.add(p);
 		}
 		return s;
@@ -40,7 +40,7 @@ public class LibroI implements Libro {
 	
 	public Set<String> palabrasDistintasNoHuecas(String file) {
 		Set<String> palabrasHuecas = LibroI.of().palabrasHuecas("ficheros/palabras_huecas.txt");
-		List<String> lineas = FileTools.lineasDeFichero(file);
+		List<String> lineas = File2.lineasDeFichero(file);
 		Set<String> palabrasDistintas = new HashSet<>();
 		for(String linea: lineas) {
 			if(!linea.isEmpty()) {
@@ -62,7 +62,7 @@ public class LibroI implements Libro {
 	public Double longitudMediaDeLineas(String file) {
 		Integer numLineas = 0;
 		Integer sumTamLineas = 0;
-		for(String linea: FileTools.lineasDeFichero(file)) {
+		for(String linea: File2.lineasDeFichero(file)) {
 			Integer ln = linea.length();
 			numLineas ++;
 			sumTamLineas += ln;
@@ -72,7 +72,7 @@ public class LibroI implements Libro {
 	
 	public Integer numeroDeLineasVacias(String file) {
 		Integer n = 0;
-		for(String linea: FileTools.lineasDeFichero(file)) {
+		for(String linea: File2.lineasDeFichero(file)) {
 			if(linea.isEmpty()) {
 				n++;
 			}
@@ -83,7 +83,7 @@ public class LibroI implements Libro {
 	public String lineaMasLarga(String file) {
 		String lineaMaslarga = null;
 		Integer lnlineaMaslarga = null;
-		for(String linea: FileTools.lineasDeFichero(file)) {
+		for(String linea: File2.lineasDeFichero(file)) {
 			Integer nl = linea.length();
 			if(lnlineaMaslarga == null || nl > lnlineaMaslarga) {
 				lineaMaslarga = linea;
@@ -97,7 +97,7 @@ public class LibroI implements Libro {
 	public Integer numeroDeLineaConPalabra(String file, String palabra) {
 		Integer n = 0;
 		Integer r = -1;
-		for(String linea: FileTools.lineasDeFichero(file)) {
+		for(String linea: File2.lineasDeFichero(file)) {
 			if(linea.contains(palabra)) {
 				r = n;
 				break;
@@ -111,7 +111,7 @@ public class LibroI implements Libro {
 	public String lineaNumero(String file, Integer n) {
 		Integer i = 0;
 		String r = null;
-		for(String linea: FileTools.lineasDeFichero(file)) {
+		for(String linea: File2.lineasDeFichero(file)) {
 			if(i.equals(n)) {
 				r = linea;
 				break;
@@ -123,7 +123,7 @@ public class LibroI implements Libro {
 	
 	public SortedMap<String,Integer> frecuenciasDePalabras(String file) {
 		Set<String> palabrasHuecas = LibroI.of().palabrasHuecas("ficheros/palabras_huecas.txt");
-		List<String> lineas = FileTools.lineasDeFichero(file);
+		List<String> lineas = File2.lineasDeFichero(file);
 		SortedMap<String,Integer> m = new TreeMap<>();
 		for(String linea: lineas) {
 			if(!linea.isEmpty()) {
@@ -160,7 +160,7 @@ public class LibroI implements Libro {
 	
 	public SortedMap<String,Set<Integer>> lineasDePalabra(String file){
 		Set<String> palabrasHuecas = LibroI.of().palabrasHuecas("ficheros/palabras_huecas.txt");
-		List<String> lineas = FileTools.lineasDeFichero(file);
+		List<String> lineas = File2.lineasDeFichero(file);
 		SortedMap<String,Set<Integer>> r = new TreeMap<>();
 		Integer nl = 0;
 		for(String linea: lineas) {
@@ -185,7 +185,7 @@ public class LibroI implements Libro {
 	@Override
 	public Map<Character, String> lineaMasLargaQueComienzaCon(String file) {
 		Map<Character, String> m = new HashMap<>();
-		List<String> lineas = FileTools.lineasDeFichero(file);
+		List<String> lineas = File2.lineasDeFichero(file);
 		for(String linea: lineas) {
 			if(!linea.isEmpty()) {
 				Character key = linea.charAt(0);

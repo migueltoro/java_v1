@@ -13,7 +13,8 @@ module java_v1 {
 	exports us.lsi.aeropuerto;
 	exports us.lsi.whatsapp;
 	
-	requires transitive commons.math3;
+	requires transitive org.apache.commons.lang3;
 	requires transitive java.desktop;
 	requires transitive juniversalchardet;
+	requires transitive commons.math3;
 }

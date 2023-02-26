@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.time.Month;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Locale;
 
 public record Persona(String nombre, String apellidos, LocalDateTime fechaNacimiento) 
@@ -19,10 +20,18 @@ public record Persona(String nombre, String apellidos, LocalDateTime fechaNacimi
 	public static Persona parse(String text) {
 		String[] partes = text.split(",");
 		String nc = partes[0];
-		String[] partes_nc = nc.split(" ");
+		String[] partesNc = nc.split(" ");
 		LocalDate ld = LocalDate.parse(partes[1],DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 		LocalTime lt = LocalTime.parse(partes[2],DateTimeFormatter.ofPattern("HH:mm"));
-		return Persona.of(partes_nc[0],partes_nc[1],LocalDateTime.of(ld, lt));
+		return Persona.of(partesNc[0],partesNc[1],LocalDateTime.of(ld, lt));
+	}
+	
+	public static Persona parseList(List<String> partes) {
+		String nc = partes.get(0);
+		String[] partesNc = nc.split(" ");
+		LocalDate ld = LocalDate.parse(partes.get(1),DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+		LocalTime lt = LocalTime.parse(partes.get(2),DateTimeFormatter.ofPattern("HH:mm"));
+		return Persona.of(partesNc[0],partesNc[1],LocalDateTime.of(ld, lt));
 	}
 	
 	public Integer edad() {
@@ -31,7 +40,7 @@ public record Persona(String nombre, String apellidos, LocalDateTime fechaNacimi
 		return p.getYears();
 	}
 	
-	public String nombre_completo() {
+	public String nombreCompleto() {
 		return String.format("%s %s",this.nombre(),this.apellidos());
 	}
 	
@@ -48,7 +57,7 @@ public record Persona(String nombre, String apellidos, LocalDateTime fechaNacimi
 	public String toString() {
 		String fs = fechaNacimiento().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 		String hs = fechaNacimiento().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
-		return String.format("%s, de %d, nacido el %s a las %s",nombre_completo(),edad(),fs,hs);
+		return String.format("%s, de %d, nacido el %s a las %s",nombreCompleto(),edad(),fs,hs);
 	}
 	
 	@Override

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import us.lsi.tools.FileTools;
+import us.lsi.tools.File2;
 
 public class OcupacionesVuelos {
 	
@@ -17,7 +17,7 @@ public class OcupacionesVuelos {
 	}
 
 	public static OcupacionesVuelos of(String fichero) {
-		List<OcupacionVuelo> r = FileTools.streamDeFichero(fichero,"Windows-1252")
+		List<OcupacionVuelo> r = File2.streamDeFichero(fichero,"Windows-1252")
 				.map(x -> OcupacionVuelo.parse(x))
 				.collect(Collectors.toList());
 		return new OcupacionesVuelos(r);

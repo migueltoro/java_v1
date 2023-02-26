@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import us.lsi.tools.FileTools;
+import us.lsi.tools.File2;
 
 public class Aerolineas {
 	
@@ -18,7 +18,7 @@ public class Aerolineas {
 	}
 	
 	public static Aerolineas of(String fichero) {
-		List<Aerolinea> datos = FileTools.streamDeFichero(fichero,"Windows-1252")
+		List<Aerolinea> datos = File2.streamDeFichero(fichero,"Windows-1252")
 				.map(x ->Aerolinea.parse(x))
 				.toList();
 		Aerolineas aerolineas = new Aerolineas(datos);

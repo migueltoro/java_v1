@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 import org.mozilla.universalchardet.UniversalDetector;
 
 
-public class FileTools {
+public class File2 {
 	
 	public static String getFileCharset(String file) {
 		try {
@@ -110,7 +110,7 @@ public class FileTools {
 	}
 
 	public static void main(String[] args) {
-		String s = FileTools.getFileCharset("ficheros_aeropuertos/aeropuertos.csv");
+		String s = File2.getFileCharset("ficheros_aeropuertos/aeropuertos.csv");
 		System.out.println(s);
 	}
 

@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import us.lsi.tools.FileTools;
+import us.lsi.tools.File2;
 
 public class Vuelos {
 	
@@ -18,7 +18,7 @@ public class Vuelos {
 		return Vuelos.fvuelos;
 	}
 	public static Vuelos of(String fichero) {
-		List<Vuelo>  vuelos = FileTools.streamDeFichero(fichero,"Windows-1252")
+		List<Vuelo>  vuelos = File2.streamDeFichero(fichero,"Windows-1252")
 				.map(x -> Vuelo.parse(x))
 				.collect(Collectors.toList());
 		return new Vuelos(vuelos);

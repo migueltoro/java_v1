@@ -1,6 +1,6 @@
 package us.lsi.ejemplos_b1;
 
-import org.apache.commons.math3.fraction.Fraction;
+import org.apache.commons.lang3.math.Fraction;
 
 public class Expresiones_1 {
 	
@@ -32,7 +32,7 @@ public class Expresiones_1 {
 			Fraction f2 = Fraction.getReducedFraction(1, 4);
 			System.out.println(f1);
 			System.out.println(f1.subtract(f2));
-			System.out.println(f1.multiply(f2));
+			System.out.println(f1.multiplyBy(f2));
 		}
 		
 		public static void exps() {

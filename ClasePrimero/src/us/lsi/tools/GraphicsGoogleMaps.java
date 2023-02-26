@@ -40,18 +40,18 @@ public class GraphicsGoogleMaps extends AbstractGraphicsMaps implements Graphics
 
 	@Override
 	public String getKey() {
-		return FileTools.lineasDeFichero("C:/Users/migueltoro/OneDrive - UNIVERSIDAD DE SEVILLA/Escritorio/Jars/Keys/privateGoogle.txt").get(0);
+		return File2.lineasDeFichero("C:/Users/migueltoro/OneDrive - UNIVERSIDAD DE SEVILLA/Escritorio/Jars/Keys/privateGoogle.txt").get(0);
 	}
 	
 
 	@Override
 	protected String getPolylinePattern() {
-		return FileTools.text("resources/GooglePolylinePattern.html");
+		return File2.text("resources/GooglePolylinePattern.html");
 	}
 	
 	@Override
 	protected String getMarkersPattern() {
-		return FileTools.text("resources/GoogleMarkersPattern.html");
+		return File2.text("resources/GoogleMarkersPattern.html");
 	}
 
 	@Override

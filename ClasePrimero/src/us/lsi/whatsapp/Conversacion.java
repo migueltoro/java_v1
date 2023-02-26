@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import us.lsi.tools.FileTools;
+import us.lsi.tools.File2;
 import us.lsi.tools.Graphics;
 import us.lsi.tools.List2;
 import us.lsi.tools.Preconditions;
@@ -27,11 +27,11 @@ public class Conversacion {
 
 	private Conversacion(String file) {
 		super();	
-		this.mensajes = FileTools.lineasDeFichero(file).stream()
+		this.mensajes = File2.lineasDeFichero(file).stream()
 				.filter(x->x.length()>0)
 				.map(m->Mensaje.parse(m))
 				.collect(Collectors.toList());
-		this.palabrasHuecas = FileTools.lineasDeFichero("resources/palabras_huecas.txt").stream()
+		this.palabrasHuecas = File2.lineasDeFichero("resources/palabras_huecas.txt").stream()
 				.filter(x->x.length()>0)
 				.collect(Collectors.toSet());
 	}

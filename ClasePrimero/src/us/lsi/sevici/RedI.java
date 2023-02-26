@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import us.lsi.coordenadas.Coordenadas2D;
-import us.lsi.tools.FileTools;
+import us.lsi.tools.File2;
 import us.lsi.tools.Preconditions;
 
 public class RedI extends RedA implements Red{
 	
 	public static Red parse(String fichero) {
-		List<String> lineas = FileTools.lineasDeFichero("ficheros/estaciones.csv");
+		List<String> lineas = File2.lineasDeFichero("ficheros/estaciones.csv");
 		lineas = lineas.subList(1, lineas.size());
 		List<Estacion> estaciones = new ArrayList<>();
 		for(String ln:lineas) {
@@ -149,7 +149,7 @@ public class RedI extends RedA implements Red{
 		for(int i=0;i<n;i++) {
 			r = r+this.estaciones().get(i).toString()+"\n";
 		}
-		FileTools.write(file, r);
+		File2.write(file, r);
 	}
 	
 	@Override

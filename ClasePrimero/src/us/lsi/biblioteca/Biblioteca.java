@@ -12,18 +12,18 @@ import java.util.stream.Stream;
 import us.lsi.tools.Par;
 import us.lsi.tools.Preconditions;
 import us.lsi.biblioteca.Prestamo.TipoPrestamo;
-import us.lsi.tools.FileTools;
+import us.lsi.tools.File2;
 
 public class Biblioteca {
 	
 	public static Biblioteca of(String nombre, String codigoPostal, String email) {
-		List<Usuario> usuarios = FileTools.streamDeFichero("ficheros_biblioteca/usuarios.txt")
+		List<Usuario> usuarios = File2.streamDeFichero("ficheros_biblioteca/usuarios.txt")
 				.map(line->Usuario.parse(line)).toList();
-		List<Libro> libros = FileTools.streamDeFichero("ficheros_biblioteca/libros.txt")
+		List<Libro> libros = File2.streamDeFichero("ficheros_biblioteca/libros.txt")
 				.map(line->Libro.parse(line)).toList(); 
-		List<Ejemplar> ejemplares = FileTools.streamDeFichero("ficheros_biblioteca/ejemplares.txt")
+		List<Ejemplar> ejemplares = File2.streamDeFichero("ficheros_biblioteca/ejemplares.txt")
 				.map(line->Ejemplar.parse(line)).toList();
-		List<Prestamo> prestamos = FileTools.streamDeFichero("ficheros_biblioteca/prestamos.txt")
+		List<Prestamo> prestamos = File2.streamDeFichero("ficheros_biblioteca/prestamos.txt")
 				.map(line->Prestamo.parse(line)).toList();
 		return new Biblioteca(nombre, codigoPostal, email, usuarios, libros, ejemplares, prestamos);
 	}

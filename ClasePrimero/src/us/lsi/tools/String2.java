@@ -3,7 +3,7 @@ package us.lsi.tools;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class StringTools {
+public class String2 {
 	
 	/**
 	 * @param in String de entrada

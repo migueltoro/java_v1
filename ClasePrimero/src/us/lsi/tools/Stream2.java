@@ -15,11 +15,21 @@ import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 
-public class StreamTools {
+public class Stream2 {
+	
+	public static Stream<IntPair> allPairs(Integer n, Integer m){
+		return allPairs(0,n,0,m);
+	}
+			
+	public static Stream<IntPair> allPairs(Integer n1, Integer n2, Integer m1, Integer m2){
+		return IntStream.range(n1, n2).boxed()
+				.flatMap(x->IntStream.range(m1, m2).boxed().map(y->IntPair.of(x,y)));
+	}
 	
 	public static <L, R, T> Spliterator<T> zip(Spliterator<L> lefts, Spliterator<R> rights,
 			BiFunction<L, R, T> combiner) {
@@ -194,12 +204,10 @@ public class StreamTools {
 				Collectors.collectingAndThen(Collectors.reducing(op),e->e.get())));
 	}
 	
-	public static <E,K> Map<K,E> groupingReduce(Stream<E> st, Function<E,K> key, BinaryOperator<E> op, E a0){
-		return st.collect(Collectors.groupingBy(key,Collectors.reducing(a0,op)));
-	}
-	
-	public static <E,K,T> Map<K,T> groupingReduce(Stream<E> st, Function<E,K> key, Function<E,T> map, BinaryOperator<T> op, T a0){
-		return st.collect(Collectors.groupingBy(key,Collectors.reducing(a0,map,op)));
+	public static <E,K,T> Map<K,T> groupingReduce(Stream<E> st, Function<E,K> key, Function<E,T> value, BinaryOperator<T> op, T a0){
+		return st.collect(Collectors.groupingBy(key,
+				Collectors.mapping(value,
+						Collectors.collectingAndThen(Collectors.reducing(op),e->e.get()))));
 	}
 
 }

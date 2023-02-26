@@ -1,6 +1,6 @@
 package us.lsi.aeropuerto;
 
-import static us.lsi.tools.StreamTools.toList;
+import static us.lsi.tools.Stream2.toList;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
