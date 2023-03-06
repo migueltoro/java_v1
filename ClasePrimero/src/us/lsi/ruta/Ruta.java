@@ -26,7 +26,7 @@ public interface Ruta {
 	
 	public static Ruta leeDeFichero(String fichero) {
 		return switch(Ruta.getTipoImplementacion()) {
-		case Funcional->RutaF.leeDeFichero(fichero);
+		case Funcional->RutaF.leeDeFicheroCsv(fichero);
 		case Imperativa->RutaI.leeDeFichero(fichero);
 		};
 	}

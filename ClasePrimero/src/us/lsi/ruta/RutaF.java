@@ -25,6 +25,11 @@ public class RutaF extends RutaA implements Ruta {
 		List<Marca> marcas = File2.streamDeFichero("ficheros/ruta.csv").map(x->Marca.parse(x)).collect(toList());
 		return of(marcas);
 	}
+	
+	public static Ruta leeDeFicheroCsv(String fichero) {
+		List<Marca> marcas = File2.streamDeCsv("ficheros/ruta.csv").map(x->Marca.parseCsv(x)).collect(toList());
+		return of(marcas);
+	}
 
 	@Override
 	public Double getTiempo() {

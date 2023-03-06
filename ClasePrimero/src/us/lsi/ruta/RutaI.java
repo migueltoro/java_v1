@@ -24,6 +24,8 @@ public class RutaI extends RutaA implements Ruta {
 		}
 		return of(marcas);
 	}
+	
+	
 
 	private RutaI(List<Marca> marcas) {
 		super(marcas);

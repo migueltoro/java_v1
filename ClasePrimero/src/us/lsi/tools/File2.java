@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 import org.mozilla.universalchardet.UniversalDetector;
 
 
@@ -33,12 +35,6 @@ public class File2 {
 			}
 			universalDetector.dataEnd();
 			String encoding = universalDetector.getDetectedCharset();
-
-//			if (encoding != null) {
-//				System.out.println(String.format("Detected encoding for %s is %s.", file, encoding));
-//			} else {
-//				System.out.println(String.format("No encoding detected for %s.", file));
-//			}
 
 			universalDetector.reset();
 
@@ -68,6 +64,7 @@ public class File2 {
 		return lineasDeFichero(file, charSet.toString());
 	}
 	
+	
 	public static List<String> lineasDeFichero(String file, String charSet) {
 		List<String> lineas = null;
 		try {		
@@ -76,6 +73,42 @@ public class File2 {
 			System.out.println(e.toString());
 		}
 		return lineas;
+	}
+	
+	public static Stream<List<String>> streamDeCsv(String file) {
+		return streamDeCsv(file,CSVFormat.RFC4180);
+	}
+	
+	/**
+	 * Más información sobre la lectura de ficheros CSV en https://commons.apache.org/proper/commons-csv/index.html
+	 * @param file Fichero de entrada
+	 * @param format Formato del fichero
+	 * @return Un Stream donde cada elemento es una lista de campos
+	 */
+	public static Stream<List<String>> streamDeCsv(String file,CSVFormat format) {
+		CSVParser parser=null;
+		try {
+			BufferedReader csvData = new BufferedReader(new FileReader(file));
+			parser = CSVParser.parse(csvData, format);
+		} catch (IOException e) {
+			System.out.println(e.toString());
+		}
+		return parser.getRecords().stream().map(r->r.toList());
+	}
+	
+	public static List<List<String>> lineasDeCsv(String file) {
+		return lineasDeCsv(file,CSVFormat.RFC4180);
+	}
+	
+	public static List<List<String>> lineasDeCsv(String file, CSVFormat format) {
+		CSVParser parser=null;
+		try {
+			BufferedReader csvData = new BufferedReader(new FileReader(file));
+			parser = CSVParser.parse(csvData, CSVFormat.RFC4180);
+		} catch (IOException e) {
+			System.out.println(e.toString());
+		}
+		return parser.getRecords().stream().map(r->r.toList()).toList();
 	}
 	
 	public static void writeStream(Stream<String> s, String file) {

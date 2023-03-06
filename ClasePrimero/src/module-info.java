@@ -17,4 +17,5 @@ module java_v1 {
 	requires transitive java.desktop;
 	requires transitive juniversalchardet;
 	requires transitive commons.math3;
+	requires transitive org.apache.commons.csv;
 }
