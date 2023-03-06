@@ -1,12 +1,14 @@
 package us.lsi.tools;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.TreeMap;
 import java.util.Spliterators.AbstractSpliterator;
 import java.util.TreeSet;
@@ -21,6 +23,26 @@ import java.util.stream.StreamSupport;
 
 
 public class Stream2 {
+	
+	public static <E> Stream<E> of(Iterable<E> iterable) {
+	    return StreamSupport.stream(
+	        Spliterators.spliteratorUnknownSize(
+	            iterable.iterator(),
+	            Spliterator.ORDERED
+	        ),
+	        false
+	    );
+	}
+	
+	public static <E> Stream<E> of(Iterator<E> iterator) {
+	    return StreamSupport.stream(
+	        Spliterators.spliteratorUnknownSize(
+	            iterator,
+	            Spliterator.ORDERED
+	        ),
+	        false
+	    );
+	}
 	
 	public static Stream<IntPair> allPairs(Integer n, Integer m){
 		return allPairs(0,n,0,m);

@@ -93,7 +93,7 @@ public class File2 {
 		} catch (IOException e) {
 			System.out.println(e.toString());
 		}
-		return parser.getRecords().stream().map(r->r.toList());
+		return Stream2.of(parser.iterator()).map(r->r.toList());
 	}
 	
 	public static List<List<String>> lineasDeCsv(String file) {
