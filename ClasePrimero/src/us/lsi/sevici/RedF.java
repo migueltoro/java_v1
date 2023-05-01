@@ -10,12 +10,14 @@ import java.util.stream.Stream;
 
 import us.lsi.coordenadas.Coordenadas2D;
 import us.lsi.tools.File2;
+import us.lsi.tools.Stream2;
 
 public class RedF extends RedA implements Red {
 	
 	public static Red parse(String fichero) {
-		List<Estacion> estaciones = File2.streamDeFichero("ficheros/estaciones.csv").skip(1)
-				.map(linea -> Estacion.parse(linea)).collect(Collectors.toList());
+		List<Estacion> estaciones = File2.streamDeFichero("ficheros/estaciones.csv","WINDOWS-1252").skip(1)
+				.map(linea -> Estacion.parse(linea))
+				.collect(Collectors.toList());
 		return of(estaciones);
 	}
 
@@ -71,10 +73,15 @@ public class RedF extends RedA implements Red {
 		return this.estaciones.stream().collect(Collectors.groupingBy(e -> e.free_bikes()));
 	}
 
+//	@Override
+//	public Map<Integer, Integer> numeroDeEstacionesPorBicisDisponibles() {
+//		return this.estaciones.stream().collect(Collectors.groupingBy(e -> e.free_bikes(),
+//				Collectors.collectingAndThen(Collectors.toList(),ls->ls.size())));
+//	}
+	
 	@Override
 	public Map<Integer, Integer> numeroDeEstacionesPorBicisDisponibles() {
-		return this.estaciones.stream().collect(Collectors.groupingBy(e -> e.free_bikes(),
-				Collectors.collectingAndThen(Collectors.toList(),ls->ls.size())));
+		return Stream2.groupingReduce(this.estaciones.stream(),e->e.free_bikes(),e->1,(x,y)->x+y);
 	}
 
 	@Override

@@ -9,7 +9,7 @@ public class TestRed {
 	
 	public static void main(String[] args) {
 		Locale.setDefault(new Locale("en", "US"));
-		Red.setTipoImplementacion(TipoImplementacion.Imperativa);
+		Red.setTipoImplementacion(TipoImplementacion.Funcional);
 		Red r = Red.parse("ficheros/estaciones.csv");
 		System.out.println(r);
 		System.out.println(r.porNumero(250));

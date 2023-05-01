@@ -13,7 +13,7 @@ import us.lsi.tools.Preconditions;
 public class RedI extends RedA implements Red{
 	
 	public static Red parse(String fichero) {
-		List<String> lineas = File2.lineasDeFichero("ficheros/estaciones.csv");
+		List<String> lineas = File2.lineasDeFichero("ficheros/estaciones.csv","WINDOWS-1252");
 		lineas = lineas.subList(1, lineas.size());
 		List<Estacion> estaciones = new ArrayList<>();
 		for(String ln:lineas) {

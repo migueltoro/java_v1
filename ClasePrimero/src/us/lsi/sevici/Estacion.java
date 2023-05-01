@@ -25,8 +25,6 @@ public record Estacion(Integer numero,
 		return new Estacion(numero,name,slots,empty_slots,free_bikes,coordenadas);
 	}
 
-	
-	
 	@Override
 	public String toString() {
 		return String.format("(%3d,%30s,%2d,%2d,%2d,%s)",numero,name,slots,empty_slots,free_bikes,coordenadas.toString());
