@@ -15,17 +15,17 @@ import us.lsi.tools.Stream2;
 public class RedF extends RedA implements Red {
 	
 	public static Red parse(String fichero) {
-		List<Estacion> estaciones = File2.streamDeFichero("ficheros/estaciones.csv","WINDOWS-1252").skip(1)
+		Set<Estacion> estaciones = File2.streamDeFichero("ficheros/estaciones.csv","WINDOWS-1252").skip(1)
 				.map(linea -> Estacion.parse(linea))
-				.collect(Collectors.toList());
+				.collect(Collectors.toSet());
 		return of(estaciones);
 	}
 
-	public static RedF of(List<Estacion> estaciones) {
+	public static RedF of(Set<Estacion> estaciones) {
 		return new RedF(estaciones);
 	}
 
-	private RedF(List<Estacion> estaciones) {
+	private RedF(Set<Estacion> estaciones) {
 		super(estaciones);
 	}
 	
@@ -37,7 +37,7 @@ public class RedF extends RedA implements Red {
 	}
 
 	@Override
-	public Set<Estacion> porName(String nombre) {
+	public Set<Estacion> estacion(String nombre) {
 		return this.estaciones.stream().filter(e -> e.name().equals(nombre)).collect(Collectors.toSet());
 	}
 
@@ -52,15 +52,15 @@ public class RedF extends RedA implements Red {
 	}
 
 	@Override
-	public List<Coordenadas2D> ubicaciones() {
-		return this.estaciones.stream().map(e -> e.coordenadas()).collect(Collectors.toList());
+	public Set<Coordenadas2D> ubicaciones() {
+		return this.estaciones.stream().map(e -> e.coordenadas()).collect(Collectors.toSet());
 	}
 
 
 	@Override
-	public List<Coordenadas2D> ubicacionEstacionesDisponibles(Integer k) {
+	public Set<Coordenadas2D> ubicacionEstacionesDisponibles(Integer k) {
 		return this.estaciones.stream().filter(e -> e.free_bikes() >= k).map(e -> e.coordenadas())
-				.collect(Collectors.toList());
+				.collect(Collectors.toSet());
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class RedF extends RedA implements Red {
 	
 	@Override
 	public void escribe(Integer n, String file) {
-		Stream<String> s = this.estaciones().subList(0,n).stream().map(e->e.toString());
+		Stream<String> s = this.estaciones().stream().limit(n).map(e->e.toString());
 		File2.writeStream(s,file);
 	}
 

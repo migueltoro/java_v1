@@ -3,6 +3,7 @@ package us.lsi.geometria;
 import java.awt.Color;
 import java.util.Locale;
 
+import us.lsi.ejemplos_b1_tipos.Vector2D;
 import us.lsi.tools.Ventana;
 
 public class TestGeometria {

@@ -48,7 +48,7 @@ public class Streams {
 	
 
 	public static void main(String[] args) {
-		Locale.setDefault(new Locale("en","US"));
+		Locale.setDefault(Locale.of("en","US"));
 		ejemplo1();
 		ejemplo2();
 		ejemplo3();

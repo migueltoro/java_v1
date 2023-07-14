@@ -16,7 +16,7 @@ public class RutaI extends RutaA implements Ruta {
 		return new RutaI(marcas);
 	}
 	
-	public static Ruta leeDeFichero(String fichero) {
+	public static Ruta of(String fichero) {
 		List<Marca> marcas = new ArrayList<>();
 		for (String linea:File2.lineasDeFichero("ficheros/ruta.csv")) {
 			Marca m = Marca.parse(linea);
@@ -26,16 +26,15 @@ public class RutaI extends RutaA implements Ruta {
 	}
 	
 	
-
 	private RutaI(List<Marca> marcas) {
 		super(marcas);
 	}
 
-	public Double getLongitud() {
+	public Double longitud() {
 		Integer n = this.marcas.size();
 		Double a = 0.;
 		for(Integer i=0; i< n-1; i++) {
-			Intervalo it = this.getIntervalo(i);
+			Intervalo it = this.intervalo(i);
 			Double ln = it.longitud();
 			a = a + ln;
 		}
@@ -43,11 +42,11 @@ public class RutaI extends RutaA implements Ruta {
 	}
 
 	@Override
-	public Double getTiempo() {
+	public Double tiempo() {
 		Integer n = this.marcas.size();
 		Double a = 0.;
 		for(Integer i=0; i< n-1; i++) {
-			Intervalo it = this.getIntervalo(i);
+			Intervalo it = this.intervalo(i);
 			Double ln = it.tiempo();
 			a = a + ln;
 		}
@@ -55,11 +54,11 @@ public class RutaI extends RutaA implements Ruta {
 	}
 
 	@Override
-	public Double getDesnivelCrecienteAcumulado() {
+	public Double desnivelCrecienteAcumulado() {
 		Integer n = this.marcas.size();
 		Double a = 0.;
 		for(Integer i=0; i< n-1; i++) {
-			Intervalo it = this.getIntervalo(i);
+			Intervalo it = this.intervalo(i);
 			if (it.desnivel()>0) {
 				Double ln = it.longitud();
 				a = a + ln;
@@ -69,11 +68,11 @@ public class RutaI extends RutaA implements Ruta {
 	}
 
 	@Override
-	public Double getDesnivelDecrecienteAcumulado() {
+	public Double desnivelDecrecienteAcumulado() {
 		Integer n = this.marcas.size();
 		Double a = 0.;
 		for(Integer i=0; i< n-1; i++) {
-			Intervalo it = this.getIntervalo(i);
+			Intervalo it = this.intervalo(i);
 			if (it.desnivel()<0) {
 				Double ln = it.longitud();
 				a = a + ln;
@@ -92,11 +91,11 @@ public class RutaI extends RutaA implements Ruta {
 	}
 	
 	@Override
-	public Map<Type, Integer> getFrecuencias() {
+	public Map<Type, Integer> frecuencias() {
 		Map<Type,Integer> m = new HashMap<>();
 		Integer n = this.marcas.size();
 		for(Integer i=0; i< n-1; i++) {
-			Intervalo in = this.getIntervalo(i);
+			Intervalo in = this.intervalo(i);
 			Type key = in.type();
 			if(m.containsKey(key)) {
 				Integer v = m.get(key);
@@ -109,11 +108,11 @@ public class RutaI extends RutaA implements Ruta {
 	}
 
 	@Override
-	public Set<Intervalo> getLLanos() {
+	public Set<Intervalo> llanos() {
 		Set<Intervalo> s = new HashSet<>();
 		Integer n = this.marcas.size();
 		for(Integer i=0; i< n-1; i++) {
-			Intervalo in = this.getIntervalo(i);
+			Intervalo in = this.intervalo(i);
 			if (in.type().equals(Type.Llano)) {
 				s.add(in);
 			}

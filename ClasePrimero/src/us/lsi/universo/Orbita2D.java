@@ -1,6 +1,6 @@
 package us.lsi.universo;
 
-import us.lsi.geometria.Vector2D;
+import us.lsi.ejemplos_b1_tipos.Vector2D;
 
 public record Orbita2D(
 		Double a,

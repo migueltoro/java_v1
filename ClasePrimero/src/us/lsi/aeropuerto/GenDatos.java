@@ -1,7 +1,5 @@
 package us.lsi.aeropuerto;
 
-import static us.lsi.tools.Stream2.toList;
-
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -9,8 +7,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -46,7 +45,7 @@ public class GenDatos {
 	}
 	
 	public static Vuelos random(Integer numVuelos) {
-		List<Vuelo> vuelos = toList(IntStream.range(0,numVuelos).boxed().map(e->random()));
+		Set<Vuelo> vuelos = IntStream.range(0,numVuelos).boxed().map(e->random()).collect(Collectors.toSet());
 		return new Vuelos(vuelos);
 	}
 
@@ -67,11 +66,11 @@ public class GenDatos {
 
 	public static OcupacionesVuelos random(Integer numOcupaciones, Integer anyo) {
 		Integer n = Vuelos.of().size();
-		List<OcupacionVuelo> r = toList(
-				IntStream.range(0, numOcupaciones).boxed()
-				.map(e -> random(Vuelos.of().get(GenDatos.rnd.nextInt(n)), anyo)));
-		OcupacionesVuelos.focupacionesVuelos =  new OcupacionesVuelos(r);
-		return OcupacionesVuelos.focupacionesVuelos;
+		Set<OcupacionVuelo> r = IntStream.range(0, numOcupaciones).boxed()
+				.map(e -> random(Vuelos.of().get(GenDatos.rnd.nextInt(n)), anyo))
+				.collect(Collectors.toSet());
+		OcupacionesVuelos.getorOcupacionesVuelos =  new OcupacionesVuelos(r);
+		return OcupacionesVuelos.getorOcupacionesVuelos;
 	}
 
 }

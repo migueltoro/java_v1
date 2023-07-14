@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import us.lsi.ejemplos_b1_tipos.Vector2D;
 import us.lsi.tools.Ventana;
 
 public class AgregadoGeometrico2D implements ObjetoGeometrico2D {

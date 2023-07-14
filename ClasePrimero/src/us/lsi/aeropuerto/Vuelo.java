@@ -51,7 +51,7 @@ public record Vuelo(
 	@Override
 	public String toString() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-		return String.format(new Locale("en", "US"),"%s,%s,%s,%s,%.2f,%d,%d,%s,%s",
+		return String.format(Locale.of("en", "US"),"%s,%s,%s,%s,%.2f,%d,%d,%s,%s",
 				codigoAerolinea,
 				numero,
 				codigoDestino,
@@ -65,7 +65,7 @@ public record Vuelo(
 	
 	public String toString2() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-		return String.format(new Locale("en", "US"),"%s,%s,%s,%s,%.2f,%d,%d,%s,%d",codigoAerolinea,numero,codigoDestino,codigoOrigen,precio,
+		return String.format(Locale.of("en", "US"),"%s,%s,%s,%s,%.2f,%d,%d,%s,%d",codigoAerolinea,numero,codigoDestino,codigoOrigen,precio,
 				numPlazas,duracion.toMinutes(),hora.format(formatter),diaSemana.getValue());
 	}
 	

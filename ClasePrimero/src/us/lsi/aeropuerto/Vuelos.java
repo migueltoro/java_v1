@@ -1,55 +1,50 @@
 package us.lsi.aeropuerto;
 
-
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import us.lsi.tools.File2;
 
 public class Vuelos {
 	
-	private static Vuelos fvuelos = null;
+	private static Vuelos gestorVuelos = null;
 	
 	public static Vuelos of() {
-		if(Vuelos.fvuelos == null)
-			Vuelos.fvuelos = Vuelos.of("ficheros_aeropuertos/vuelos.csv");
-		return Vuelos.fvuelos;
+		if(Vuelos.gestorVuelos == null)
+			Vuelos.gestorVuelos = Vuelos.of("ficheros_aeropuertos/vuelos.csv");
+		return Vuelos.gestorVuelos;
 	}
 	public static Vuelos of(String fichero) {
-		List<Vuelo>  vuelos = File2.streamDeFichero(fichero,"Windows-1252")
+		Set<Vuelo>  vuelos = File2.streamDeFichero(fichero,"Windows-1252")
 				.map(x -> Vuelo.parse(x))
-				.collect(Collectors.toList());
+				.collect(Collectors.toSet());
 		return new Vuelos(vuelos);
 	}
 	
-	private List<Vuelo> vuelos;
-	private Integer numVuelos;
+	private Set<Vuelo> vuelos;
 	private Map<String, Vuelo> codigosVuelos;
 	
-	public Vuelos(List<Vuelo> vuelos) {
+	public Vuelos(Set<Vuelo> vuelos) {
 		super();
 		this.vuelos = vuelos;
-		this.numVuelos =  this.vuelos.size();
-		this.codigosVuelos = this.stream().collect(Collectors.toMap(Vuelo::codigo,x->x));
+		this.codigosVuelos = this.vuelos.stream().collect(Collectors.toMap(Vuelo::codigo,x->x));
 	}
 
-	public Stream<Vuelo> stream() {
-		return this.vuelos.stream();
+	public Set<Vuelo> todos() {
+		return this.vuelos;
 	}
 
-	
 	public Vuelo vuelo(String codigo) {
 		return this.codigosVuelos.get(codigo);
 	}
 	
 	public Vuelo get(Integer index) {
-		return this.vuelos.get(index);
+		return this.vuelos.stream().toList().get(index);
 	}
 
 	public Integer size() {
-		return this.numVuelos;
+		return this.vuelos.size();
 	}
 
 	

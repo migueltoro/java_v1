@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import us.lsi.ejemplos_b1_tipos.Vector2D;
 import us.lsi.tools.Preconditions;
 import us.lsi.tools.Ventana;
 

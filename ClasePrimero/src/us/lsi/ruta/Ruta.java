@@ -24,29 +24,29 @@ public interface Ruta {
 		};
 	}
 	
-	public static Ruta leeDeFichero(String fichero) {
+	public static Ruta of(String fichero) {
 		return switch(Ruta.getTipoImplementacion()) {
-		case Funcional->RutaF.leeDeFicheroCsv(fichero);
-		case Imperativa->RutaI.leeDeFichero(fichero);
+		case Funcional->RutaF.ofCsv(fichero);
+		case Imperativa->RutaI.of(fichero);
 		};
 	}
 
-	Double getTiempo();
+	Double tiempo();
 
-	Double getLongitud();
+	Double longitud();
 
-	Double getVelocidadMedia();
+	Double velocidadMedia();
 
-	Intervalo getIntervalo(Integer i);
+	Intervalo intervalo(Integer i);
 
-	Double getDesnivelCrecienteAcumulado();
+	Double desnivelCrecienteAcumulado();
 
-	Double getDesnivelDecrecienteAcumulado();
+	Double desnivelDecrecienteAcumulado();
 	
-	Map<Type,Integer> getFrecuencias();
+	Map<Type,Integer> frecuencias();
 	
-	Set<Intervalo> getLLanos();
+	Set<Intervalo> llanos();
 	
-	Integer gerNumMarcas();
+	Integer numMarcas();
 
 }

@@ -34,5 +34,7 @@ public record Prestamo(Integer codigo, String isbn, Integer codigoEjemplar, Stri
 	public LocalDate fechaEntrega() {
 		return fechaPrestamo.plusDays(diasDePrestamo(tipo));
 	}
+	
+	
 
 }

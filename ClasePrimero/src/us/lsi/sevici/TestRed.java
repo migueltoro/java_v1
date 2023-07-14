@@ -8,12 +8,12 @@ public class TestRed {
 
 	
 	public static void main(String[] args) {
-		Locale.setDefault(new Locale("en", "US"));
+		Locale.setDefault(Locale.of("en", "US"));
 		Red.setTipoImplementacion(TipoImplementacion.Funcional);
 		Red r = Red.parse("ficheros/estaciones.csv");
 		System.out.println(r);
-		System.out.println(r.porNumero(250));
-		System.out.println(r.porName("CALLE DE SALVADOR ALLENDE"));
+		System.out.println(r.estacion(250));
+		System.out.println(r.estacion("CALLE DE SALVADOR ALLENDE"));
 		System.out.println(Map2.toString(r.numeroDeEstacionesPorBicisDisponibles()));
 		r.escribe(10,"ficheros/estaciones2.txt");
 //		List<Coordenadas2D> ubicaciones = r.ubicacionEstacionesDisponibles(25);

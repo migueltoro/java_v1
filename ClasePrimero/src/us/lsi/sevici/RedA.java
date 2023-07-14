@@ -1,7 +1,8 @@
 package us.lsi.sevici;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import us.lsi.tools.Preconditions;
 
 public abstract class RedA implements Red{
@@ -10,18 +11,22 @@ public abstract class RedA implements Red{
 	
 	public static TipoImplementacion tipo = TipoImplementacion.Funcional;
 	
-	protected List<Estacion> estaciones;
+	protected Set<Estacion> estaciones;
 	protected Map<Integer, Estacion> indices;
 
-	protected RedA(List<Estacion> estaciones) {
+	protected RedA(Set<Estacion> estaciones) {
 		super();
 		this.estaciones = estaciones;
 		this.indices = null;
 	}
 	
+	public Map<Integer, Estacion> indices() {
+		return indices;
+	}
+
 	@Override
 	public void add(Estacion e) {
-		Preconditions.checkArgument(!this.indices().containsKey(e.numero()),"La estacion esta ya incluida");
+		Preconditions.checkArgument(!this.indices.containsKey(e.numero()),"La estacion esta ya incluida");
 		this.estaciones.add(e);
 		this.indices = null;
 	}
@@ -38,12 +43,12 @@ public abstract class RedA implements Red{
 	}
 	
 	@Override
-	public List<Estacion> estaciones() {
+	public Set<Estacion> estaciones() {
 		return estaciones;
 	}
 
 	@Override
-	public Estacion porNumero(Integer numero) {
+	public Estacion estacion(Integer numero) {
 		Estacion e = this.indices().getOrDefault(numero,null);
 		Preconditions.checkNotNull(e);
 		return e;

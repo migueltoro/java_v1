@@ -28,17 +28,17 @@ public abstract class RutaA implements Ruta {
 	}
 
 	@Override
-	public Double getVelocidadMedia() {
-		return this.getLongitud()/this.getTiempo();
+	public Double velocidadMedia() {
+		return this.longitud()/this.tiempo();
 	}
 
 	@Override
-	public Intervalo getIntervalo(Integer i) {
+	public Intervalo intervalo(Integer i) {
 		return Intervalo.of(this.marcas.get(i),this.marcas.get(i+1));
 	}
 	
 	@Override
-	public Integer gerNumMarcas() {
+	public Integer numMarcas() {
 		return this.marcas.size();
 	}
 

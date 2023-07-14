@@ -14,7 +14,7 @@ public interface Red {
 		RedA.tipo = tipo;
 	}
 	
-	public static Red of(List<Estacion> marcas) {
+	public static Red of(Set<Estacion> marcas) {
 		return switch(RedA.tipo) {
 		case Funcional->RedF.of(marcas);
 		case Imperativa->RedI.of(marcas);
@@ -32,23 +32,21 @@ public interface Red {
 	
 	void remove(Estacion e);
 	
-	List<Estacion> estaciones();
-	
-	Map<Integer, Estacion> indices();
+	Set<Estacion> estaciones();
 
 	Integer numero();
 
-	Estacion porNumero(Integer numero);
+	Estacion estacion(Integer numero);
 
-	Set<Estacion> porName(String nombre);
+	Set<Estacion> estacion(String nombre);
 
 	Set<Estacion> estacionesConBicisDisponibles();
 
 	Set<Estacion> estacionesConBicisDisponibles(Integer n);
 
-	List<Coordenadas2D> ubicaciones();
+	Set<Coordenadas2D> ubicaciones();
 
-	List<Coordenadas2D> ubicacionEstacionesDisponibles(Integer k);
+	Set<Coordenadas2D> ubicacionEstacionesDisponibles(Integer k);
 
 	Estacion estacionMasBicisDisponibles();
 

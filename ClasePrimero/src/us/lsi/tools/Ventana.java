@@ -8,7 +8,9 @@ import java.awt.Shape;
 import java.awt.BasicStroke;
 import java.util.function.Function;
 
-import us.lsi.geometria.Vector2D;
+import us.lsi.ejemplos_b1_tipos.Vector2D;
+
+
 
 public class Ventana {
 	

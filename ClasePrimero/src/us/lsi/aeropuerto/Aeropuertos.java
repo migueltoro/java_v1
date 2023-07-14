@@ -1,37 +1,35 @@
 package us.lsi.aeropuerto;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import us.lsi.tools.File2;
 
 public class Aeropuertos {
 	
-	private static Aeropuertos faeropuertos = null;
+	private static Aeropuertos gestorAeropuertos = null;
 	
 	public static Aeropuertos of() {
-		if(Aeropuertos.faeropuertos == null)
-			Aeropuertos.faeropuertos = Aeropuertos.of("ficheros_aeropuertos/aeropuertos.csv");
-		return faeropuertos;
+		if(Aeropuertos.gestorAeropuertos == null)
+			Aeropuertos.gestorAeropuertos = Aeropuertos.of("ficheros_aeropuertos/aeropuertos.csv");
+		return gestorAeropuertos;
 	}
 	
 	public static Aeropuertos of(String fichero) {
-		List<Aeropuerto> aeropuertos = File2.streamDeFichero(fichero,"Windows-1252")
+		Set<Aeropuerto> aeropuertos = File2.streamDeFichero(fichero,"Windows-1252")
 				.map(x -> Aeropuerto.parse(x))
-				.collect(Collectors.toList());	
-		Aeropuertos.faeropuertos =  new Aeropuertos(aeropuertos);
-		return Aeropuertos.faeropuertos;
+				.collect(Collectors.toSet());	
+		Aeropuertos.gestorAeropuertos =  new Aeropuertos(aeropuertos);
+		return Aeropuertos.gestorAeropuertos;
 	}
 	
-	private List<Aeropuerto> aeropuertos;
+	private Set<Aeropuerto> aeropuertos;
 	private Map<String,Aeropuerto> codigosAeropuertos = null;
 	private Map<String,String> ciudadDeAeropuerto = null;
 	private Map<String,Set<Aeropuerto>> aeropuertosEnCiudad= null;
 	
-	public Aeropuertos(List<Aeropuerto> aeropuertos) {
+	public Aeropuertos(Set<Aeropuerto> aeropuertos) {
 		super();
 		this.aeropuertos = aeropuertos;
 		this.codigosAeropuertos = 
@@ -65,12 +63,12 @@ public class Aeropuertos {
 		return this.aeropuertos.size();
 	}
 
-	public Stream<Aeropuerto> stream() {
-		return this.aeropuertos.stream();
+	public Set<Aeropuerto> todos() {
+		return this.aeropuertos;
 	}
 	
 	public Aeropuerto get(Integer i) {
-		return this.aeropuertos.get(i);
+		return this.aeropuertos.stream().toList().get(i);
 	}
 
 

@@ -21,35 +21,35 @@ public class RutaF extends RutaA implements Ruta {
 		super(marcas);
 	}
 
-	public static Ruta leeDeFichero(String fichero) {
+	public static Ruta of(String fichero) {
 		List<Marca> marcas = File2.streamDeFichero("ficheros/ruta.csv").map(x->Marca.parse(x)).collect(toList());
 		return of(marcas);
 	}
 	
-	public static Ruta leeDeFicheroCsv(String fichero) {
+	public static Ruta ofCsv(String fichero) {
 		List<Marca> marcas = File2.streamDeCsv("ficheros/ruta.csv").map(x->Marca.parseCsv(x)).collect(toList());
 		return of(marcas);
 	}
 
 	@Override
-	public Double getTiempo() {
+	public Double tiempo() {
 		Integer n = super.marcas.size();
-		return IntStream.range(0,n-1).boxed().map(i->this.getIntervalo(i)).mapToDouble(x->x.tiempo()).sum();
+		return IntStream.range(0,n-1).boxed().map(i->this.intervalo(i)).mapToDouble(x->x.tiempo()).sum();
 	}
 	
 	@Override
-	public Double getLongitud() {
+	public Double longitud() {
 		Integer n = super.marcas.size();
-		return IntStream.range(0,n-1).boxed().map(i->this.getIntervalo(i)).mapToDouble(x->x.longitud()).sum();
+		return IntStream.range(0,n-1).boxed().map(i->this.intervalo(i)).mapToDouble(x->x.longitud()).sum();
 	}
 	
 	
 	@Override
-	public Double getDesnivelCrecienteAcumulado() {
+	public Double desnivelCrecienteAcumulado() {
 		Integer n = super.marcas.size();		
 		return IntStream.range(0, n-1)
 				.boxed()
-				.map(i->this.getIntervalo(i))
+				.map(i->this.intervalo(i))
 				.filter(e->e.desnivel()>0)
 				.mapToDouble(e->e.longitud())
 				.sum();
@@ -57,11 +57,11 @@ public class RutaF extends RutaA implements Ruta {
 	
 	
 	@Override
-	public Double getDesnivelDecrecienteAcumulado() {
+	public Double desnivelDecrecienteAcumulado() {
 		Integer n = super.marcas.size();		
 		return IntStream.range(0, n-1)
 				.boxed()
-				.map(i->this.getIntervalo(i))
+				.map(i->this.intervalo(i))
 				.filter(e->e.desnivel()<0)
 				.mapToDouble(e->e.longitud())
 				.sum();
@@ -73,16 +73,16 @@ public class RutaF extends RutaA implements Ruta {
 	}
 
 	@Override
-	public Map<Type,Integer> getFrecuencias() {
-		Stream<Intervalo> st = IntStream.range(0,super.gerNumMarcas()-1).boxed()
-		.map(i->super.getIntervalo(i));
+	public Map<Type,Integer> frecuencias() {
+		Stream<Intervalo> st = IntStream.range(0,super.numMarcas()-1).boxed()
+		.map(i->super.intervalo(i));
 		return Stream2.groupingReduce(st,it->it.type(),x->1,(x,y)->x+y);
 	}
 	
 	@Override
-	public Set<Intervalo> getLLanos() {
-		return IntStream.range(0,super.gerNumMarcas()-1).boxed()
-				.map(i->super.getIntervalo(i))
+	public Set<Intervalo> llanos() {
+		return IntStream.range(0,super.numMarcas()-1).boxed()
+				.map(i->super.intervalo(i))
 				.filter(in->in.type().equals(Type.Llano))
 				.collect(toSet());
 	}

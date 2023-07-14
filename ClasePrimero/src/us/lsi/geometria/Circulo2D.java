@@ -3,6 +3,7 @@ package us.lsi.geometria;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
+import us.lsi.ejemplos_b1_tipos.Vector2D;
 import us.lsi.tools.Preconditions;
 import us.lsi.tools.Ventana;
 

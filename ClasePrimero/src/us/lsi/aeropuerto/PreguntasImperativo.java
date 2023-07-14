@@ -24,9 +24,9 @@ public class PreguntasImperativo implements Preguntas {
 	// como prefijo s (esto es, comienzan por s).
 	
 	public Integer numeroDepasajeros(String prefix) {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.of().stream().toList();
+		OcupacionesVuelos ls = OcupacionesVuelos.of();
 		Integer sum = 0;
-		for(OcupacionVuelo ocp:ls) {
+		for(OcupacionVuelo ocp:ls.todas()) {
 			if(ocp.vuelo().ciudadDestino().startsWith(prefix)) {
 				Integer numPasajeros = ocp.numPasajeros();
 				sum = sum + numPasajeros;
@@ -39,9 +39,9 @@ public class PreguntasImperativo implements Preguntas {
 	// existe un vuelo en la fecha f con destino en s.
 	
 	public Boolean hayDestino(Set<String> destinos, LocalDate f) {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.of().stream().toList();
+		OcupacionesVuelos ls = OcupacionesVuelos.of();
 		Boolean a = false;
-		for(OcupacionVuelo ocp:ls) {
+		for(OcupacionVuelo ocp:ls.todas()) {
 			if(ocp.fecha().toLocalDate().equals(f)) {
 				if(destinos.contains(ocp.vuelo().ciudadDestino())) {
 					a = true;
@@ -56,9 +56,9 @@ public class PreguntasImperativo implements Preguntas {
 	// los vuelos de fecha f
 	
 	public Set<String> destinosDiferentes(LocalDate f) {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.of().stream().toList();
+		OcupacionesVuelos ls = OcupacionesVuelos.of();
 		Set<String> a = new HashSet<>();
-		for(OcupacionVuelo ocp:ls) {
+		for(OcupacionVuelo ocp:ls.todas()) {
 			if(ocp.fecha().toLocalDate().equals(f)) {
 				String ciudadDestino = ocp.vuelo().ciudadDestino();
 				a.add(ciudadDestino);			
@@ -71,9 +71,9 @@ public class PreguntasImperativo implements Preguntas {
 	// total de pasajeros a ese destino en el a�o anyo
 	
 	public SortedMap<String, Integer> totalPasajerosADestino(Integer any) {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.of().stream().toList();
+		OcupacionesVuelos ls = OcupacionesVuelos.of();
 		SortedMap<String,Integer> a = new TreeMap<String, Integer>(Comparator.reverseOrder());
-		for(OcupacionVuelo ocp:ls) {
+		for(OcupacionVuelo ocp:ls.todas()) {
 			if(ocp.fecha().getYear() == any) {
 				String key = ocp.vuelo().ciudadDestino();
 				if(a.containsKey(key)) {
@@ -91,9 +91,9 @@ public class PreguntasImperativo implements Preguntas {
 	// destino
 	
 	public String primerVuelo(String destino) {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.of().stream().toList();
+		OcupacionesVuelos ls = OcupacionesVuelos.of();
 		OcupacionVuelo a = null;
-		for(OcupacionVuelo ocp:ls) {
+		for(OcupacionVuelo ocp:ls.todas()) {
 			if(ocp.vuelo().ciudadDestino().equals(destino) &&
 			   ocp.vuelo().numPlazas() > ocp.numPasajeros() &&	
 			   ocp.fecha().isAfter(LocalDateTime.now())) {
@@ -121,9 +121,9 @@ public class PreguntasImperativo implements Preguntas {
 	}
 	
 	public Map<String, Double> precioMedio(Integer n) {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.of().stream().toList();
+		OcupacionesVuelos ls = OcupacionesVuelos.of();
 		Map<String, List<OcupacionVuelo>> a = new HashMap<>();
-		for(OcupacionVuelo ocp:ls) {
+		for(OcupacionVuelo ocp:ls.todas()) {
 			if(ocp.vuelo().numPlazas()-ocp.numPasajeros()==n) {
 				String key = ocp.vuelo().ciudadDestino();
 				if(a.containsKey(key)) {
@@ -155,10 +155,10 @@ public class PreguntasImperativo implements Preguntas {
 	// a f. Si no hubiera vuelos devuelve 0.0
 	
 	public Double precioMedio(LocalDateTime f) {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.of().stream().toList();
+		OcupacionesVuelos ls = OcupacionesVuelos.of();
 		Double sum = 0.;
 		Integer n = 0;
-		for(OcupacionVuelo ocp: ls) {
+		for(OcupacionVuelo ocp: ls.todas()) {
 			if(ocp.fecha().isAfter(f)) {
 				Double precio = ocp.vuelo().precio();
 				sum = sum +precio;
@@ -172,9 +172,9 @@ public class PreguntasImperativo implements Preguntas {
 	// fechas de los vuelos a ese destino.
 	
 	public Map<String, Set<LocalDate>> fechasADestino() {
-		List<OcupacionVuelo> ls = OcupacionesVuelos.of().stream().toList();
+		OcupacionesVuelos ls = OcupacionesVuelos.of();
 		Map<String, Set<LocalDate>> a = new HashMap<>();
-		for(OcupacionVuelo ocp: ls) {
+		for(OcupacionVuelo ocp: ls.todas()) {
 			String key = ocp.vuelo().ciudadDestino();
 			LocalDate fecha = ocp.fechaSalida();
 			if(a.containsKey(key)) {

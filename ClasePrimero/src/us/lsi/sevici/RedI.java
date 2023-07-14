@@ -15,19 +15,19 @@ public class RedI extends RedA implements Red{
 	public static Red parse(String fichero) {
 		List<String> lineas = File2.lineasDeFichero("ficheros/estaciones.csv","WINDOWS-1252");
 		lineas = lineas.subList(1, lineas.size());
-		List<Estacion> estaciones = new ArrayList<>();
+		Set<Estacion> estaciones = new HashSet<>();
 		for(String ln:lineas) {
 			Estacion e = Estacion.parse(ln);
 			estaciones.add(e);
 		}
-		return of(estaciones);
+		return RedI.of(estaciones);
 	}
 
-	public static RedI of(List<Estacion> estaciones) {
+	public static RedI of(Set<Estacion> estaciones) {
 		return new RedI(estaciones);
 	}
 
-	private RedI(List<Estacion> estaciones) {
+	private RedI(Set<Estacion> estaciones) {
 		super(estaciones);
 	}
 	
@@ -50,7 +50,7 @@ public class RedI extends RedA implements Red{
 	}
 
 	@Override
-	public Set<Estacion> porName(String nombre) {
+	public Set<Estacion> estacion(String nombre) {
 		Set<Estacion> s = new HashSet<>();
 		for(Estacion e:super.estaciones()) {
 			if(e.name().equals(nombre))
@@ -80,8 +80,8 @@ public class RedI extends RedA implements Red{
 	}
 
 	@Override
-	public List<Coordenadas2D> ubicaciones() {
-		List<Coordenadas2D> s = new ArrayList<>();
+	public Set<Coordenadas2D> ubicaciones() {
+		Set<Coordenadas2D> s = new HashSet<>();
 		for(Estacion e:super.estaciones()) {
 			Coordenadas2D c = e.coordenadas();
 			s.add(c);
@@ -90,8 +90,8 @@ public class RedI extends RedA implements Red{
 	}
 
 	@Override
-	public List<Coordenadas2D> ubicacionEstacionesDisponibles(Integer k) {
-		List<Coordenadas2D> s = new ArrayList<>();
+	public Set<Coordenadas2D> ubicacionEstacionesDisponibles(Integer k) {
+		Set<Coordenadas2D> s = new HashSet<>();
 		for(Estacion e:super.estaciones()) {
 			if (e.free_bikes() >= k) {
 				Coordenadas2D c = e.coordenadas();
@@ -146,8 +146,11 @@ public class RedI extends RedA implements Red{
 	@Override
 	public void escribe(Integer n, String file) {		
 		String r = "";
-		for(int i=0;i<n;i++) {
-			r = r+this.estaciones().get(i).toString()+"\n";
+		Integer i = 0;
+		for(Estacion e:this.estaciones()) {
+			r = r+e.toString()+"\n";
+			i++;
+			if(i == n) break;
 		}
 		File2.write(file, r);
 	}

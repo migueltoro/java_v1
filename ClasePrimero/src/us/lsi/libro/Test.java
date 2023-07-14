@@ -10,10 +10,11 @@ import us.lsi.tools.Map2;
 public class Test {
 
 	public static void main(String[] args) {
-		Locale.setDefault(new Locale("en", "US"));
+		Locale.setDefault(Locale.of("en", "US"));
 		TipoImplementacion t = TipoImplementacion.Funcional;
 		Integer n = Libro.of(t).numeroDeLineas("ficheros/quijote.txt");
 		System.out.println(n);
+		System.out.println();
 //		Set<String> s = Libro.palabrasHuecas("ficheros/palabras_huecas.txt");
 //		System.out.println(CollectionsTools.collectionToString(s));
 		n = Libro.of(t).numeroDePalabrasDistintasNoHuecas("ficheros/quijote.txt");

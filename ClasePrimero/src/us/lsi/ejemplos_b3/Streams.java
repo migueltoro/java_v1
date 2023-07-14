@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
-import us.lsi.ejemplos_b1.Persona;
+import us.lsi.ejemplos_b1_tipos.Persona;
 
 public class Streams {
 	

@@ -8,6 +8,12 @@ import java.time.format.DateTimeFormatter;
 public record OcupacionVuelo(String codigoVuelo, LocalDateTime fecha, Integer numPasajeros) {
 	
 	
+	public static record Ocv(String codigoVuelo, LocalDateTime fecha) {
+		public static Ocv of(String codigoVuelo, LocalDateTime fecha) {
+			return new Ocv(codigoVuelo, fecha);
+		}
+	}
+	
 	public static OcupacionVuelo parse(String text) {
 		String[] campos = text.split(",");
 		String codeVuelo = campos[0];
@@ -24,6 +30,10 @@ public record OcupacionVuelo(String codigoVuelo, LocalDateTime fecha, Integer nu
 			LocalDateTime fecha,
 			Integer numPasajeros) {
 		return new OcupacionVuelo(codeVuelo,fecha,numPasajeros);	
+	}
+	
+	public Ocv key() {
+		return Ocv.of(this.codigoVuelo,this.fecha);
 	}
 	
 	public Vuelo vuelo() {

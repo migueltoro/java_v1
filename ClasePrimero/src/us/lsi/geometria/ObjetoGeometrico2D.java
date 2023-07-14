@@ -2,6 +2,7 @@ package us.lsi.geometria;
 
 
 
+import us.lsi.ejemplos_b1_tipos.Vector2D;
 import us.lsi.tools.Ventana;
 
 public interface ObjetoGeometrico2D {

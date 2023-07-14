@@ -3,6 +3,7 @@ package us.lsi.geometria;
 import java.awt.Shape;
 import java.awt.geom.Line2D;
 
+import us.lsi.ejemplos_b1_tipos.Vector2D;
 import us.lsi.tools.Ventana;
 
 public record Segmento2D(Punto2D p1, Punto2D p2) implements ObjetoGeometrico2D, ShapeDeObjeto {

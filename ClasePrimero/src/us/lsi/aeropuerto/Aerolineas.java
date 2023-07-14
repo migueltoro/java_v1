@@ -1,31 +1,30 @@
 package us.lsi.aeropuerto;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import us.lsi.tools.File2;
 
 public class Aerolineas {
 	
-	private static Aerolineas faerolineas = null;
+	private static Aerolineas gestoraAerolineas = null;
 	
 	public static Aerolineas of() {
-		if(Aerolineas.faerolineas == null)
-			Aerolineas.faerolineas = Aerolineas.of("ficheros_aeropuertos/aerolineas.csv");
-		return faerolineas;
+		if(Aerolineas.gestoraAerolineas == null)
+			Aerolineas.gestoraAerolineas = Aerolineas.of("ficheros_aeropuertos/aerolineas.csv");
+		return gestoraAerolineas;
 	}
 	
 	public static Aerolineas of(String fichero) {
-		List<Aerolinea> datos = File2.streamDeFichero(fichero,"Windows-1252")
+		Set<Aerolinea> datos = File2.streamDeFichero(fichero,"Windows-1252")
 				.map(x ->Aerolinea.parse(x))
-				.toList();
+				.collect(Collectors.toSet());
 		Aerolineas aerolineas = new Aerolineas(datos);
 		return aerolineas;
 	}
 	
-	public Aerolineas(List<Aerolinea> aeroLineas) {
+	public Aerolineas(Set<Aerolinea> aeroLineas) {
 		super();
 		this.aeroLineas = aeroLineas;
 		this.codigosAerolineas = 
@@ -33,7 +32,7 @@ public class Aerolineas {
 	}
 
 	
-	private List<Aerolinea> aeroLineas;
+	private Set<Aerolinea> aeroLineas;
 	
 	private Map<String,Aerolinea> codigosAerolineas = null;
 
@@ -45,14 +44,14 @@ public class Aerolineas {
 		return this.aeroLineas.size();
 	}
 	
-	public Stream<Aerolinea> stream() {
-		return this.aeroLineas.stream();
+	public Set<Aerolinea> todas() {
+		return this.aeroLineas;
 	}
 	
 	public Aerolinea get(Integer i) {
-		return this.aeroLineas.get(i);
+		return this.aeroLineas.stream().toList().get(i);
 	}
-	
+		
 	public String string() {
 		return String.format("Aerolineas\n\t%s",this.aeroLineas.stream()
 				.map(a->a.toString())
