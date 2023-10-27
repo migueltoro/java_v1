@@ -6,54 +6,57 @@ import java.util.stream.Collectors;
 import us.lsi.tools.File2;
 
 public class Matriculas {
-	
-	 
-	 public static Matriculas gestorDeMatriculas = null;
-		
-		public static Matriculas of() {
-			if (Matriculas.gestorDeMatriculas == null)
-				Matriculas.gestorDeMatriculas = Matriculas.of("ficheros/matriculas.txt");
-	        return Matriculas.gestorDeMatriculas;
-		}
-		
-		public static Matriculas of(String file) {
-			Set<Matricula> matriculas = File2.streamDeFichero(file,"utf-8")
-	        		.map(ln->Matricula.parse(ln)).collect(Collectors.toSet());    	
-			Matriculas.gestorDeMatriculas = new Matriculas(matriculas);
-			return Matriculas.gestorDeMatriculas;
-		}
-		
-		public static Matriculas of(Set<Matricula> matriculas) {
-			return new Matriculas(matriculas);
-		}
 
-		private Set<Matricula> matriculas;
+	public static Matriculas gestorDeMatriculas = null;
 
-		private Matriculas(Set<Matricula> matriculas) {
-			super();
-			this.matriculas = matriculas;
-		}
-	    
-	    public Integer size() { 
-	        return this.matriculas.size();
-	    }
-	    
-	    public void addMatricula(Alumno alumno,Asignatura asignatura,Integer grupo) {
-	    	Matricula m = Matricula.of(alumno.dni(),asignatura.ida(),grupo);
-	        this.matriculas.add(m);
-	    }
-	
-	    public void removeMatricula(Alumno alumno,Asignatura asignatura,Integer grupo) {
-	    	Matricula m = Matricula.of(alumno.dni(),asignatura.ida(),grupo);
-	        this.matriculas.remove(m);
-	    }
+	public static Matriculas of() {
+		return Matriculas.of("");
+	}
 
-		public Set<Matricula> todas() {
-			return this.matriculas;
-		}
-		
-		public Matricula get(Integer index) { 
-		    return this.matriculas.stream().toList().get(index);
-		}
-	    
+	public static Matriculas of(String root) {
+		if (Matriculas.gestorDeMatriculas == null)
+			Matriculas.gestorDeMatriculas = Matriculas.parse(File2.absolute_path("ficheros/matriculas.txt", root));
+		return Matriculas.gestorDeMatriculas;
+	}
+
+	public static Matriculas parse(String file) {
+		Set<Matricula> matriculas = File2.streamDeFichero(file, "utf-8").map(ln -> Matricula.parse(ln))
+				.collect(Collectors.toSet());
+		Matriculas.gestorDeMatriculas = new Matriculas(matriculas);
+		return Matriculas.gestorDeMatriculas;
+	}
+
+	public static Matriculas of(Set<Matricula> matriculas) {
+		return new Matriculas(matriculas);
+	}
+
+	private Set<Matricula> matriculas;
+
+	private Matriculas(Set<Matricula> matriculas) {
+		super();
+		this.matriculas = matriculas;
+	}
+
+	public Integer size() {
+		return this.matriculas.size();
+	}
+
+	public void addMatricula(Alumno alumno, Asignatura asignatura, Integer grupo) {
+		Matricula m = Matricula.of(alumno.dni(), asignatura.ida(), grupo);
+		this.matriculas.add(m);
+	}
+
+	public void removeMatricula(Alumno alumno, Asignatura asignatura, Integer grupo) {
+		Matricula m = Matricula.of(alumno.dni(), asignatura.ida(), grupo);
+		this.matriculas.remove(m);
+	}
+
+	public Set<Matricula> todas() {
+		return this.matriculas;
+	}
+
+	public Matricula get(Integer index) {
+		return this.matriculas.stream().toList().get(index);
+	}
+
 }

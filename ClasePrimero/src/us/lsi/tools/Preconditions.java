@@ -48,11 +48,12 @@ public class Preconditions {
 	}
 	
 	/**
-	 * Comprueba que los parámetros son no null
+	 * Comprueba que los parï¿½metros son no null
 	 * @param <T> El tipo del elemento	
-	 * @param reference Parámetros a comprobar
+	 * @param reference Parï¿½metros a comprobar
 	 */
-	public static <T> void checkNotNull(@SuppressWarnings("unchecked") T... reference){
+	@SafeVarargs
+	public static <T> void checkNotNull(T... reference){
 		if(Arrays.stream(reference).anyMatch(x->x == null)){
 			throw new NullPointerException(String.format("Son nulos los elementos %s",
 					IntStream.range(0, reference.length)
@@ -66,9 +67,9 @@ public class Preconditions {
 	 * Checks that index is a valid element index into a list, string, or array with the specified size. 
 	 * An element index may range from 0 inclusive to size exclusive. 
 	 * You don't pass the list, string, or array directly; you just pass its size. 
-	 * @param index Un índice 
-	 * @param size El tamaño de la lista
-	 * @return Index El índice del elemento
+	 * @param index Un ï¿½ndice 
+	 * @param size El tamaï¿½o de la lista
+	 * @return Index El ï¿½ndice del elemento
 	 */
 	public static int checkElementIndex(int index, int size){
 		if(!(index>=0 && index<size)){
@@ -81,9 +82,9 @@ public class Preconditions {
 	 * Checks that index is a valid position index into a list, string, or array with the specified size. 
 	 * A position index may range from 0 inclusive to size inclusive. 
 	 * You don't pass the list, string, or array directly; you just pass its size. Returns index.
-	 * @param index El índice del elemento
-	 * @param size El tamaño de la lista
-	 * @return Index El índice del elemento
+	 * @param index El ï¿½ndice del elemento
+	 * @param size El tamaï¿½o de la lista
+	 * @return Index El ï¿½ndice del elemento
 	 */
 	public static int checkPositionIndex(int index, int size){
 		if(!(index>=0 && index<=size)){

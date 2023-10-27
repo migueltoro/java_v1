@@ -14,12 +14,17 @@ public class Prestamos {
 	public static Prestamos gestorDePrestamos = null;
 	
 	public static Prestamos of() {
+		return Prestamos.of("");
+	}
+	
+	public static Prestamos of(String root) {
 		if (Prestamos.gestorDePrestamos == null)
-			Prestamos.gestorDePrestamos = Prestamos.of("ficheros_biblioteca/Prestamos.txt");
+			Prestamos.gestorDePrestamos = 
+				Prestamos.parse(File2.absolute_path("ficheros_biblioteca/Prestamos.txt",root));
         return Prestamos.gestorDePrestamos;
 	}
 	
-	public static Prestamos of(String file) {
+	public static Prestamos parse(String file) {
 		Set<Prestamo> prestamos = File2.streamDeFichero(file,"utf-8")
         		.map(ln->Prestamo.parse(ln)).collect(Collectors.toSet());    	
 		Prestamos.gestorDePrestamos = new Prestamos(prestamos);

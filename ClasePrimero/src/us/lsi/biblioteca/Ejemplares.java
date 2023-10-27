@@ -15,12 +15,17 @@ public class Ejemplares {
 	public static Ejemplares gestorDeEjemplares = null;
 	
 	public static Ejemplares of() {
+		return Ejemplares.of("");
+	}
+	
+	public static Ejemplares of(String root) {
 		if (Ejemplares.gestorDeEjemplares == null)
-			Ejemplares.gestorDeEjemplares = Ejemplares.of("ficheros_biblioteca/Ejemplares.txt");
+			Ejemplares.gestorDeEjemplares = 
+				Ejemplares.parse(File2.absolute_path("ficheros_biblioteca/Ejemplares.txt",root));
         return Ejemplares.gestorDeEjemplares;
 	}
 	
-	public static Ejemplares of(String file) {
+	public static Ejemplares parse(String file) {
 		Set<Ejemplar> ejemplares = File2.streamDeFichero(file,"utf-8")
         		.map(ln->Ejemplar.parse(ln)).collect(Collectors.toSet());    	
 		Ejemplares.gestorDeEjemplares = new Ejemplares(ejemplares);

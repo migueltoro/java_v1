@@ -11,12 +11,17 @@ public class Libros {
 	public static Libros gestorDeLibros = null;
 	
 	public static Libros of() {
+		return Libros.of("");
+	}
+	
+	public static Libros of(String root) {
 		if (Libros.gestorDeLibros == null)
-			Libros.gestorDeLibros = Libros.of("ficheros_biblioteca/Libros.txt");
+			Libros.gestorDeLibros = 
+				Libros.parse(File2.absolute_path("ficheros_biblioteca/Libros.txt",root));
         return Libros.gestorDeLibros;
 	}
 	
-	public static Libros of(String file) {
+	public static Libros parse(String file) {
 		Set<Libro> libros = File2.streamDeFichero(file,"utf-8")
         		.map(ln->Libro.parse(ln)).collect(Collectors.toSet());    	
 		Libros.gestorDeLibros = new Libros(libros);

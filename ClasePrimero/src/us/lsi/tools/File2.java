@@ -3,7 +3,9 @@ package us.lsi.tools;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,15 +14,29 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.mozilla.universalchardet.UniversalDetector;
 
 
 public class File2 {
+	
+	public static String root = "C:/Users/migueltoro/git/java_v1/ClasePrimero/";
+	
+	public static String root_project() {
+		return new File("root/Empty.txt").getAbsolutePath().replace("root\\Empty.txt","");
+	}
+	
+	public static String absolute_path(String file, String root_project) {
+		return root_project+file;
+	}
 	
 	public static String getFileCharset(String file) {
 		try {
@@ -76,7 +92,7 @@ public class File2 {
 	}
 	
 	public static Stream<List<String>> streamDeCsv(String file) {
-		return streamDeCsv(file,CSVFormat.RFC4180);
+		return streamDeCsv(file,",");
 	}
 	
 	/**
@@ -85,11 +101,16 @@ public class File2 {
 	 * @param format Formato del fichero
 	 * @return Un Stream donde cada elemento es una lista de campos
 	 */
-	public static Stream<List<String>> streamDeCsv(String file,CSVFormat format) {
+	public static Stream<List<String>> streamDeCsv(String file,String delimiter) {
 		CSVParser parser=null;
 		try {
 			BufferedReader csvData = new BufferedReader(new FileReader(file));
-			parser = CSVParser.parse(csvData, format);
+			CSVFormat csvFormat = CSVFormat.Builder.create()
+					.setSkipHeaderRecord(false)
+					.setDelimiter(delimiter)
+					.setTrim(true)
+					.build();
+			parser = csvFormat.parse(csvData);
 		} catch (IOException e) {
 			System.out.println(e.toString());
 		}
@@ -97,18 +118,59 @@ public class File2 {
 	}
 	
 	public static List<List<String>> lineasDeCsv(String file) {
-		return lineasDeCsv(file,CSVFormat.RFC4180);
+		return lineasDeCsv(file,",");
 	}
 	
-	public static List<List<String>> lineasDeCsv(String file, CSVFormat format) {
+	public static List<List<String>> lineasDeCsv(String file, String delimiter) {
 		CSVParser parser=null;
 		try {
 			BufferedReader csvData = new BufferedReader(new FileReader(file));
-			parser = CSVParser.parse(csvData, CSVFormat.RFC4180);
+			CSVFormat csvFormat = CSVFormat.Builder.create()
+					.setSkipHeaderRecord(false)
+					.setDelimiter(delimiter)
+					.setTrim(true)
+					.build();
+			parser = csvFormat.parse(csvData);
 		} catch (IOException e) {
 			System.out.println(e.toString());
 		}
 		return parser.getRecords().stream().map(r->r.toList()).toList();
+	}
+	
+	public static Map<String,List<String>> mapDeCsv(String file) {
+		return mapDeCsv(file,",");
+	}
+	
+	public static Map<String,List<String>> mapDeCsv(String file,String delimiter) {
+		Map<String,List<String>> rt = new HashMap<>();
+		Iterable<CSVRecord> records = null;
+		BufferedReader in;
+		try {
+			in = new BufferedReader(new FileReader(file));
+			CSVFormat csvFormat = CSVFormat.Builder.create()
+					.setHeader()
+					.setSkipHeaderRecord(true)
+					.setDelimiter(delimiter)
+					.setTrim(true)
+					.build();
+			records = csvFormat.parse(in);
+		} catch (FileNotFoundException e) {
+			System.out.println(e.toString());
+		} catch (IOException e) {
+			System.out.println(e.toString());
+		}
+	    for (CSVRecord rd : records) {
+	        for(String name:rd.toMap().keySet()) {	        	
+	        	if(rt.keySet().contains(name)) {
+	        		rt.get(name).add(rd.get(name));
+	        	} else {
+	        		List<String> ls = new ArrayList<>();
+	        		ls.add(rd.get(name));
+	        		rt.put(name,ls);	
+	        	}
+	        }    
+	    }	    
+	    return rt;
 	}
 	
 	public static void writeStream(Stream<String> s, String file) {
@@ -145,6 +207,10 @@ public class File2 {
 	public static void main(String[] args) {
 		String s = File2.getFileCharset("ficheros_aeropuertos/aeropuertos.csv");
 		System.out.println(s);
+		System.out.println(File2.root_project());
+		System.out.println(File2.mapDeCsv("datos/pp.csv"));
+		System.out.println(File2.lineasDeCsv("datos/pp.csv"));
+		System.out.println(File2.streamDeCsv("datos/pp.csv").toList());
 	}
 
 }

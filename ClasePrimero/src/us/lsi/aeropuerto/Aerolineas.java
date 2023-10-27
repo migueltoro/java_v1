@@ -11,12 +11,17 @@ public class Aerolineas {
 	private static Aerolineas gestoraAerolineas = null;
 	
 	public static Aerolineas of() {
+		return Aerolineas.of("");
+	}
+	
+	public static Aerolineas of(String root) {
 		if(Aerolineas.gestoraAerolineas == null)
-			Aerolineas.gestoraAerolineas = Aerolineas.of("ficheros_aeropuertos/aerolineas.csv");
+			Aerolineas.gestoraAerolineas = 
+				Aerolineas.parse(File2.absolute_path("ficheros_aeropuertos/aerolineas.csv",root));
 		return gestoraAerolineas;
 	}
 	
-	public static Aerolineas of(String fichero) {
+	public static Aerolineas parse(String fichero) {
 		Set<Aerolinea> datos = File2.streamDeFichero(fichero,"Windows-1252")
 				.map(x ->Aerolinea.parse(x))
 				.collect(Collectors.toSet());
@@ -31,7 +36,6 @@ public class Aerolineas {
 				this.aeroLineas.stream().collect(Collectors.toMap(a->a.codigo(),a->a));
 	}
 
-	
 	private Set<Aerolinea> aeroLineas;
 	
 	private Map<String,Aerolinea> codigosAerolineas = null;

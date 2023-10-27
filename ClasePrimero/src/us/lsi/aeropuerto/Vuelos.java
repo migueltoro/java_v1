@@ -11,11 +11,15 @@ public class Vuelos {
 	private static Vuelos gestorVuelos = null;
 	
 	public static Vuelos of() {
+		return Vuelos.of("");
+	}
+	
+	public static Vuelos of(String root) {
 		if(Vuelos.gestorVuelos == null)
-			Vuelos.gestorVuelos = Vuelos.of("ficheros_aeropuertos/vuelos.csv");
+			Vuelos.gestorVuelos = Vuelos.parse(File2.absolute_path("ficheros_aeropuertos/vuelos.csv",root));
 		return Vuelos.gestorVuelos;
 	}
-	public static Vuelos of(String fichero) {
+	public static Vuelos parse(String fichero) {
 		Set<Vuelo>  vuelos = File2.streamDeFichero(fichero,"Windows-1252")
 				.map(x -> Vuelo.parse(x))
 				.collect(Collectors.toSet());
@@ -49,9 +53,9 @@ public class Vuelos {
 
 	
 	public static void main(String[] args) {
-		Aeropuertos.of("ficheros/aeropuertos.csv");
-		Aerolineas.of("ficheros/aerolineas.csv");
-		Vuelos.of("ficheros/vuelos.csv");
+		Aeropuertos.parse("ficheros/aeropuertos.csv");
+		Aerolineas.parse("ficheros/aerolineas.csv");
+		Vuelos.parse("ficheros/vuelos.csv");
 	}
 	
 }

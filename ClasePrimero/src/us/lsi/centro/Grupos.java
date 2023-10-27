@@ -10,8 +10,12 @@ public class Grupos {
 	public static Grupos gestorDeGrupos = null;
 	
 	public static Grupos of() {
+		return  Grupos.of("");
+	}
+	
+	public static Grupos of(String root) {
 		if (Grupos.gestorDeGrupos == null)
-			Grupos.gestorDeGrupos = Grupos.of(Centro.of());
+			Grupos.gestorDeGrupos = Grupos.of(Centro.of(root));
         return Grupos.gestorDeGrupos;
 	}
 	

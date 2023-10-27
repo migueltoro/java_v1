@@ -4,13 +4,12 @@ package us.lsi.tools;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators;
-import java.util.Spliterators.AbstractSpliterator;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -49,22 +48,41 @@ public class Stream2 {
 				.flatMap(x->IntStream.range(m1, m2).boxed().map(y->IntPair.of(x,y)));
 	}
 	
-	public static <L, R, T> Spliterator<T> zip(Spliterator<L> lefts, Spliterator<R> rights,
-			BiFunction<L, R, T> combiner) {
-		return new AbstractSpliterator<T>(
-				Long.min(lefts.estimateSize(), rights.estimateSize()),
-				lefts.characteristics() & rights.characteristics()) {
+	public static <A, B, C> Stream<C> zip(Stream<? extends A> a, Stream<? extends B> b,
+			BiFunction<? super A, ? super B, ? extends C> zipper) {
+		Objects.requireNonNull(zipper);
+		Spliterator<? extends A> aSpliterator = Objects.requireNonNull(a).spliterator();
+		Spliterator<? extends B> bSpliterator = Objects.requireNonNull(b).spliterator();
+
+		// Zipping looses DISTINCT and SORTED characteristics
+		int characteristics = aSpliterator.characteristics() & bSpliterator.characteristics()
+				& ~(Spliterator.DISTINCT | Spliterator.SORTED);
+
+		long zipSize = ((characteristics & Spliterator.SIZED) != 0)
+				? Math.min(aSpliterator.getExactSizeIfKnown(), bSpliterator.getExactSizeIfKnown())
+				: -1;
+
+		Iterator<A> aIterator = Spliterators.iterator(aSpliterator);
+		Iterator<B> bIterator = Spliterators.iterator(bSpliterator);
+		Iterator<C> cIterator = new Iterator<C>() {
 			@Override
-			public boolean tryAdvance(Consumer<? super T> action) {
-				return lefts.tryAdvance(left -> rights.tryAdvance(right -> action.accept(combiner.apply(left, right))));
+			public boolean hasNext() {
+				return aIterator.hasNext() && bIterator.hasNext();
+			}
+
+			@Override
+			public C next() {
+				return zipper.apply(aIterator.next(), bIterator.next());
 			}
 		};
+
+		Spliterator<C> split = Spliterators.spliterator(cIterator, zipSize, characteristics);
+		return (a.isParallel() || b.isParallel()) ? StreamSupport.stream(split, true)
+				: StreamSupport.stream(split, false);
 	}
 	
 	public static <L, R> Stream<Pair<L,R>> zip(Stream<L> leftStream, Stream<R> rightStream) {
-		Spliterator<L> lefts = leftStream.spliterator();
-		Spliterator<R> rights = rightStream.spliterator();
-		return StreamSupport.stream(zip(lefts,rights,(a,b)->Pair.of(a, b)), leftStream.isParallel() || rightStream.isParallel());
+		return Stream2.zip(leftStream,rightStream,(a,b)->Pair.of(a, b));
 	}
 	
 	public static <E> Stream<Enumerate<E>> enumerate(Stream<E> stream, Integer start){

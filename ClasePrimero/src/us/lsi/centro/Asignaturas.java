@@ -11,12 +11,17 @@ public class Asignaturas {
 	public static Asignaturas gestorDeAsignaturas = null;
 	
 	public static Asignaturas of() {
+		return Asignaturas.of("");
+	}
+	
+	public static Asignaturas of(String root) {
 		if (Asignaturas.gestorDeAsignaturas == null)
-			Asignaturas.gestorDeAsignaturas = Asignaturas.of("ficheros/asignaturas.txt");
+			Asignaturas.gestorDeAsignaturas = 
+				Asignaturas.parse(File2.absolute_path("ficheros/asignaturas.txt",root));
         return Asignaturas.gestorDeAsignaturas;
 	}
 	
-	public static Asignaturas of(String file) {
+	public static Asignaturas parse(String file) {
 		Set<Asignatura> asignaturas = File2.streamDeFichero(file,"utf-8")
         		.map(ln->Asignatura.parse(ln)).collect(Collectors.toSet());    	
 		Asignaturas.gestorDeAsignaturas = new Asignaturas(asignaturas);

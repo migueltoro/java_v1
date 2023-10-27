@@ -11,12 +11,17 @@ public class Aeropuertos {
 	private static Aeropuertos gestorAeropuertos = null;
 	
 	public static Aeropuertos of() {
+		return Aeropuertos.of("");
+	}
+	
+	public static Aeropuertos of(String root) {
 		if(Aeropuertos.gestorAeropuertos == null)
-			Aeropuertos.gestorAeropuertos = Aeropuertos.of("ficheros_aeropuertos/aeropuertos.csv");
+			Aeropuertos.gestorAeropuertos = 
+			Aeropuertos.parse(File2.absolute_path("ficheros_aeropuertos/aeropuertos.csv",root));
 		return gestorAeropuertos;
 	}
 	
-	public static Aeropuertos of(String fichero) {
+	public static Aeropuertos parse(String fichero) {
 		Set<Aeropuerto> aeropuertos = File2.streamDeFichero(fichero,"Windows-1252")
 				.map(x -> Aeropuerto.parse(x))
 				.collect(Collectors.toSet());	

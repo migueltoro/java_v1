@@ -10,12 +10,17 @@ public class Asignaciones {
 	public static Asignaciones gestorDeAsignaciones = null;
 	
 	public static Asignaciones of() {
+		return Asignaciones.of("");
+	}
+	
+	public static Asignaciones of(String root) {
 		if (Asignaciones.gestorDeAsignaciones == null)
-			Asignaciones.gestorDeAsignaciones = Asignaciones.of("ficheros/Asignaciones.txt");
+			Asignaciones.gestorDeAsignaciones = 
+			Asignaciones.parse(File2.absolute_path("ficheros/Asignaciones.txt",root));
         return Asignaciones.gestorDeAsignaciones;
 	}
 	
-	public static Asignaciones of(String file) {
+	public static Asignaciones parse(String file) {
 		Set<Asignacion> asignaciones = File2.streamDeFichero(file,"utf-8")
         		.map(ln->Asignacion.parse(ln)).collect(Collectors.toSet());    	
 		Asignaciones.gestorDeAsignaciones = new Asignaciones(asignaciones);

@@ -11,12 +11,17 @@ public class Profesores {
 	public static Profesores gestorDeProfesores = null;
 	
 	public static Profesores of() {
+		return Profesores.of("");
+	}
+	
+	public static Profesores of(String root) {
 		if (Profesores.gestorDeProfesores == null)
-			Profesores.gestorDeProfesores = Profesores.of("ficheros/profesores.txt");
+			Profesores.gestorDeProfesores = 
+				Profesores.parse(File2.absolute_path("ficheros/profesores.txt",root));
         return Profesores.gestorDeProfesores;
 	}
 	
-	public static Profesores of(String file) {
+	public static Profesores parse(String file) {
 		Set<Profesor> profesores = File2.streamDeFichero(file,"utf-8")
         		.map(ln->Profesor.parse(ln)).collect(Collectors.toSet());    	
 		Profesores.gestorDeProfesores = new Profesores(profesores);

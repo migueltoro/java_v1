@@ -13,12 +13,17 @@ public class OcupacionesVuelos {
 	static OcupacionesVuelos getorOcupacionesVuelos = null;
 	
 	public static OcupacionesVuelos of() {
+		return OcupacionesVuelos.of("");
+	}
+	
+	public static OcupacionesVuelos of(String root) {
 		if(OcupacionesVuelos.getorOcupacionesVuelos == null)
-			OcupacionesVuelos.getorOcupacionesVuelos = OcupacionesVuelos.of("ficheros_aeropuertos/ocupacionesVuelos.csv");
+			OcupacionesVuelos.getorOcupacionesVuelos = 
+			OcupacionesVuelos.parse(File2.absolute_path("ficheros_aeropuertos/ocupacionesVuelos.csv",root));
 		return OcupacionesVuelos.getorOcupacionesVuelos;
 	}
 
-	public static OcupacionesVuelos of(String fichero) {
+	public static OcupacionesVuelos parse(String fichero) {
 		Set<OcupacionVuelo> r = File2.streamDeFichero(fichero,"Windows-1252")
 				.map(x -> OcupacionVuelo.parse(x))
 				.collect(Collectors.toSet());

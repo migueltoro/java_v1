@@ -2,21 +2,30 @@ package us.lsi.biblioteca;
 
 
 import java.util.stream.IntStream;
+
 import us.lsi.tools.Preconditions;
 
 public class Biblioteca {
 	
 	public static Biblioteca of(String nombre, String codigoPostal, String email) {
-		return new Biblioteca(nombre, codigoPostal, email,
-				Usuarios.of(), Libros.of(), 
-				Ejemplares.of(), Prestamos.of());
+		return Biblioteca.of("", nombre, codigoPostal, email);
 	}
 	
-	public static Biblioteca of(String nombre, String codigoPostal, String email, String usuarios,
+	public static Biblioteca of(String root, String nombre, String codigoPostal, String email) {
+		return new Biblioteca(nombre, codigoPostal, email,
+				Usuarios.of(root), 
+				Libros.of(root), 
+				Ejemplares.of(root), 
+				Prestamos.of(root));
+	}
+	
+	public static Biblioteca parse(String nombre, String codigoPostal, String email, String usuarios,
 			String libros, String ejemplares, String prestamos) {
 		return new Biblioteca(nombre, codigoPostal, email, 
-				Usuarios.of(usuarios), Libros.of(libros), 
-				Ejemplares.of(ejemplares), Prestamos.of(prestamos));
+				Usuarios.parse(usuarios), 
+				Libros.parse(libros), 
+				Ejemplares.parse(ejemplares), 
+				Prestamos.parse(prestamos));
 	}
 
 	private String nombre;

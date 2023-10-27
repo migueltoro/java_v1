@@ -12,12 +12,17 @@ public class Usuarios {
 	public static Usuarios gestorDeUsuarios = null;
 	
 	public static Usuarios of() {
+		return Usuarios.of("");
+	}
+	
+	public static Usuarios of(String root) {
 		if (Usuarios.gestorDeUsuarios == null)
-			Usuarios.gestorDeUsuarios = Usuarios.of("ficheros_biblioteca/usuarios.txt");
+			Usuarios.gestorDeUsuarios = 
+				Usuarios.parse(File2.absolute_path("ficheros_biblioteca/usuarios.txt",root));
         return Usuarios.gestorDeUsuarios;
 	}
 	
-	public static Usuarios of(String file) {
+	public static Usuarios parse(String file) {
 		Set<Usuario> usuarios = File2.streamDeFichero(file,"utf-8")
         		.map(ln->Usuario.parse(ln)).collect(Collectors.toSet());    	
 		Usuarios.gestorDeUsuarios = new Usuarios(usuarios);

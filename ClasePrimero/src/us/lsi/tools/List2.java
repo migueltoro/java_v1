@@ -7,25 +7,32 @@ import java.util.stream.Collectors;
 
 public class List2 {
 	
+	public static <E> List<E> choose(List<E> ls, List<Integer> indices){
+		return Stream2.enumerate(ls.stream())
+				.filter(p->indices.contains(p.counter()))
+				.map(p->p.value())
+				.toList();
+	}
+	
 	/**
-	 * @pre La lista no está vacía
+	 * @pre La lista no estï¿½ vacï¿½a
 	 * @param <E> Tipo de los elementos
 	 * @param ls Una lista
 	 * @return Su primer elemento
 	 */
 	public static <E> E first(List<E> ls){
-		Preconditions.checkArgument(!ls.isEmpty(), "La lista no puede estar vacía");
+		Preconditions.checkArgument(!ls.isEmpty(), "La lista no puede estar vacï¿½a");
 		return ls.get(0);
 	}
 	
 	/**
-	 * @pre La lista no está vacía
+	 * @pre La lista no estï¿½ vacï¿½a
 	 * @param <E> Tipo de los elementos
 	 * @param ls Una lista
-	 * @return Su último elemento
+	 * @return Su ï¿½ltimo elemento
 	 */
 	public static <E> E last(List<E> ls){
-		Preconditions.checkArgument(!ls.isEmpty(), "La lista no puede estar vacía");
+		Preconditions.checkArgument(!ls.isEmpty(), "La lista no puede estar vacï¿½a");
 		int n = ls.size();
 		return ls.get(n-1);
 	}
@@ -34,9 +41,9 @@ public class List2 {
 	/**
 	 * @param <E> tipo de los elementos de la lista
 	 * @param ls Una lista
-	 * @post La lista queda con el último elemento eliminado
-	 * @pre la lista no puede estar vacía
-	 * @return El último elemento eliminado
+	 * @post La lista queda con el ï¿½ltimo elemento eliminado
+	 * @pre la lista no puede estar vacï¿½a
+	 * @return El ï¿½ltimo elemento eliminado
 	 */
 	public static <E> E removeLast(List<E> ls){
 		int last = ls.size()-1;
@@ -48,7 +55,7 @@ public class List2 {
 	 * @param <E> tipo de los elementos de la lista
 	 * @param ls Una lista
 	 * @param e Un elemento
-	 * @post La lista queda con e añadido en primer lugar
+	 * @post La lista queda con e aï¿½adido en primer lugar
 	 */
 	public static <E> void addFirst(List<E> ls, E e){
 		ls.add(0,e);
@@ -57,7 +64,7 @@ public class List2 {
 	/**
 	 * @param <E> tipo de los elementos
 	 * @param elements Una serie de elementos
-	 * @return Una lista construida de first más los que están en elements
+	 * @return Una lista construida de first mï¿½s los que estï¿½n en elements
 	 */
 	@SafeVarargs
 	public static <E> List<E> of(E... elements){
@@ -70,7 +77,7 @@ public class List2 {
 	 * @param <E> Tipo de los elementos de la lista
 	 * @param ls1 Una lista
 	 * @param ls2 Una segunda lista
-	 * @return La concatenación d elas dos listas
+	 * @return La concatenaciï¿½n d elas dos listas
 	 */
 	public static <E> List<E> concat(List<E> ls1, List<E> ls2){
 		List<E> r = new ArrayList<>(ls1);
