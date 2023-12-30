@@ -5,9 +5,11 @@ Se quiere hacer una pequeÃ±a aplicaciÃ³n que ayude en la gestiÃ³n de un ce
 Los datos para gestionar este centro educativo provienen de 5 archivos diferentes:
 
 1.	profesores.txt: datos de los profesores del centro educativo. Cada una de las lÃ­neas del fichero tienen el mismo formato con líneas de la forma: 
+
 ```
 BadÃ­a Carretero,Felipa,53045701L,1998-10-26 18:31,+34722071515,Avenida de Leonardo Pont 26;Huelva;22501,Doctor
 ```
+
 Con propiedades: apellidos, nombre, dni, fecha de nacimiento, telÃ©fono, direcciÃ³n y tÃ­tulo 
 
 2.	alumnos.txt: datos de los profesores del centro educativo. Cada una de las lÃ­neas del fichero tienen el mismo formato con lÃ­neas de la forma:
@@ -16,7 +18,7 @@ Con propiedades: apellidos, nombre, dni, fecha de nacimiento, telÃ©fono, direc
 Girona Gómez,Nieves,92521023G,1998-01-20 02:07,+34721158714,Paseo de Herminio Maestre 71;Ourense;16866,8.3
 ```
 
-Con propiedades: apellidos, nombre, dni, fecha de nacimiento, telÃ©fono, direcciÃ³n y nota media de entrada al grado
+Con propiedades: apellidos, nombre, dni, fecha de nacimiento, telÃ©fono, direcciÃ³n y nota media de entrada al grado.
 
 3.	asignaturas.txt: datos de las asignaturas que se imparten en el centro universitario. Cada una de las lÃ­neas del fichero tienen el mismo formato con lÃ­neas de la forma: 
 
@@ -25,7 +27,8 @@ Con propiedades: apellidos, nombre, dni, fecha de nacimiento, telÃ©fono, direc
 
 ```
 
-Con propiedades: id, nombre, nÃºmero de crÃ©ditos y nÃºmero de grupos
+Con propiedades: id, nombre, nÃºmero de crÃ©ditos y nÃºmero de grupos.
+
 
 4.	matriculas.txt: datos de las matrÃ­culas que han realizado cada uno de los alumnos en las distintas asignaturas del centro. Cada una de las lÃ­neas del fichero tienen el mismo formato con lÃ­neas de la forma: 
 
@@ -33,7 +36,8 @@ Con propiedades: id, nombre, nÃºmero de crÃ©ditos y nÃºmero de grupos
 72842943B,0,0
 ```
 
-Con propiedades: dni del alumno, identificador de asignatura, nÃºmero de grupo
+Con propiedades: dni del alumno, identificador de asignatura, nÃºmero de grupo.
+
 
 5.	asignaciones.txt: datos de las asignaciones entre los profesores y las asignaturas que imparten. Cada una de las lÃ­neas del fichero tienen el mismo formato con lÃ­neas de la forma: 
 
