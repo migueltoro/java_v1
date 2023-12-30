@@ -84,6 +84,17 @@ public class Stream2 {
 		return enumerate(stream,0);
 	}
 	
+	public static <T, U, K> Stream<Pair<T,U>> join(
+			Stream<T> s1, 
+			Stream<U> s2, 
+			Function<T, K> k1,
+			Function<U, K> k2) {
+		Map<K, List<T>> m1 = Stream2.groupingList(s1,k1);
+		Map<K, List<U>> m2 = Stream2.groupingList(s2,k2);
+		Set<K> sk = Set2.intersection(m1.keySet(),m2.keySet());
+		return sk.stream().flatMap(k->Stream2.cartesianProduct(m1.get(k).stream(),m2.get(k).stream()));
+	}
+	
 	public static <E> Iterable<E> toIterable(Stream<E> st){
 		return st::iterator;
 	}
@@ -116,11 +127,11 @@ public class Stream2 {
 				Collectors.collectingAndThen(Collectors.toSet(),f))));
 	}
 	
-	public static <E> Map<E,Integer> groupsingSize(Stream<E> st){
-		return Stream2.groupsingSize(st, x->x);
+	public static <E> Map<E,Integer> groupingSize(Stream<E> st){
+		return Stream2.groupingSize(st, x->x);
 	}
 	
-	public static <E,K> Map<K,Integer> groupsingSize(Stream<E> st,Function<E,K> key){
+	public static <E,K> Map<K,Integer> groupingSize(Stream<E> st,Function<E,K> key){
 		return st.collect(Collectors.groupingBy(key,
 				Collectors.collectingAndThen(Collectors.counting(),Long::intValue)));
 	}

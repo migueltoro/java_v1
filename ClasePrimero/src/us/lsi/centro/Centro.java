@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import us.lsi.tools.File2;
+import us.lsi.tools.Pair;
 import us.lsi.tools.Preconditions;
+import us.lsi.tools.Stream2;
 
 public class Centro {
 
@@ -109,6 +112,24 @@ public class Centro {
 				.map(ap -> this.profesores().profesor(ap.dni())).filter(p -> p.edad() >= edad)
 				.collect(Collectors.toSet());
 	}
+	
+	public Map<String,List<String>> alumnosDeProfesores() {
+		Stream<Asignacion> as = this.asignaciones().todas().stream();
+		Stream<Matricula> ms = this.matriculas().todas().stream();
+		Stream<Pair<String, String>> ppa = 
+				Stream2.join(as,ms,a->a.grupo(),m->m.grupo())
+					.map(p->Pair.of(p.first().dni(),p.second().dni()));
+		return Stream2.groupingList(ppa,p->p.first(),p->p.second());
+	}
+	
+	public Map<String,Integer> numAlumnosDeProfesor() {
+		Stream<Asignacion> as = this.asignaciones().todas().stream();
+		Stream<Matricula> ms = this.matriculas().todas().stream();
+		Stream<Pair<String, String>> ppa = 
+				Stream2.join(as,ms,a->a.grupo(),m->m.grupo())
+					.map(p->Pair.of(p.first().dni(),p.second().dni()));
+		return Stream2.groupingSize(ppa,p->p.first());
+	}
 
 	public Map<Integer, Integer> numProfesoresPorEdad() {
 		return this.asignaciones().todas().stream().map(ap -> this.profesores().profesor(ap.dni()))
@@ -143,6 +164,8 @@ public class Centro {
 		return this.alumnos().todos().stream().collect(Collectors.groupingBy(a -> a.edad(),
 				Collectors.collectingAndThen(Collectors.counting(), n -> n * 100.0 / total)));
 	}
+	
+	
 
 	public static void main(String[] args) {
 		Centro c = Centro.of();
@@ -157,6 +180,7 @@ public class Centro {
 		System.out.println(Grupo.of(4, 2));
 		System.out.println(c.grupos().gruposSinProfesor());
 		System.out.println(c.grupos().size());
+		System.out.println(c.numAlumnosDeProfesor());
 	}
 
 }

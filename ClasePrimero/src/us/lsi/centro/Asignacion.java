@@ -10,5 +10,9 @@ public record Asignacion(String dni, Integer ida, Integer idg) {
         String[] partes = text.split(",");
         return Asignacion.of(partes[0],Integer.parseInt(partes[1]),Integer.parseInt(partes[2]));
 	}
+    
+    public Grupo grupo() {
+    	return Grupo.of(ida, idg);
+    }
 
 }

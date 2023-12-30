@@ -11,6 +11,10 @@ public record Matricula(String dni, Integer ida, Integer idg) {
 	        String[] partes = text.split(",");
 	        return Matricula.of(partes[0],Integer.parseInt(partes[1]),Integer.parseInt(partes[2]));
 	    }
+	    
+	    public Grupo grupo() {
+	    	return Grupo.of(ida, idg);
+	    }
 
 	    public String toString() {
 	        return String.format("%s,%s,%s",this.dni(),this.ida(),this.idg());
