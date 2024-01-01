@@ -8,7 +8,7 @@ import java.util.Locale;
 public class TestCoordenadas2D {
 
 	public static void main(String[] args) {
-		Locale.setDefault(new Locale("en", "US"));
+		Locale.setDefault(Locale.of("en", "US"));
 		Coordenadas2D c1 = Coordenadas2D.of(36.74991256557405,-5.147951105609536);
 		Coordenadas2D c2 = Coordenadas2D.of(36.74274251796305,-5.165218245238066);
 		System.out.println(c1);

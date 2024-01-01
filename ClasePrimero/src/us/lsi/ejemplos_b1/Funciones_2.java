@@ -35,7 +35,7 @@ public class Funciones_2 {
 	}
 
 	public static void main(String[] args) {
-		Locale.setDefault(new Locale("en", "US"));
+		Locale.setDefault(Locale.of("en", "US"));
 		System.out.println(Funciones_2.solEcuacionSegundoGrado(4., 1., 1.));
 		System.out.println(Funciones_2.solEcuacionPrimerGrado(4., 1.));
 	}
