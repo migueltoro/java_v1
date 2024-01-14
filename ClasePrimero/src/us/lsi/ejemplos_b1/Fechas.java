@@ -11,10 +11,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Fechas {
 	
-	public static void ejemplos() {
-		LocalDateTime actual = LocalDateTime.now();
-		LocalDateTime otro = LocalDateTime.of(2022,3,27,0,0);
-
+	public static void ejemplos1() {
 		LocalDateTime d1 = LocalDateTime.now();
 		Period t = Period.of(2,5,3);
 		LocalDateTime d2 = d1.plus(t);
@@ -30,7 +27,11 @@ public class Fechas {
 		System.out.println(d1.getDayOfWeek());
 		System.out.println(Period.between(d1.toLocalDate(), d2.toLocalDate()).getYears());
 		System.out.println(ChronoUnit.DAYS.between(d1.toLocalDate(), d2.toLocalDate()));
-		
+	}
+	
+	public static void ejemplos2() {
+		LocalDateTime actual = LocalDateTime.now();
+		LocalDateTime otro = LocalDateTime.of(2022,3,27,0,0);
 		LocalDate d3 = actual.toLocalDate();
 		LocalTime time = actual.toLocalTime();
 		
@@ -50,7 +51,7 @@ public class Fechas {
 	
 
 	public static void main(String[] args) {
-		ejemplos();
+		ejemplos1();
 	}
 
 }

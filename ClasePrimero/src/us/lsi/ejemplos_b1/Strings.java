@@ -5,7 +5,6 @@ import java.util.Arrays;
 public class Strings {
 	
 	public static void ejemplos() {
-		
 	    Integer a = 2;
 	    Double b = 4.567;
 	    Integer i = 5;
