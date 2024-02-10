@@ -20,11 +20,11 @@ public class Centro {
 
 	public static Centro of(String root) {
 		if (Centro.centro == null)
-			Centro.centro = Centro.parse(File2.absolute_path("ficheros_centro/alumnos.txt", root),
-					File2.absolute_path("ficheros_centro/profesores.txt", root),
-					File2.absolute_path("ficheros_centro/asignaturas.txt", root),
-					File2.absolute_path("ficheros_centro/matriculas.txt", root),
-					File2.absolute_path("ficheros_centro/asignaciones.txt", root));
+			Centro.centro = Centro.parse(File2.absolute_path("centro/alumnos.txt", root),
+					File2.absolute_path("centro/profesores.txt", root),
+					File2.absolute_path("centro/asignaturas.txt", root),
+					File2.absolute_path("centro/matriculas.txt", root),
+					File2.absolute_path("centro/asignaciones.txt", root));
 		return Centro.centro;
 	}
 

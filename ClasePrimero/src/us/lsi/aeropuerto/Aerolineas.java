@@ -17,7 +17,7 @@ public class Aerolineas {
 	public static Aerolineas of(String root) {
 		if(Aerolineas.gestoraAerolineas == null)
 			Aerolineas.gestoraAerolineas = 
-				Aerolineas.parse(File2.absolute_path("ficheros_aeropuertos/aerolineas.csv",root));
+				Aerolineas.parse(File2.absolute_path("aeropuertos/aerolineas.csv",root));
 		return gestoraAerolineas;
 	}
 	

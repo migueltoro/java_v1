@@ -18,7 +18,7 @@ public class Usuarios {
 	public static Usuarios of(String root) {
 		if (Usuarios.gestorDeUsuarios == null)
 			Usuarios.gestorDeUsuarios = 
-				Usuarios.parse(File2.absolute_path("ficheros_biblioteca/usuarios.txt",root));
+				Usuarios.parse(File2.absolute_path("biblioteca/usuarios.txt",root));
         return Usuarios.gestorDeUsuarios;
 	}
 	

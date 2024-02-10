@@ -129,8 +129,6 @@ public class LibroF implements Libro {
 				.filter(ln->!ln.isEmpty())
 				.collect(Collectors.groupingBy(ln->ln.charAt(0),
 						Collectors.reducing("",BinaryOperator.maxBy(Comparator.comparing(ln->ln.length())))));
-//						Collectors.collectingAndThen(Collectors.maxBy(Comparator.comparing(ln->ln.length())),
-//								r->r.get())));
 	}
 
 }

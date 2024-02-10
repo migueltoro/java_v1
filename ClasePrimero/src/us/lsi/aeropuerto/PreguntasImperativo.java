@@ -213,7 +213,7 @@ public class PreguntasImperativo implements Preguntas {
 	}
 	
 	
-	//13. Dado un n�mero n devuelve un conjunto con los n destinos con m�s vuelos
+	//13. Dado un n�mero n devuelve un conjunto con los n destinos con más vuelos
 	
 	@Override
 	public Set<String> entreLosMasVuelos(Integer n) {
@@ -221,7 +221,7 @@ public class PreguntasImperativo implements Preguntas {
 		return null;
 	}
 	
-	// 14. Dado un n�mero entero n devuelve una lista con los destinos que tienen m�s de n vuelos
+	// 14. Dado un número entero n devuelve una lista con los destinos que tienen m�s de n vuelos
 	
 	@Override
 	public List<String> masDeNVuelos(Integer n) {

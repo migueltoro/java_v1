@@ -17,7 +17,7 @@ public class Profesores {
 	public static Profesores of(String root) {
 		if (Profesores.gestorDeProfesores == null)
 			Profesores.gestorDeProfesores = 
-				Profesores.parse(File2.absolute_path("ficheros/profesores.txt",root));
+				Profesores.parse(File2.absolute_path("centro/profesores.txt",root));
         return Profesores.gestorDeProfesores;
 	}
 	

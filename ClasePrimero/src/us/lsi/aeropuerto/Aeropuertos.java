@@ -17,7 +17,7 @@ public class Aeropuertos {
 	public static Aeropuertos of(String root) {
 		if(Aeropuertos.gestorAeropuertos == null)
 			Aeropuertos.gestorAeropuertos = 
-			Aeropuertos.parse(File2.absolute_path("ficheros_aeropuertos/aeropuertos.csv",root));
+			Aeropuertos.parse(File2.absolute_path("aeropuertos/aeropuertos.csv",root));
 		return gestorAeropuertos;
 	}
 	

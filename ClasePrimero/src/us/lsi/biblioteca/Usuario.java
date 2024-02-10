@@ -19,7 +19,7 @@ public class Usuario extends Persona {
 	}
 
 	public static Usuario of(Persona p,LocalDate fechaAlta) { 
-        return new Usuario(p.apellidos(),p.nombre(),p.fechaNacimiento(),p.dni(),
+        return new Usuario(p.apellidos(),p.nombre(),p.fechaDeNacimiento(),p.dni(),
         		p.telefono(),p.direccion(),fechaAlta);
 	}
     

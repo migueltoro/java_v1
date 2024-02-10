@@ -20,7 +20,7 @@ public class Prestamos {
 	public static Prestamos of(String root) {
 		if (Prestamos.gestorDePrestamos == null)
 			Prestamos.gestorDePrestamos = 
-				Prestamos.parse(File2.absolute_path("ficheros_biblioteca/Prestamos.txt",root));
+				Prestamos.parse(File2.absolute_path("biblioteca/Prestamos.txt",root));
         return Prestamos.gestorDePrestamos;
 	}
 	

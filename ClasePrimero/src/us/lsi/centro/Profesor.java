@@ -4,18 +4,24 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import us.lsi.ejemplos_b1_tipos.Direccion;
+import us.lsi.ejemplos_b1_tipos.Persona;
+
 public class Profesor extends Persona {
     
 	private Titulo titulo;
+	
+	// String apellidos, String nombre, LocalDateTime fechaDeNacimiento, String dni, String telefono,
+	//Direccion direccion
 
-    private Profesor(String apellidos, String nombre, String dni, LocalDateTime fechaDeNacimiento, String telefono,
+    private Profesor(String apellidos, String nombre,  LocalDateTime fechaDeNacimiento, String dni, String telefono,
 			Direccion direccion,Titulo titulo) {
-		super(apellidos, nombre, dni, fechaDeNacimiento, telefono, direccion);
+		super(apellidos, nombre, fechaDeNacimiento, dni, telefono, direccion);
 		this.titulo = titulo;
 	}
 
 	public static Profesor of(Persona p,Titulo titulo) { 
-        return new Profesor(p.apellidos(),p.nombre(),p.dni(),p.fechaDeNacimiento(),
+        return new Profesor(p.apellidos(),p.nombre(),p.fechaDeNacimiento(), p.dni(),
         		p.telefono(),p.direccion(),titulo);
     }
     

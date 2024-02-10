@@ -17,7 +17,7 @@ public class Libros {
 	public static Libros of(String root) {
 		if (Libros.gestorDeLibros == null)
 			Libros.gestorDeLibros = 
-				Libros.parse(File2.absolute_path("ficheros_biblioteca/Libros.txt",root));
+				Libros.parse(File2.absolute_path("biblioteca/Libros.txt",root));
         return Libros.gestorDeLibros;
 	}
 	

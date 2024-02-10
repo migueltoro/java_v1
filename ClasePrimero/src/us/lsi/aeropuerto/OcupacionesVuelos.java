@@ -19,7 +19,7 @@ public class OcupacionesVuelos {
 	public static OcupacionesVuelos of(String root) {
 		if(OcupacionesVuelos.getorOcupacionesVuelos == null)
 			OcupacionesVuelos.getorOcupacionesVuelos = 
-			OcupacionesVuelos.parse(File2.absolute_path("ficheros_aeropuertos/ocupacionesVuelos.csv",root));
+			OcupacionesVuelos.parse(File2.absolute_path("aeropuertos/ocupacionesVuelos.csv",root));
 		return OcupacionesVuelos.getorOcupacionesVuelos;
 	}
 

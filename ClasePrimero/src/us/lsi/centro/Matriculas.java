@@ -15,7 +15,7 @@ public class Matriculas {
 
 	public static Matriculas of(String root) {
 		if (Matriculas.gestorDeMatriculas == null)
-			Matriculas.gestorDeMatriculas = Matriculas.parse(File2.absolute_path("ficheros/matriculas.txt", root));
+			Matriculas.gestorDeMatriculas = Matriculas.parse(File2.absolute_path("centro/matriculas.txt", root));
 		return Matriculas.gestorDeMatriculas;
 	}
 

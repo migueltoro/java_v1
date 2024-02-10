@@ -4,15 +4,20 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import us.lsi.ejemplos_b1_tipos.Direccion;
+import us.lsi.ejemplos_b1_tipos.Persona;
 import us.lsi.tools.Preconditions;
 
 public class Alumno extends Persona {
     
 	private Double nota;
+	
+	// String apellidos, String nombre, LocalDateTime fechaDeNacimiento, String dni, String telefono,
+	//Direccion direccion
 
-    private Alumno(String apellidos, String nombre, String dni, LocalDateTime fechaDeNacimiento, String telefono,
+    private Alumno(String apellidos, String nombre, LocalDateTime fechaDeNacimiento, String dni, String telefono,
 			Direccion direccion, Double nota) {
-		super(apellidos, nombre, dni, fechaDeNacimiento, telefono, direccion);
+		super(apellidos, nombre, fechaDeNacimiento, dni, telefono, direccion);
 		this.nota = nota;
 	}
 	
@@ -23,7 +28,7 @@ public class Alumno extends Persona {
 	public static Alumno of(Persona p, Double nota) {
 		Preconditions.checkArgument(0 <= nota && nota <= 14,
 				String.format("La nota debe estar comprendida entre 0 y 14 y es %.2f", nota));
-		return new Alumno(p.apellidos(), p.nombre(), p.dni(), p.fechaDeNacimiento(), p.telefono(),
+		return new Alumno(p.apellidos(), p.nombre(), p.fechaDeNacimiento(), p.dni(), p.telefono(),
 				p.direccion(), nota);
 	}
     

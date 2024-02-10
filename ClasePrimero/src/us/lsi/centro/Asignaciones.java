@@ -16,7 +16,7 @@ public class Asignaciones {
 	public static Asignaciones of(String root) {
 		if (Asignaciones.gestorDeAsignaciones == null)
 			Asignaciones.gestorDeAsignaciones = 
-			Asignaciones.parse(File2.absolute_path("ficheros/Asignaciones.txt",root));
+			Asignaciones.parse(File2.absolute_path("centro/asignaciones.txt",root));
         return Asignaciones.gestorDeAsignaciones;
 	}
 	

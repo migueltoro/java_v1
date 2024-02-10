@@ -17,7 +17,7 @@ public class Asignaturas {
 	public static Asignaturas of(String root) {
 		if (Asignaturas.gestorDeAsignaturas == null)
 			Asignaturas.gestorDeAsignaturas = 
-				Asignaturas.parse(File2.absolute_path("ficheros/asignaturas.txt",root));
+				Asignaturas.parse(File2.absolute_path("centro/asignaturas.txt",root));
         return Asignaturas.gestorDeAsignaturas;
 	}
 	
