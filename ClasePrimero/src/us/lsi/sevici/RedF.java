@@ -81,7 +81,7 @@ public class RedF extends RedA implements Red {
 	
 	@Override
 	public Map<Integer, Integer> numeroDeEstacionesPorBicisDisponibles() {
-		return Stream2.groupingReduce(this.estaciones.stream(),e->e.free_bikes(),e->1,(x,y)->x+y);
+		return Stream2.groupingReduce(this.estaciones.stream(),e->e.free_bikes(),(x,y)->x+y,e->1);
 	}
 
 	@Override

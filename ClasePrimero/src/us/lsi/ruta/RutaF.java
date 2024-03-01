@@ -76,7 +76,7 @@ public class RutaF extends RutaA implements Ruta {
 	public Map<Type,Integer> frecuencias() {
 		Stream<Intervalo> st = IntStream.range(0,super.numMarcas()-1).boxed()
 		.map(i->super.intervalo(i));
-		return Stream2.groupingReduce(st,it->it.type(),x->1,(x,y)->x+y);
+		return Stream2.groupingReduce(st,it->it.type(),(x,y)->x+y,x->1);
 	}
 	
 	@Override

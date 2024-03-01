@@ -71,17 +71,14 @@ public class Stream2 {
 		return StreamSupport.stream(Stream2.zip(lefts, rights, combiner), leftStream.isParallel() || rightStream.isParallel());
 	}
 	
-	public static <L, R> Stream<Pair<L,R>> zip(Stream<L> leftStream, Stream<R> rightStream) {
-		return Stream2.zip(leftStream,rightStream,(a,b)->Pair.of(a, b));
-	}
 	
-	public static <E> Stream<Enumerate<E>> enumerate(Stream<E> stream, Integer start){
-		Stream<Integer> st = Stream.iterate(start,e->e+1);
-		return Stream2.zip(st,stream).map(p->Enumerate.of(p.first(),p.second()));
+	public static <E> Stream<Enumerate<E>> enumerate(Stream<E> stream, Integer start) {
+		Stream<Integer> st = Stream.iterate(start, e -> e + 1);
+		return zip(stream, st, (e, n) -> Enumerate.of(n, e));
 	}
-	
-	public static <E> Stream<Enumerate<E>> enumerate(Stream<E> stream){
-		return enumerate(stream,0);
+
+	public static <E> Stream<Enumerate<E>> enumerate(Stream<E> stream) {
+		return enumerate(stream, 0);
 	}
 	
 	public static <E,R> Stream<Enumerate<R>> flatMapEnumerate(Stream<Enumerate<E>> stream,Function<E,Stream<R>> f){
@@ -145,11 +142,18 @@ public class Stream2 {
 				Collectors.collectingAndThen(Collectors.reducing(op),e->e.get())));
 	}
 	
-	public static <E,K,T> Map<K,T> groupingReduce(Stream<E> st, Function<E,K> key, Function<E,T> value, 
-			BinaryOperator<T> op){
+	public static <E,K,T> Map<K,T> groupingReduce(Stream<E> st, Function<E,K> key,  
+			BinaryOperator<T> op, Function<E,T> value){
 		return st.collect(Collectors.groupingBy(key,
 				Collectors.mapping(value,
 						Collectors.collectingAndThen(Collectors.reducing(op),e->e.get()))));
+	}
+	
+	public static void main(String[] args) {
+		List<Double> ls = List.of(2.3,3.4,5.6,7.8);
+		List<Pair<Integer,Double>> ls2 = Stream2.enumerate(ls.stream()).map(e->Pair.of(e.counter(),e.value()))
+				.toList();
+		System.out.println(ls2);
 	}
 
 }
