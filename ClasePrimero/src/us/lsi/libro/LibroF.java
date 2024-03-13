@@ -102,6 +102,13 @@ public class LibroF implements Libro {
 						    Collectors.collectingAndThen(Collectors.toList(),ls->ls.size())));			
 	}
 	
+	public SortedMap<String,Integer> frecuenciasDePalabras_2(String file){
+		Stream<String> r = File2.streamDeFichero(file,"WINDOWS-1252")
+				.filter(ln->!ln.isEmpty())
+				.flatMap(ln->Arrays.stream(ln.split(separadores)));
+		return Stream2.groupingSize(r,Comparator.naturalOrder());			
+	}
+	
 	
 	public SortedMap<Integer,Set<String>> palabrasPorFrecuencias(String file){
 		SortedMap<String,Integer> fq = LibroF.of().frecuenciasDePalabras(file);
@@ -111,7 +118,15 @@ public class LibroF implements Libro {
 						Collectors.toSet()));
 	}
 	
+	public SortedMap<Integer,Set<String>> palabrasPorFrecuencias_2(String file){
+		SortedMap<String,Integer> fq = LibroF.of().frecuenciasDePalabras(file);
+		Stream<String> r = fq.keySet().stream();
+		return Stream2.<String,Integer>groupingSet(r,
+				p->fq.get(p),
+				Comparator.naturalOrder());
+	}
 	
+	@Override
 	public SortedMap<String,Set<Integer>> lineasDePalabra(String file){
 		Set<String> palabrasHuecas = LibroF.of().palabrasHuecas("ficheros/palabras_huecas.txt");
 		Stream<Enumerate<String>> se = Stream2.enumerate(File2.streamDeFichero(file)).filter(p->!p.value().isEmpty());
@@ -122,6 +137,16 @@ public class LibroF implements Libro {
 						 ()->new TreeMap<>(),
 						 Collectors.mapping(p->p.counter(),Collectors.toSet())));		 
 	}
+	
+	public SortedMap<String,Set<Integer>> lineasDePalabra_2(String file){
+		Set<String> palabrasHuecas = LibroF.of().palabrasHuecas("ficheros/palabras_huecas.txt");
+		Stream<Enumerate<String>> se = 
+				Stream2.enumerate(File2.streamDeFichero(file)).filter(p->!p.value().isEmpty());
+		Stream<Enumerate<String>> se2 = 
+				Stream2.flatMapEnumerate(se,ln->Arrays.stream(ln.split(separadores)))
+				 .filter(p->!palabrasHuecas.contains(p.value()));
+	    return Stream2.<Enumerate<String>,String,Integer>groupingSet(se2,p->p.value(),p->p.counter(),Comparator.naturalOrder());	 
+	}
 
 	@Override
 	public Map<Character, String> lineaMasLargaQueComienzaCon(String file) {
@@ -129,6 +154,16 @@ public class LibroF implements Libro {
 				.filter(ln->!ln.isEmpty())
 				.collect(Collectors.groupingBy(ln->ln.charAt(0),
 						Collectors.reducing("",BinaryOperator.maxBy(Comparator.comparing(ln->ln.length())))));
+	}
+	
+	
+	public Map<Character, String> lineaMasLargaQueComienzaCon_2(String file) {
+		Stream<String> r = File2.streamDeFichero(file,"WINDOWS-1252")
+				.filter(ln->!ln.isEmpty());
+		return Stream2.groupingReduce(r, 
+				ln->ln.charAt(0),
+				BinaryOperator.maxBy(Comparator.comparing(ln->ln.length())),
+				p->p);
 	}
 
 }

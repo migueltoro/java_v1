@@ -119,7 +119,10 @@ public class Centro {
 		Stream<Pair<String, String>> ppa = 
 				Stream2.join(as,ms,a->a.grupo(),m->m.grupo())
 					.map(p->Pair.of(p.first().dni(),p.second().dni()));
-		return Stream2.groupingList(ppa,p->p.first(),p->p.second());
+		return Stream2.groupingList(
+				ppa,
+				p->p.first(),
+				p->p.second());
 	}
 	
 	public Map<String,Integer> numAlumnosDeProfesor() {
