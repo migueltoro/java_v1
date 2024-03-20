@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Map2 {
@@ -67,7 +68,6 @@ public class Map2 {
 		return m;
 	}
 	
-	
 	public static <K, V> Map<K, V> merge(Map<K,V> m1, Map<K,V> m2) {
 		Map<K, V> r = new HashMap<>(m1);
 		r.putAll(m2);
@@ -75,8 +75,20 @@ public class Map2 {
 	}
 	
 	
+	public static <K1, V1, V2> Map<K1, V2> map(Map<K1,V1> m1, Function<V1,V2> value) {
+		return Map2.map(m1,x->x,value);
+	}
+	
+	
+	public static <K1, V1, K2, V2> Map<K2, V2> map(Map<K1,V1> m1, Function<K1,K2> key, Function<V1,V2> value) {
+		return m1.entrySet().stream()
+				.collect(Collectors.toMap(e->key.apply(e.getKey()),e->value.apply((e.getValue()))));
+	}
+	
 	public static <K, V> Entry<K,V> entry(K key, V value) {
 		return new AbstractMap.SimpleEntry<>(key,value);
 	}
+	
+	
 
 }
