@@ -120,12 +120,10 @@ public class Stream2 {
 	}
 	
 	public static <E,K,T,R> Map<K,R> groupingList(Stream<E> st,Function<E,K> key, Function<E,T> value, 
-			Function<List<T>,R> end){
+			Function<List<T>,R> andThen){
 		return st.collect(Collectors.groupingBy(key,Collectors.mapping(value,
-				Collectors.collectingAndThen(Collectors.toList(),end))));
+				Collectors.collectingAndThen(Collectors.toList(),andThen))));
 	}
-	
-	
 	
 	public static <E,K> Map<K,Set<E>> groupingSet(Stream<E> st,Function<E,K> key){
 		return st.collect(Collectors.groupingBy(key,Collectors.toSet()));
@@ -150,9 +148,10 @@ public class Stream2 {
 	}
 	
 	public static <E,K,T,R> Map<K,R> groupingSet(Stream<E> st,Function<E,K> key, 
-			Function<E,T> value, Function<Set<T>,R> f){
-		return st.collect(Collectors.groupingBy(key,Collectors.mapping(value,
-				Collectors.collectingAndThen(Collectors.toSet(),f))));
+			Function<E,T> value, Function<Set<T>,R> andThen){
+		return st.collect(Collectors.groupingBy(key,
+				Collectors.mapping(value,
+						Collectors.collectingAndThen(Collectors.toSet(),andThen))));
 	}
 	
 	public static <E> SortedMap<E,Integer> groupingSize(Stream<E> st,Comparator<E> order){
