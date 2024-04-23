@@ -15,13 +15,8 @@ public class Ejemplares {
 	public static Ejemplares gestorDeEjemplares = null;
 	
 	public static Ejemplares of() {
-		return Ejemplares.of("");
-	}
-	
-	public static Ejemplares of(String root) {
 		if (Ejemplares.gestorDeEjemplares == null)
-			Ejemplares.gestorDeEjemplares = 
-				Ejemplares.parse(File2.absolute_path("biblioteca/Ejemplares.txt",root));
+			Ejemplares.gestorDeEjemplares = Ejemplares.parse("biblioteca/Ejemplares.txt");
         return Ejemplares.gestorDeEjemplares;
 	}
 	

@@ -13,13 +13,8 @@ public class OcupacionesVuelos {
 	static OcupacionesVuelos getorOcupacionesVuelos = null;
 	
 	public static OcupacionesVuelos of() {
-		return OcupacionesVuelos.of("");
-	}
-	
-	public static OcupacionesVuelos of(String root) {
 		if(OcupacionesVuelos.getorOcupacionesVuelos == null)
-			OcupacionesVuelos.getorOcupacionesVuelos = 
-			OcupacionesVuelos.parse(File2.absolute_path("aeropuertos/ocupacionesVuelos.csv",root));
+			OcupacionesVuelos.getorOcupacionesVuelos = OcupacionesVuelos.parse("aeropuertos/ocupacionesVuelos.csv");
 		return OcupacionesVuelos.getorOcupacionesVuelos;
 	}
 

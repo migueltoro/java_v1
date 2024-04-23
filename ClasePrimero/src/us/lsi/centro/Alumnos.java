@@ -11,13 +11,8 @@ public class Alumnos {
 	private static Alumnos gestorDeAlumnos = null;
 	
 	public static Alumnos of() {
-		return Alumnos.of("");
-	}
-	
-	public static Alumnos of(String root) {
 		if (Alumnos.gestorDeAlumnos == null)
-			Alumnos.gestorDeAlumnos = 
-				Alumnos.parse(File2.absolute_path("centro/alumnos.txt",root));
+			Alumnos.gestorDeAlumnos = Alumnos.parse("centro/alumnos.txt");
         return Alumnos.gestorDeAlumnos;
 	}
 	

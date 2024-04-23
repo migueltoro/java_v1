@@ -8,15 +8,11 @@ import us.lsi.tools.Preconditions;
 public class Biblioteca {
 	
 	public static Biblioteca of(String nombre, String codigoPostal, String email) {
-		return Biblioteca.of("", nombre, codigoPostal, email);
-	}
-	
-	public static Biblioteca of(String root, String nombre, String codigoPostal, String email) {
 		return new Biblioteca(nombre, codigoPostal, email,
-				Usuarios.of(root), 
-				Libros.of(root), 
-				Ejemplares.of(root), 
-				Prestamos.of(root));
+				Usuarios.of(), 
+				Libros.of(), 
+				Ejemplares.of(), 
+				Prestamos.of());
 	}
 	
 	public static Biblioteca parse(String nombre, String codigoPostal, String email, String usuarios,

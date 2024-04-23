@@ -10,13 +10,8 @@ public class Asignaciones {
 	public static Asignaciones gestorDeAsignaciones = null;
 	
 	public static Asignaciones of() {
-		return Asignaciones.of("");
-	}
-	
-	public static Asignaciones of(String root) {
 		if (Asignaciones.gestorDeAsignaciones == null)
-			Asignaciones.gestorDeAsignaciones = 
-			Asignaciones.parse(File2.absolute_path("centro/asignaciones.txt",root));
+			Asignaciones.gestorDeAsignaciones = Asignaciones.parse("centro/asignaciones.txt");
         return Asignaciones.gestorDeAsignaciones;
 	}
 	

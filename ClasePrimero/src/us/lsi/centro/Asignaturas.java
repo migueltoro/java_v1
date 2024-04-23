@@ -10,14 +10,9 @@ public class Asignaturas {
 	
 	public static Asignaturas gestorDeAsignaturas = null;
 	
-	public static Asignaturas of() {
-		return Asignaturas.of("");
-	}
-	
 	public static Asignaturas of(String root) {
 		if (Asignaturas.gestorDeAsignaturas == null)
-			Asignaturas.gestorDeAsignaturas = 
-				Asignaturas.parse(File2.absolute_path("centro/asignaturas.txt",root));
+			Asignaturas.gestorDeAsignaturas = Asignaturas.parse("centro/asignaturas.txt");
         return Asignaturas.gestorDeAsignaturas;
 	}
 	

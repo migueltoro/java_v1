@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import us.lsi.tools.File2;
+
 import us.lsi.tools.Pair;
 import us.lsi.tools.Preconditions;
 import us.lsi.tools.Stream2;
@@ -15,16 +15,12 @@ import us.lsi.tools.Stream2;
 public class Centro {
 
 	public static Centro of() {
-		return Centro.of("");
-	}
-
-	public static Centro of(String root) {
 		if (Centro.centro == null)
-			Centro.centro = Centro.parse(File2.absolute_path("centro/alumnos.txt", root),
-					File2.absolute_path("centro/profesores.txt", root),
-					File2.absolute_path("centro/asignaturas.txt", root),
-					File2.absolute_path("centro/matriculas.txt", root),
-					File2.absolute_path("centro/asignaciones.txt", root));
+			Centro.centro = Centro.parse("centro/alumnos.txt",
+					"centro/profesores.txt",
+					"centro/asignaturas.txt",
+					"centro/matriculas.txt",
+					"centro/asignaciones.txt");
 		return Centro.centro;
 	}
 

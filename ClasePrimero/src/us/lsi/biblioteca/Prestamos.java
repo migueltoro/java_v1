@@ -14,13 +14,8 @@ public class Prestamos {
 	public static Prestamos gestorDePrestamos = null;
 	
 	public static Prestamos of() {
-		return Prestamos.of("");
-	}
-	
-	public static Prestamos of(String root) {
 		if (Prestamos.gestorDePrestamos == null)
-			Prestamos.gestorDePrestamos = 
-				Prestamos.parse(File2.absolute_path("biblioteca/Prestamos.txt",root));
+			Prestamos.gestorDePrestamos = Prestamos.parse("biblioteca/Prestamos.txt");
         return Prestamos.gestorDePrestamos;
 	}
 	

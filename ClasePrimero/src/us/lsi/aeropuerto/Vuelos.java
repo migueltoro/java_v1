@@ -11,12 +11,8 @@ public class Vuelos {
 	private static Vuelos gestorVuelos = null;
 	
 	public static Vuelos of() {
-		return Vuelos.of("");
-	}
-	
-	public static Vuelos of(String root) {
-		if(Vuelos.gestorVuelos == null)
-			Vuelos.gestorVuelos = Vuelos.parse(File2.absolute_path("aeropuertos/vuelos.csv",root));
+		if(Vuelos.gestorVuelos == null) 
+			Vuelos.gestorVuelos = Vuelos.parse("aeropuertos/vuelos.csv");
 		return Vuelos.gestorVuelos;
 	}
 	public static Vuelos parse(String fichero) {
