@@ -1,6 +1,7 @@
 package us.lsi.aeropuerto;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,8 +36,8 @@ public class Aerolineas {
 	
 	private Map<String,Aerolinea> codigosAerolineas = null;
 
-	public Aerolinea aerolinea(String codigo) {
-		return this.codigosAerolineas.get(codigo);
+	public Optional<Aerolinea> aerolinea(String codigo) {
+		return Optional.ofNullable(this.codigosAerolineas.get(codigo));
 	}
 	
 	public Integer size() {

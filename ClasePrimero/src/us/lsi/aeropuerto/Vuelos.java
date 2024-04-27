@@ -1,6 +1,7 @@
 package us.lsi.aeropuerto;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,8 +36,8 @@ public class Vuelos {
 		return this.vuelos;
 	}
 
-	public Vuelo vuelo(String codigo) {
-		return this.codigosVuelos.get(codigo);
+	public Optional<Vuelo> vuelo(String codigo) {
+		return Optional.ofNullable(this.codigosVuelos.get(codigo));
 	}
 	
 	public Vuelo get(Integer index) {

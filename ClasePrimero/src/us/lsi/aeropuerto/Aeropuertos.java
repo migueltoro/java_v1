@@ -1,6 +1,7 @@
 package us.lsi.aeropuerto;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -47,12 +48,12 @@ public class Aeropuertos {
 				.collect(Collectors.joining("\n\t")));
 	}
 	
-	public Aeropuerto aeropuerto(String codigo) { //codigoAropueto, Aeropuerto
-		return this.codigosAeropuertos.get(codigo);
+	public Optional<Aeropuerto> aeropuerto(String codigo) { //codigoAropueto, Aeropuerto
+		return Optional.ofNullable(this.codigosAeropuertos.get(codigo));
 	}
 
-	public String ciudadDeAeropuerto(String codigo) {  //codigoAeropuerto, ciudad
-		return ciudadDeAeropuerto.get(codigo);
+	public Optional<String> ciudadDeAeropuerto(String codigo) {  //codigoAeropuerto, ciudad
+		return Optional.ofNullable(this.ciudadDeAeropuerto.get(codigo));
 	}
 	
 	public Set<Aeropuerto> aeropuertosEnCiudad(String ciudad) { //ciudad, {codigosAeropuerto, ...} 

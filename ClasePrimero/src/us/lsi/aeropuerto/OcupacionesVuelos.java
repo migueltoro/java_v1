@@ -2,6 +2,7 @@ package us.lsi.aeropuerto;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,8 +43,8 @@ public class OcupacionesVuelos {
 		return this.ocupaciones.stream().toList().get(i);
 	}
 	
-	public OcupacionVuelo ocupacionVuelo(String codigoVuelo, LocalDateTime fecha) {
-		return this.map.getOrDefault(Ocv.of(codigoVuelo,fecha),null);
+	public Optional<OcupacionVuelo> ocupacionVuelo(String codigoVuelo, LocalDateTime fecha) {
+		return Optional.ofNullable(this.map.get(Ocv.of(codigoVuelo,fecha)));
 	}
 	
 	

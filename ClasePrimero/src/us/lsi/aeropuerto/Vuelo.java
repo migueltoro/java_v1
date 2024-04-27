@@ -74,11 +74,11 @@ public record Vuelo(
 	
 	
 	public String ciudadDestino() {
-		return Aeropuertos.of().ciudadDeAeropuerto(this.codigoDestino);
+		return Aeropuertos.of().ciudadDeAeropuerto(this.codigoDestino).orElse("Aeropuerto no existente");
 	}
 	
 	public String ciudadOrigen() {
-		return Aeropuertos.of().ciudadDeAeropuerto(this.codigoOrigen);
+		return Aeropuertos.of().ciudadDeAeropuerto(this.codigoOrigen).orElse("Aeropuerto no existente");
 	}	
 	
 	public String codigo() {
