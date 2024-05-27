@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class PreguntasImperativo implements Preguntas {
 
@@ -51,6 +53,19 @@ public class PreguntasImperativo implements Preguntas {
 		}
 		return a;
 	}
+	
+	public Boolean hayDestino2(Set<String> destinos, LocalDate f) {
+		OcupacionesVuelos ls = OcupacionesVuelos.of();
+		OcupacionVuelo a = null;
+		for(OcupacionVuelo ocp:ls.todas()) {
+			if(ocp.fecha().toLocalDate().equals(f) &&
+			  destinos.contains(ocp.vuelo().ciudadDestino())) {
+					a = ocp;
+					break;
+			}
+		}
+		return a != null;
+	}
 
 	//3. Dada una fecha f devuelve el conjunto de ciudades destino diferentes de todos
 	// los vuelos de fecha f
@@ -65,6 +80,36 @@ public class PreguntasImperativo implements Preguntas {
 			}
 		}
 		return a;
+	}
+	
+	
+	public SortedSet<String> destinosDiferentes2(LocalDate f) {
+		OcupacionesVuelos ls = OcupacionesVuelos.of();
+		SortedSet<String> a = new TreeSet<>(Comparator.naturalOrder());
+		for(OcupacionVuelo ocp:ls.todas()) {
+			if(ocp.fecha().toLocalDate().equals(f)) {
+				String ciudadDestino = ocp.vuelo().ciudadDestino();
+				a.add(ciudadDestino);			
+			}
+		}
+		return a;
+	}
+	
+	public List<String> destinosDiferentes3(LocalDate f) {
+		OcupacionesVuelos ls = OcupacionesVuelos.of();
+		Set<String> a = new HashSet<>();
+		for(OcupacionVuelo ocp:ls.todas()) {
+			if(ocp.fecha().toLocalDate().equals(f)) {
+				String ciudadDestino = ocp.vuelo().ciudadDestino();
+				a.add(ciudadDestino);			
+			}
+		}
+		List<String> nls = new ArrayList<>();
+		for(String s:a) {
+			nls.add(s);
+		}
+		Collections.sort(nls);
+		return nls;
 	}
 	
 	//4. Dado un anyo devuelve un SortedMap que relacione cada destino con el
@@ -96,11 +141,10 @@ public class PreguntasImperativo implements Preguntas {
 		for(OcupacionVuelo ocp:ls.todas()) {
 			if(ocp.vuelo().ciudadDestino().equals(destino) &&
 			   ocp.vuelo().numPlazas() > ocp.numPasajeros() &&	
-			   ocp.fecha().isAfter(LocalDateTime.now())) {
-			   if(a==null || ocp.fecha().isBefore(a.fecha())) {
+			   ocp.fecha().isAfter(LocalDateTime.now())  &&
+			   (a==null || ocp.fecha().isBefore(a.fecha()))) {
 				   a = ocp;
 			   }
-			}
 		}
 		if(a==null) throw new IllegalArgumentException("La lista est� vac�a");
 		return a.vuelo().codigoAerolinea();
@@ -145,11 +189,45 @@ public class PreguntasImperativo implements Preguntas {
 	//7. Devuelve un Map tal que dado un entero n haga corresponder
 	// a cada fecha la lista de los n destinos con los vuelos de mayor duraci�n.
 	
-	@Override
-	public Map<LocalDate, List<String>> destinosConMayorDuracion(Integer n) {
-		// TODO Auto-generated method stub
-		return null;
+	private static Comparator<OcupacionVuelo> cmp = 
+			Comparator.comparing((OcupacionVuelo ocp) -> 
+			ocp.vuelo().duracion().getSeconds()).reversed();
+	
+	private List<String> mayorDuracion(List<OcupacionVuelo> ls,Integer n){
+//		Stream<String> st = ls.stream()
+//				.sorted(cmp)
+//				.limit(n)
+//				.map(ocp -> ocp.vuelo().ciudadDestino());
+		List<OcupacionVuelo> ls2 = new ArrayList<>(ls);
+		Collections.sort(ls2,cmp);
+		List<OcupacionVuelo> ls3 = ls2.subList(0, n);
+		List<String> ls4 = new ArrayList<>();
+		for(OcupacionVuelo ocp:ls3) {
+			ls4.add(ocp.vuelo().ciudadDestino());
+		}
+		return	ls4;
 	}
+	
+	public Map<LocalDate, List<String>> destinosConMayorDuracion(Integer n) {
+		OcupacionesVuelos ls = OcupacionesVuelos.of();
+		Map<LocalDate, List<OcupacionVuelo>> a = new HashMap<>();
+		for(OcupacionVuelo ocp:ls.todas()) {
+				LocalDate key = ocp.fecha().toLocalDate();
+				if(a.containsKey(key)) {
+					a.get(key).add(ocp);
+				} else {
+					List<OcupacionVuelo> lsn = new ArrayList<>();
+					lsn.add(ocp);
+					a.put(key, lsn);
+				}
+		}
+		Map<LocalDate, List<String>> r = new HashMap<>();
+		for(LocalDate key:a.keySet()) {
+			r.put(key,this.mayorDuracion(a.get(key),n));
+		}
+		return r;
+	}
+	
 	
 	//8. Dada una fecha f devuelve el precio medio de los vuelos con salida posterior
 	// a f. Si no hubiera vuelos devuelve 0.0
@@ -165,7 +243,7 @@ public class PreguntasImperativo implements Preguntas {
 				n= n+1;
 			}
 		}
-		return n==0?sum/n:0.0;
+		return n!=0?sum/n:0.0;
 	}
 	
 	//9. Devuelve un Map que haga corresponder a cada destino un conjunto con las
@@ -192,8 +270,24 @@ public class PreguntasImperativo implements Preguntas {
 	
 	@Override
 	public String destinoConMasVuelos() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String,Integer> numVuelosDeDestino = new HashMap<>();
+		for(Vuelo v:Vuelos.of().todos()) {
+			String key = v.codigoDestino();
+			if(numVuelosDeDestino.containsKey(key)) {
+				numVuelosDeDestino.put(key, numVuelosDeDestino.get(key)+1);
+			} else {
+				numVuelosDeDestino.put(key,1);
+			}
+		}
+		String r = null;
+		Integer n = null;
+		for(String d:numVuelosDeDestino.keySet()) {
+			if(n==null ||  numVuelosDeDestino.get(d) > n) {
+				r = d;
+				n = numVuelosDeDestino.get(d);
+			}
+		}
+		return r;
 	}
 	
 	//11. Dado un entero m devuelve un conjunto ordenado con las duraciones de todos los vuelos cuya duraci�n es mayor que m minutos.
@@ -246,8 +340,19 @@ public class PreguntasImperativo implements Preguntas {
 	
 	@Override
 	public Map<String, Vuelo> masBarato() {
-		// TODO Auto-generated method stub
-		return null;
+		Vuelos ls =Vuelos.of();
+		Map<String,Vuelo> res = new HashMap<String,Vuelo>();
+
+		for(Vuelo v:ls.todos()) {
+			String key = v.ciudadDestino();
+			if(!res.containsKey(key)) {
+				res.put(key, v);
+			}
+			else if(v.precio()<res.get(key).precio()) {
+				res.replace(key, v);
+			}
+		}
+		return res;
 	}
 	
 	// 17. Devuelve un Map que haga corresponder a cada destino el n�mero de fechas
