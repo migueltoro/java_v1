@@ -5,11 +5,9 @@ import java.util.Map;
 import java.util.Set;
 import static java.util.stream.Collectors.*;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import us.lsi.ruta.Intervalo.Type;
 import us.lsi.tools.File2;
-import us.lsi.tools.Stream2;
 
 public class RutaF extends RutaA implements Ruta {
 	
@@ -74,9 +72,7 @@ public class RutaF extends RutaA implements Ruta {
 
 	@Override
 	public Map<Type,Integer> frecuencias() {
-		Stream<Intervalo> st = IntStream.range(0,super.numMarcas()-1).boxed()
-		.map(i->super.intervalo(i));
-		return Stream2.groupingReduce(st,it->it.type(),(x,y)->x+y,x->1);
+		return null;
 	}
 	
 	@Override

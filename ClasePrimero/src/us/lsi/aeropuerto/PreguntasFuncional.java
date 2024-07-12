@@ -17,8 +17,6 @@ import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import us.lsi.tools.Stream2;
-
 public class PreguntasFuncional implements Preguntas {
 
 	PreguntasFuncional() {
@@ -131,14 +129,6 @@ public class PreguntasFuncional implements Preguntas {
 					Collectors.collectingAndThen(Collectors.toList(),g->preM(g))));
 		}
 		
-		
-		public Map<String, Double> precioMedio2(Integer n ) {
-			Stream<OcupacionVuelo> st = OcupacionesVuelos.of().todas().stream()
-					.filter(ocp -> ocp.vuelo().numPlazas()-ocp.numPasajeros() == n);
-			
-			return Stream2.groupingList(st, ocp -> ocp.vuelo().ciudadDestino(), 
-					x->x, g->preM(g));
-		}
 
 		//7. Devuelve un Map tal que dado un entero n haga corresponder
 		// a cada fecha la lista de los n destinos con los vuelos de mayor duraci�n.
@@ -162,12 +152,7 @@ public class PreguntasFuncional implements Preguntas {
 			return st.collect(Collectors.groupingBy(oc -> oc.fecha().toLocalDate(),
 					Collectors.collectingAndThen(Collectors.toList(),ls->mayorDuracion(ls,n))));
 		}
-		
-		public Map<LocalDate, List<String>> destinosConMayorDuracion2(Integer n) {
-			Stream<OcupacionVuelo> st =  OcupacionesVuelos.of().todas().stream();
-			
-			return Stream2.groupingList(st,oc -> oc.fecha().toLocalDate(),x->x,ls->mayorDuracion(ls,n));
-		}
+
 
 		//8. Dada una fecha f devuelve el precio medio de los vuelos con salida posterior
 		// a f. Si no hubiera vuelos devuelve 0.0
@@ -175,7 +160,6 @@ public class PreguntasFuncional implements Preguntas {
 		public Double precioMedio(LocalDateTime f) {
 			DoubleStream st = OcupacionesVuelos.of().todas().stream()
 					.filter(ocp -> ocp.fecha().isAfter(f))
-//					.filter(p))
 					.mapToDouble(ocp -> ocp.vuelo().precio());
 			
 			return	st.average().orElse(0.0);
@@ -194,28 +178,12 @@ public class PreguntasFuncional implements Preguntas {
 		}
 		
 		
-		public Map<String, Set<LocalDate>> fechasADestino2() {
-			Stream<OcupacionVuelo> st = OcupacionesVuelos.of().todas().stream();
-			
-			return Stream2.groupingSet(st, ocp -> ocp.vuelo().ciudadDestino(), OcupacionVuelo::fechaSalida);
-		}
-		
-		
 		//10. Devuelve el destino con mayor n�mero de vuelos
 		
 		public String destinoConMasVuelos() {	
 			Map<String,Integer> numVuelosDeDestino = Vuelos.of().todos().stream()
 					 .collect(Collectors.groupingBy(Vuelo::codigoDestino,
 							  Collectors.collectingAndThen(Collectors.counting(),Long::intValue)));
-			return 	numVuelosDeDestino.keySet().stream()
-					.max(Comparator.comparing(d->numVuelosDeDestino.get(d)))
-					.get();	
-		}
-		
-		public String destinoConMasVuelos2() {	
-			Stream<Vuelo> st = Vuelos.of().todos().stream();
-			Map<String,Integer> numVuelosDeDestino = Stream2.groupingSize(st,Vuelo::codigoDestino);
-			
 			return 	numVuelosDeDestino.keySet().stream()
 					.max(Comparator.comparing(d->numVuelosDeDestino.get(d)))
 					.get();	

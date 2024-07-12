@@ -92,8 +92,8 @@ public class Stream2 {
 			Stream<U> s2, 
 			Function<T, K> k1,
 			Function<U, K> k2) {
-		Map<K, List<T>> m1 = Stream2.groupingList(s1,k1);
-		Map<K, List<U>> m2 = Stream2.groupingList(s2,k2);
+		Map<K, List<T>> m1 = s1.collect(Collectors.groupingBy(k1));
+		Map<K, List<U>> m2 = s2.collect(Collectors.groupingBy(k2));
 		Set<K> sk = Set2.intersection(m1.keySet(),m2.keySet());
 		return sk.stream().flatMap(k->Stream2.cartesianProduct(m1.get(k).stream(),m2.get(k).stream()));
 	}
@@ -102,96 +102,7 @@ public class Stream2 {
 		return st::iterator;
 	}
 	
-	public static <K,E> Map<K,List<E>> groupingList(Stream<E> st,Function<E,K> key){
-		return st.collect(Collectors.groupingBy(key));
-	}
 	
-	public static <E,K,R> Map<K,List<R>> groupingList(Stream<E> st,Function<E,K> key, 
-			Function<E,R> value){
-		return st.collect(Collectors.groupingBy(key,
-				Collectors.mapping(value,Collectors.toList())));
-	}
-	
-	public static <E,K,R> SortedMap<K,List<R>> groupingList(Stream<E> st,Function<E,K> key, 
-			Function<E,R> value, Comparator<K> order){
-		return st.collect(Collectors.groupingBy(key,
-				() ->new TreeMap<K,List<R>>(order),
-				Collectors.mapping(value,Collectors.toList())));
-	}
-	
-	public static <E,K,T,R> Map<K,R> groupingList(Stream<E> st,Function<E,K> key, Function<E,T> value, 
-			Function<List<T>,R> andThen){
-		return st.collect(Collectors.groupingBy(key,Collectors.mapping(value,
-				Collectors.collectingAndThen(Collectors.toList(),andThen))));
-	}
-	
-	public static <E,K> Map<K,Set<E>> groupingSet(Stream<E> st,Function<E,K> key){
-		return st.collect(Collectors.groupingBy(key,Collectors.toSet()));
-	}
-	
-	public static <E,K> SortedMap<K,Set<E>> groupingSet(Stream<E> st,Function<E,K> key, Comparator<K> order){
-		return st.collect(Collectors.groupingBy(key,
-				() ->new TreeMap<K,Set<E>>(order),
-				Collectors.toSet()));
-	}
-	
-	public static <E,K,T> Map<K,Set<T>> groupingSet(Stream<E> st,Function<E,K> key, Function<E,T> value){
-		return st.collect(Collectors.groupingBy(key,Collectors.mapping(value,Collectors.toSet())));
-	}
-	
-	
-	public static <E,K,T> SortedMap<K,Set<T>> groupingSet(Stream<E> st,Function<E,K> key,Function<E,T> value,
-					Comparator<K> order){
-		return st.collect(Collectors.groupingBy(key,
-				() ->new TreeMap<K,Set<T>>(order),
-				Collectors.mapping(value,Collectors.toSet())));
-	}
-	
-	public static <E,K,T,R> Map<K,R> groupingSet(Stream<E> st,Function<E,K> key, 
-			Function<E,T> value, Function<Set<T>,R> andThen){
-		return st.collect(Collectors.groupingBy(key,
-				Collectors.mapping(value,
-						Collectors.collectingAndThen(Collectors.toSet(),andThen))));
-	}
-	
-	public static <E> SortedMap<E,Integer> groupingSize(Stream<E> st,Comparator<E> order){
-		return Stream2.groupingSize(st, x->x, order);
-	}
-	
-	public static <E,K> SortedMap<K,Integer> groupingSize(Stream<E> st,Function<E,K> key,Comparator<K> order){
-		return st.collect(Collectors.groupingBy(key,
-				()->new TreeMap<K,Integer>(order),
-				Collectors.collectingAndThen(Collectors.counting(),Long::intValue)));
-	}
-	
-	public static <E> Map<E,Integer> groupingSize(Stream<E> st){
-		return Stream2.groupingSize(st, x->x);
-	}
-	
-	public static <E,K> Map<K,Integer> groupingSize(Stream<E> st,Function<E,K> key){
-		return st.collect(Collectors.groupingBy(key,
-				Collectors.collectingAndThen(Collectors.counting(),Long::intValue)));
-	}
-	
-	public static <E,K> Map<K,E> groupingReduce(Stream<E> st, Function<E,K> key, BinaryOperator<E> op){
-		return st.collect(Collectors.groupingBy(key,
-				Collectors.collectingAndThen(Collectors.reducing(op),e->e.get())));
-	}
-	
-	public static <E,K,T> Map<K,T> groupingReduce(Stream<E> st, Function<E,K> key,  
-			BinaryOperator<T> op, Function<E,T> value){
-		return st.collect(Collectors.groupingBy(key,
-				Collectors.mapping(value,
-						Collectors.collectingAndThen(Collectors.reducing(op),e->e.get()))));
-	}
-	
-	public static <E,K,T> SortedMap<K,T> groupingReduce(Stream<E> st, Function<E,K> key,  
-			BinaryOperator<T> op, Function<E,T> value, Comparator<K> order){
-		return st.collect(Collectors.groupingBy(key, 
-				()->new TreeMap<K,T>(order),
-				Collectors.mapping(value,
-						Collectors.collectingAndThen(Collectors.reducing(op),e->e.get()))));
-	}
 	
 	public static void main(String[] args) {
 		List<Double> ls = List.of(2.3,3.4,5.6,7.8);

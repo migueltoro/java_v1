@@ -12,6 +12,21 @@ import us.lsi.tools.Preconditions;
 
 public class Persona implements Comparable<Persona> {
 	
+	public enum Horoscope {
+	    ARIES,
+	    TAURUS,
+	    GEMINI,
+	    CANCER,
+	    LEO,
+	    VIRGO,
+	    LIBRA,
+	    SCORPIO,
+	    SAGITTARIUS,
+	    CAPRICORN,
+	    AQUARIUS,
+	    PISCES
+	}
+	
 	public static Persona of(String apellidos, String nombre, LocalDateTime fechaDeNacimiento, String dni,
 			String telefono, Direccion direccion) {
 		Preconditions.checkArgument(apellidos.strip().length() > 0, String.format("Los apellidos no pueden estar en blanco"));
@@ -115,9 +130,40 @@ public class Persona implements Comparable<Persona> {
 		LocalDateTime nc = this.fechaDeNacimiento().plusYears(edad + 1);
 		return nc.toLocalDate();
 	}
-
+	
 	public DayOfWeek diaSemanaSiguienteCumple() {
 		return siguienteCumple().getDayOfWeek();
+	}
+	
+	public Horoscope horoscopo() {
+	    int month = this.fechaDeNacimiento().getMonthValue();
+	    int day = this.fechaDeNacimiento().getDayOfMonth();
+
+	    if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) {
+	        return Horoscope.AQUARIUS;
+	    } else if ((month == 2 && day >= 19) || (month == 3 && day <= 20)) {
+	        return Horoscope.PISCES;
+	    } else if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) {
+	        return Horoscope.ARIES;
+	    } else if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) {
+	        return Horoscope.TAURUS;
+	    } else if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) {
+	        return Horoscope.GEMINI;
+	    } else if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) {
+	        return Horoscope.CANCER;
+	    } else if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) {
+	        return Horoscope.LEO;
+	    } else if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) {
+	        return Horoscope.VIRGO;
+	    } else if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) {
+	        return Horoscope.LIBRA;
+	    } else if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) {
+	        return Horoscope.SCORPIO;
+	    } else if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) {
+	        return Horoscope.SAGITTARIUS;
+	    } else {
+	        return Horoscope.CAPRICORN;
+	    }
 	}
 
 	public String toString() {

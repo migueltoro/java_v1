@@ -47,6 +47,12 @@ public record Vuelo(
 			DayOfWeek diaSemana) {
 		return new Vuelo(codigo,numero,codeDestino,codeOrigen,precio,numPlazas,duracion,hora,diaSemana);	
 	}
+	
+	public Vuelo {
+		if (codigoAerolinea == null || numero == null || codigoDestino == null || codigoOrigen == null || precio == null
+				|| numPlazas == null || duracion == null || hora == null || diaSemana == null)
+			throw new IllegalArgumentException("Vuelo no puede ser null");
+	}
 
 	@Override
 	public String toString() {

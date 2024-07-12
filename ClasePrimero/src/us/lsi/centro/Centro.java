@@ -1,16 +1,9 @@
 package us.lsi.centro;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-
-import us.lsi.tools.Pair;
-import us.lsi.tools.Preconditions;
-import us.lsi.tools.Stream2;
 
 public class Centro {
 
@@ -85,86 +78,52 @@ public class Centro {
 	}
 
 	public Map<Grupo, Set<Profesor>> profesoresDeGrupo() {
-		return this.asignaciones().todas().stream().collect(Collectors.groupingBy(a -> Grupo.of(a.ida(), a.idg()),
-				Collectors.mapping(a -> this.profesores().profesor(a.dni()), Collectors.toSet())));
+		return null;
 	}
 
 	public Set<Profesor> profesoresDeGrupo(Integer ida, Integer idg) {
-		return this.asignaciones().todas().stream().filter(a -> a.ida().equals(ida)).filter(a -> a.idg().equals(idg))
-				.map(a -> this.profesores().profesor(a.dni())).collect(Collectors.toSet());
+		return null;
 	}
 
 	public Set<Profesor> profesores(Alumno a) {
-		Set<Grupo> ga = this.matriculas().todas().stream().filter(m -> m.dni().equals(a.dni()))
-				.map(m -> Grupo.of(m.ida(), m.idg())).collect(Collectors.toSet());
-		return this.asignaciones().todas().stream().filter(ap -> ga.contains(Grupo.of(ap.ida(), ap.idg())))
-				.map(ap -> this.profesores().profesor(ap.dni())).collect(Collectors.toSet());
+		return null;
 	}
 
 	public Set<Profesor> profesores(Alumno a, Integer edad) {
-		Set<Grupo> ga = this.matriculas().todas().stream().filter(m -> m.dni().equals(a.dni()))
-				.map(m -> Grupo.of(m.ida(), m.idg())).collect(Collectors.toSet());
-		return this.asignaciones().todas().stream().filter(ap -> ga.contains(Grupo.of(ap.ida(), ap.idg())))
-				.map(ap -> this.profesores().profesor(ap.dni())).filter(p -> p.edad() >= edad)
-				.collect(Collectors.toSet());
+		return null;
 	}
 	
 	public Map<String,List<String>> alumnosDeProfesores() {
-		Stream<Asignacion> as = this.asignaciones().todas().stream();
-		Stream<Matricula> ms = this.matriculas().todas().stream();
-		Stream<Pair<String, String>> ppa = 
-				Stream2.join(as,ms,a->a.grupo(),m->m.grupo())
-					.map(p->Pair.of(p.first().dni(),p.second().dni()));
-		return Stream2.groupingList(
-				ppa,
-				p->p.first(),
-				p->p.second());
+		return null;
 	}
 	
 	public Map<String,Integer> numAlumnosDeProfesor() {
-		Stream<Asignacion> as = this.asignaciones().todas().stream();
-		Stream<Matricula> ms = this.matriculas().todas().stream();
-		Stream<Pair<String, String>> ppa = 
-				Stream2.join(as,ms,a->a.grupo(),m->m.grupo())
-					.map(p->Pair.of(p.first().dni(),p.second().dni()));
-		return Stream2.groupingSize(ppa,p->p.first());
+		return null;
 	}
 
 	public Map<Integer, Integer> numProfesoresPorEdad() {
-		return this.asignaciones().todas().stream().map(ap -> this.profesores().profesor(ap.dni()))
-				.collect(Collectors.groupingBy(p -> p.edad(), Collectors.reducing(0, p -> 1, (x, y) -> x + y)));
+		return null;
 	}
 
 	public Map<Integer, Integer> numGruposPorAsignatura() {
-		return this.matriculas().todas().stream().map(m -> Grupo.of(m.ida(), m.idg())).distinct()
-				.collect(Collectors.groupingBy(g -> g.ida(), Collectors.reducing(0, g -> 1, (x, y) -> x + y)));
+		return null;
 
 	}
 
 	public List<String> nombresAlumnosTop(Integer n) {
-		return this.alumnos().todos().stream().filter(a -> a.fechaDeNacimiento().getYear() > 2000)
-				.sorted(Comparator.comparing(Alumno::nota).reversed()).limit(n).map(Alumno::nombre)
-				.collect(Collectors.toList());
+		return null;
 	}
 
-	public Set<Asignatura> obtenerAsignaturasComunes(List<Alumno> alumnos) {
-		Preconditions.checkArgument(alumnos.size() >= 2);
-		Set<String> dnis = alumnos.stream().map(a -> a.dni()).collect(Collectors.toSet());
-		Map<Alumno, Set<Asignatura>> as = this.matriculas().todas().stream().filter(m -> dnis.contains(m.dni()))
-				.collect(Collectors.groupingBy(m1 -> this.alumnos().alumno(m1.dni()),
-						Collectors.mapping(m2 -> this.asignaturas().asignatura(m2.ida()), Collectors.toSet())));
-		Set<Asignatura> s = as.get(alumnos.get(0));
-		as.keySet().stream().forEach(a -> s.retainAll(as.get(a)));
-		return s;
+	public Set<Asignatura> obtenerAsignaturasComunes(List<Alumno> alumnos) {		
+		return null;
 	}
 
 	public Map<Integer, Double> porcentajeAlumnosPorEdad() {
-		Integer total = this.alumnos().size();
-		return this.alumnos().todos().stream().collect(Collectors.groupingBy(a -> a.edad(),
-				Collectors.collectingAndThen(Collectors.counting(), n -> n * 100.0 / total)));
+		return null;
 	}
 	
-	
+	//// Examen
+
 
 	public static void main(String[] args) {
 		Centro c = Centro.of();

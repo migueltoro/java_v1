@@ -10,7 +10,6 @@ import java.util.stream.Stream;
 
 import us.lsi.coordenadas.Coordenadas2D;
 import us.lsi.tools.File2;
-import us.lsi.tools.Stream2;
 
 public class RedF extends RedA implements Red {
 	
@@ -81,7 +80,7 @@ public class RedF extends RedA implements Red {
 	
 	@Override
 	public Map<Integer, Integer> numeroDeEstacionesPorBicisDisponibles() {
-		return Stream2.groupingReduce(this.estaciones.stream(),e->e.free_bikes(),(x,y)->x+y,e->1);
+		return null;
 	}
 
 	@Override

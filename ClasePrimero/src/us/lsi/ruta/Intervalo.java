@@ -9,6 +9,11 @@ public record Intervalo(Marca principio, Marca fin) {
 	public static Intervalo of(Marca principio, Marca fin) {
 		return new Intervalo(principio, fin);
 	}
+	
+	public Intervalo {
+		if (principio.time().isAfter(fin.time()))
+			throw new IllegalArgumentException("Marca principio debe ser anterior a marca fin");
+	}
 
 	@Override
 	public String toString() {

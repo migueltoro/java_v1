@@ -297,7 +297,10 @@ class DataFrameI implements DataFrame {
 	public <R> DataFrame groupBy(List<String> columNames, String newColumn, BinaryOperator<R> op,
 			Function<List<String>, R> value) {
 		Function<List<String>,List<String>> key = ls->this.select(ls,this.indexes(columNames));
-		Map<List<String>,R> g = Stream2.groupingReduce(this.rows.stream(),key,op,value);
+		Map<List<String>,R> g = this.rows.stream()
+				.collect(Collectors.groupingBy(key,
+						Collectors.mapping(value,
+								Collectors.collectingAndThen(Collectors.reducing(op),x->x.get()))));
 		DataFrame r = DataFrame.of(columNames,g.keySet().stream().toList());		
 		r = r.addColum(newColumn,g.values().stream().map(x->DataFrameI.string(x)).toList());
 		return r;

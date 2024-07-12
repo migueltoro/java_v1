@@ -12,12 +12,23 @@ public record FechaI(Integer año, Integer mes, Integer dia,Integer numDiaDesde1
 	private static Integer desde = 1900;
 	private static Integer hasta = 2100;
 	
+	public FechaI {
+		Preconditions.checkArgument(año >= FechaI.desde && año < FechaI.hasta,
+				String.format("Años limitados entre %d y %d", 1900, 2100));
+		Preconditions.checkArgument(mes > 0 && mes <= 12, String.format("Meses limitados entre %d y %d", 1, 12));
+		Preconditions.checkArgument(dia > 0 && dia <= 31,
+				String.format("Dias limitados entre %d y %d", 1, 31));
+		Preconditions.checkArgument(numDiaDesde1900 > 0,
+				String.format("numDiaDesde1900 = %d", numDiaDesde1900));
+	}
+	
 	public static FechaI of(Integer año, Integer mes, Integer dia) {
 		Preconditions.checkArgument(año>=FechaI.desde && año < FechaI.hasta, String.format("Años limitados entre %d y %d",1900, 2100));
 		Integer da = FechaI.diasAcumuladosEnAños.get(año-1900);
 		Integer dm = FechaI.diasAcumuladosEnMeses(año).get(mes);
 		Integer diasDesde1900 = da+dm+dia;
-		return new FechaI(año, mes, dia,diasDesde1900);
+		System.out.println(año+","+mes+","+dia);
+		return new FechaI(año, mes, dia, diasDesde1900);
 	}
 	
 	public static FechaI of(Integer numDiaDesde1900) {
@@ -28,6 +39,7 @@ public record FechaI(Integer año, Integer mes, Integer dia,Integer numDiaDesde1
 		Integer dia = rd-FechaI.diasAcumuladosEnMeses(año).get(mes);
 		return new FechaI(año, mes, dia,numDiaDesde1900);
 	}
+	
 	
 	public static FechaI parse(String text) {
 		String[] p = text.split("/");
@@ -80,22 +92,23 @@ public record FechaI(Integer año, Integer mes, Integer dia,Integer numDiaDesde1
 	public static Boolean esBisiesto(Integer anyo) {
 		return (anyo%4==0 && anyo%100!=0) || (anyo%4==0 && anyo%400==0);
 	}
-	
+
 	public static Integer index(List<Integer> ls, Integer value) {
-		Integer n = ls.size();
-		Integer i = 0;
-		Integer j = n;
-		Integer r = -1;
-		while(j-i>1) {
-			Integer k = (i+j)/2;
-			if(value <= ls.get(k)) {
-				j=k;
-			} else {
-				i=k;
-			}			
-		}
-		if(value >= ls.get(i) && value < ls.get(j)) r = i;
-		return r;
+		//ls is an ordered list and the method return the index of the cell of ls such that ls.get(index) < value <= ls.get(index+1)
+		int left = 0;
+	    int right = ls.size();
+	    if (ls.size() == 0 || value < ls.get(0)) return -1;
+	    if (value > ls.get(right-1)) return right-1;
+
+	    while (right - left > 2) {
+	        int mid = (left + right) / 2;
+	        if (value > ls.get(mid)) {
+	            left = mid;
+	        } else {
+	            right = mid+1;
+	        }        
+	    }	
+	    return left;
 	}
 	
 	private static List<Integer> diasAcumuladosEnMeses(Integer año) {
@@ -160,6 +173,9 @@ public record FechaI(Integer año, Integer mes, Integer dia,Integer numDiaDesde1
 		return this.numDiaDesde1900.compareTo(fi.numDiaDesde1900);
 	}
 	
-	
+	public static void main(String[] args) {
+		System.out.println(FechaI.diasAcumuladosEnMeses);
+		System.out.println(FechaI.index(FechaI.diasAcumuladosEnMeses, 59));
+	}
 	
 }

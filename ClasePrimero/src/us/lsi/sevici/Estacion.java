@@ -24,6 +24,13 @@ public record Estacion(Integer numero,
 		Coordenadas2D coordenadas = Coordenadas2D.of(Double.parseDouble(partes[4]), Double.parseDouble(partes[5]));
 		return new Estacion(numero,name,slots,empty_slots,free_bikes,coordenadas);
 	}
+	
+	public Estacion {
+		Preconditions.checkArgument(numero >= 0, String.format("Numero %d", numero));
+		Preconditions.checkArgument(slots >= 0, String.format("Slots %d", slots));
+		Preconditions.checkArgument(empty_slots >= 0, String.format("Empty_Slots %d", empty_slots));
+		Preconditions.checkArgument(free_bikes >= 0, String.format("Free_Bikes %d", free_bikes));
+	}
 
 	@Override
 	public String toString() {

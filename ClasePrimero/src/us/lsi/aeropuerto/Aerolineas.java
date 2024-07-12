@@ -51,8 +51,9 @@ public class Aerolineas {
 	public Aerolinea get(Integer i) {
 		return this.aeroLineas.stream().toList().get(i);
 	}
-		
-	public String string() {
+	
+	@Override
+	public String toString() {
 		return String.format("Aerolineas\n\t%s",this.aeroLineas.stream()
 				.map(a->a.toString())
 				.collect(Collectors.joining("\n\t")));

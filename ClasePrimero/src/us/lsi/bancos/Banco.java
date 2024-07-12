@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import us.lsi.ejemplos_b1_tipos.Persona;
-import us.lsi.tools.Stream2;
 
 public class Banco {
 
@@ -105,7 +104,7 @@ public class Banco {
 // Número de cuentas de cada cliente
 
 	public Map<String, Integer> numeroDeCuentasDeCliente() {
-		return Stream2.groupingReduce(this.cuentas().todas().stream(), c -> c.dni(), (x, y) -> x + y, x -> 1);
+		return null;
 	}
 	
 	public void test() {

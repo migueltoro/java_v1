@@ -25,6 +25,11 @@ public record Marca(LocalTime time, Coordenadas3D coordenadas) {
 	public static Marca of(LocalTime time, Coordenadas3D coordenadas) {
 		return new Marca(time, coordenadas);
 	}
+	
+	public Marca {
+		if (time == null || coordenadas == null)
+			throw new IllegalArgumentException("Marca no puede ser null");
+	}
 
 	@Override
 	public String toString() {

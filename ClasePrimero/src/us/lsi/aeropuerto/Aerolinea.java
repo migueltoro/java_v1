@@ -12,5 +12,10 @@ public record Aerolinea(String codigo, String nombre) {
 	public static Aerolinea of(String codigo, String nombre) {
 		return new Aerolinea(codigo,nombre);
 	}
+	
+	public Aerolinea {
+		if (codigo == null || nombre == null)
+			throw new IllegalArgumentException("Aerolinea no puede ser null");
+	}
 
 }
