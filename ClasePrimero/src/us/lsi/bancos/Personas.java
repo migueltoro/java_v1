@@ -67,7 +67,7 @@ public class Personas {
 		Persona p = 
 			Persona.parse("González Cortés,Ricardo,97986110S,1975-05-27 02:01:29,+34693730797,Calle Alcalá;Murcia;08001",fm);
 		System.out.println(p);
-		System.out.println(File2.getFileCharset("bancos/personas.txt"));
+		System.out.println(File2.getFileEncoding("bancos/personas.txt"));
 		System.out.println("_________");
 		System.out.println(Personas.of());
 		System.out.println(Personas.of().personaDni("34759012D"));

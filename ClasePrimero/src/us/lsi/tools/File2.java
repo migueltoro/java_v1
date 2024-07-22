@@ -1,6 +1,5 @@
 package us.lsi.tools;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -23,6 +22,7 @@ import java.util.stream.Stream;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import java.io.InputStreamReader;
 import org.mozilla.universalchardet.UniversalDetector;
 
 
@@ -38,26 +38,38 @@ public class File2 {
 		return root_project+file;
 	}
 	
-	public static String getFileCharset(String file) {
-		try {
-			byte[] buf = new byte[4096];
-			final UniversalDetector universalDetector;
-			try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file))) {
-				universalDetector = new UniversalDetector(null);
-				int numberOfBytesRead;
-				while ((numberOfBytesRead = bufferedInputStream.read(buf)) > 0 && !universalDetector.isDone()) {
-					universalDetector.handleData(buf, 0, numberOfBytesRead);
-				}
-			}
-			universalDetector.dataEnd();
-			String encoding = universalDetector.getDetectedCharset();
-
-			universalDetector.reset();
-
-			return encoding;
-		} catch (IOException e) {
-			throw new IllegalArgumentException("No se ha encontrado el fichero " + file);
-		}
+	public static String getFileEncoding(String filePath) {
+	    try (InputStreamReader reader = new InputStreamReader(new FileInputStream(filePath))) {
+	        return reader.getEncoding();
+	    } catch (IOException e) {
+	        throw new IllegalArgumentException("File not found: " + filePath, e);
+	    }
+	}
+	
+	public static String detectEncoding(String fileName) {
+	    byte[] buf = new byte[4096];
+	    FileInputStream fis = null;
+	    try {
+	        fis = new FileInputStream(fileName);
+	        UniversalDetector detector = new UniversalDetector(null);
+	        int nread;
+	        while ((nread = fis.read(buf)) > 0 && !detector.isDone()) {
+	            detector.handleData(buf, 0, nread);
+	        }
+	        detector.dataEnd();
+	        String encoding = detector.getDetectedCharset();
+	        detector.reset();
+	        return encoding;
+	    } catch (IOException e) {
+	        throw new IllegalArgumentException("File not found: " + fileName, e);
+	    } finally {
+	        if (fis != null) {
+	            try {
+	                fis.close();
+	            } catch (IOException ignored) {
+	            }
+	        }
+	    }
 	}
 
 	public static Stream<String> streamDeFichero(String file) {
@@ -205,7 +217,9 @@ public class File2 {
 	}
 
 	public static void main(String[] args) {
-		String s = File2.getFileCharset("ficheros_aeropuertos/aeropuertos.csv");
+		String s = File2.getFileEncoding("resources/cartasPattern.html");
+		System.out.println(s);
+		s = File2.detectEncoding("resources/cartasPattern.html");
 		System.out.println(s);
 		System.out.println(File2.root_project());
 		System.out.println(File2.mapDeCsv("datos/pp.csv"));

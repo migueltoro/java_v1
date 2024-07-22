@@ -17,7 +17,7 @@ public class TestAeropuerto {
 	}
 
 	public static void main(String[] args) throws IOException {
-		System.out.println(File2.getFileCharset("aeropuertos/aerolineas.csv"));
+		System.out.println(File2.getFileEncoding("aeropuertos/aerolineas.csv"));
 		Vuelos v = EspacioAereo.of().vuelos();
 		System.out.println(v.size());
 		Set<OcupacionVuelo> r = EspacioAereo.of().ocupacionesVuelos().todas();

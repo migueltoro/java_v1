@@ -13,7 +13,8 @@ public class Test {
 	public static void main(String[] args) {
 		Locale.setDefault(Locale.of("en", "US"));
 		TipoImplementacion t = TipoImplementacion.Funcional;
-		System.out.println(File2.getFileCharset("ficheros/quijote.txt"));
+		System.out.println(File2.getFileEncoding("ficheros/quijote.txt"));
+		System.out.println(File2.detectEncoding("ficheros/quijote.txt"));
 		Integer n = Libro.of(t).numeroDeLineas("ficheros/quijote.txt");
 		System.out.println(n);
 		System.out.println();

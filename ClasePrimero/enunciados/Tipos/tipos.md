@@ -12,16 +12,16 @@ Un tipo puede ser inmutable, si no se pueden modificar sus propiedades una vez c
 
 Un tipo puede _extender_ a otro (diremos que hereda de o extiende a otro)
 
-La propiedades puede ser:
+Cada propiedad puede ser:
 
-- _Básicas_: si su valor no depende del valor de otra propiedad
+- _Básica_: si su valor no depende del valor de otra propiedad
 - _Derivada_: si su valor depende del valor de otras propiedades
 - _Individual_: Si el valor de la propiedad es específico de cada valor del tipo
 - _Compartida_: Si el valor de la propiedad es compartido por todos los valores del tipo
 
-Las propiedades pueden tener parámetros para indicar un conjunto de propiedades del mismo tipo. En ese caso indicamos el rango permitido para los parámetros.
+Las propiedades pueden tener parámetros para indicar un conjunto de propiedades del mismo tipo. En ese caso indicamos el rango permitido para los parámetros. Tambien pueden tener restricciones sobre el conjunto de valores que pueden tomar.
 
-Las _operaciones_ indican la manera de modificar las propiedades del tipo. Si un tipo no tiene operaciones es inmutable. Las operaciones tienen parámetros de entrada. Para especificar estas propiedades podemos indicar un predicado que restringe los parámetros de entrada que llamamos precondición (@pre p(x)) y un predicado que indica una restricción sobre los parámetros de entrada y el valor de las propiedades tras aplicar la operación que llamamos postcondición (@post p(x,v)).
+Las _operaciones_ indican la manera de modificar las propiedades del tipo. Si un tipo no tiene operaciones es inmutable. Las operaciones tienen parámetros de entrada. Las operaciones pueden tener restricciones. Restricciones en los parámetros de entrada que especificamos por un predicado que llamamos _precondición_ (@pre p(x)). Restricciones entre los vlores de los parámetros de entrada y el valor de las propiedades tras aplicar la operación que especificamos por un predicado llamamos _postcondición_ (@post p(x,v)).
 
 Las factorías son mecanismos para construir valores de un tipo. Generalmente usaremos los siguientes:
 
@@ -34,6 +34,8 @@ _Representación_ es el mecanismo para convertir un valor del tipo en una cadena
 _Igualdad_: Es una expresión booleana que indica cuando dos valores son iguales. Por defecto dos valores son iguales si tienen las propiedades básicas iguales.
 
 _Orden natural_: En algunos tipos se puede definir un orden total sobre los valores del tipo que llamaremos orden natural.
+
+_Restricciones_: Son predicados que deben cumplir los valores de un tipo o el conjunto de valores de la población de un tipo. Aqui podemos acumular las restricciones de las propiedades, de las operaciones de un tipo. Al conjunto de restricciones también se le suele llamar _Invariante_.
 
 
 ## Diseño de poblaciones
@@ -49,8 +51,8 @@ Las factorías de las poblaciones las diseñaremos generalmente son el patrón d
 Propiedades:
 
 - apellidos, de tipo String, básica. 
-- nombre, de tipo String, básica, consultable. 
-- dni, de tipo String, básica, consultable. 
+- nombre, de tipo String, básica. 
+- dni, de tipo String, básica. 
 - fechaDeNacimiento, de tipo LocalDateTime, básica. 
 - edad, de tipo Integer, derivada. 
 
