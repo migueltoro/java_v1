@@ -12,8 +12,12 @@ public class Usuarios {
 	public static Usuarios gestorDeUsuarios = null;
 	
 	public static Usuarios of() {
+		return Usuarios.of("biblioteca/usuarios.txt");		
+	}
+	
+	public static Usuarios of(String file) {
 		if (Usuarios.gestorDeUsuarios == null)
-			Usuarios.gestorDeUsuarios = Usuarios.parse("biblioteca/usuarios.txt");
+			Usuarios.gestorDeUsuarios = new Usuarios(file);
         return Usuarios.gestorDeUsuarios;
 	}
 	
@@ -30,10 +34,17 @@ public class Usuarios {
 
 	private Set<Usuario> usuarios;
 	private Map<String,Usuario> usuariosDni;
-
+	
 	private Usuarios(Set<Usuario> usuarios) {
+        super();
+        this.usuarios = usuarios;
+        this.usuariosDni = this.usuarios.stream().collect(Collectors.toMap(e->e.dni(),e->e));
+	}     		
+
+	private Usuarios(String file) {
 		super();
-		this.usuarios = usuarios;
+		this.usuarios = File2.streamDeFichero(file,"utf-8")
+        		.map(ln->Usuario.parse(ln)).collect(Collectors.toSet());  
 		this.usuariosDni = this.usuarios.stream().collect(Collectors.toMap(e->e.dni(),e->e));
 	}
     

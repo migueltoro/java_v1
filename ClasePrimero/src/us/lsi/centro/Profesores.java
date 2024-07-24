@@ -11,8 +11,12 @@ public class Profesores {
 	public static Profesores gestorDeProfesores = null;
 	
 	public static Profesores of() {
+        return Profesores.of("centro/profesores.txt");
+	}
+	
+	public static Profesores of(String file) {
 		if (Profesores.gestorDeProfesores == null)
-			Profesores.gestorDeProfesores = Profesores.parse("centro/profesores.txt");
+			Profesores.gestorDeProfesores = new Profesores(file);
         return Profesores.gestorDeProfesores;
 	}
 	
@@ -29,10 +33,17 @@ public class Profesores {
 
 	private Set<Profesor> profesores;
 	private Map<String,Profesor> profesoresDni;
-
+	
 	private Profesores(Set<Profesor> profesores) {
 		super();
 		this.profesores = profesores;
+		this.profesoresDni = this.profesores.stream().collect(Collectors.toMap(p -> p.dni(), p -> p));
+	}
+
+	private Profesores(String file) {
+		super();
+		this.profesores = File2.streamDeFichero(file,"utf-8")
+        		.map(ln->Profesor.parse(ln)).collect(Collectors.toSet()); ;
 		this.profesoresDni = this.profesores.stream().collect(Collectors.toMap(p->p.dni(),p->p));
 	}
     

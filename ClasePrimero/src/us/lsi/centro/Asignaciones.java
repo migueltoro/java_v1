@@ -10,16 +10,13 @@ public class Asignaciones {
 	public static Asignaciones gestorDeAsignaciones = null;
 	
 	public static Asignaciones of() {
-		if (Asignaciones.gestorDeAsignaciones == null)
-			Asignaciones.gestorDeAsignaciones = Asignaciones.parse("centro/asignaciones.txt");
-        return Asignaciones.gestorDeAsignaciones;
+		return Asignaciones.of("centro/asignaciones.txt");
 	}
 	
-	public static Asignaciones parse(String file) {
-		Set<Asignacion> asignaciones = File2.streamDeFichero(file,"utf-8")
-        		.map(ln->Asignacion.parse(ln)).collect(Collectors.toSet());    	
-		Asignaciones.gestorDeAsignaciones = new Asignaciones(asignaciones);
-		return Asignaciones.gestorDeAsignaciones;
+	public static Asignaciones of(String file) {
+		if (Asignaciones.gestorDeAsignaciones == null)
+			Asignaciones.gestorDeAsignaciones = new Asignaciones(file);
+        return Asignaciones.gestorDeAsignaciones;
 	}
 	
 	public static Asignaciones of(Set<Asignacion> Asignaciones) {
@@ -27,10 +24,16 @@ public class Asignaciones {
 	}
 
 	private Set<Asignacion> asignaciones;
-
+	
 	private Asignaciones(Set<Asignacion> asignaciones) {
 		super();
 		this.asignaciones = asignaciones;
+	}
+
+	private Asignaciones(String file) {
+		super();
+		this.asignaciones = File2.streamDeFichero(file,"utf-8")
+        		.map(ln->Asignacion.parse(ln)).collect(Collectors.toSet());
 	}
     
     public Integer size() { 

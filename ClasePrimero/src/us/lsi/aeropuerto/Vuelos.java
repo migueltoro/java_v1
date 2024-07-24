@@ -12,23 +12,28 @@ public class Vuelos {
 	private static Vuelos gestorVuelos = null;
 	
 	public static Vuelos of() {
-		if(Vuelos.gestorVuelos == null) 
-			Vuelos.gestorVuelos = Vuelos.parse("aeropuertos/vuelos.csv");
-		return Vuelos.gestorVuelos;
+		return Vuelos.of("aeropuertos/vuelos.csv");
 	}
-	public static Vuelos parse(String fichero) {
-		Set<Vuelo>  vuelos = File2.streamDeFichero(fichero,"Windows-1252")
-				.map(x -> Vuelo.parse(x))
-				.collect(Collectors.toSet());
-		return new Vuelos(vuelos);
+	
+	public static Vuelos of(String file) {
+		if(Vuelos.gestorVuelos == null) 
+			Vuelos.gestorVuelos = new Vuelos(file);
+		return Vuelos.gestorVuelos;
 	}
 	
 	private Set<Vuelo> vuelos;
 	private Map<String, Vuelo> codigosVuelos;
 	
 	public Vuelos(Set<Vuelo> vuelos) {
-		super();
 		this.vuelos = vuelos;
+		this.codigosVuelos = this.vuelos.stream().collect(Collectors.toMap(Vuelo::codigo,x->x));
+	}
+	
+	private Vuelos(String file) {
+		super();
+		this.vuelos = File2.streamDeFichero(file,"Windows-1252")
+				.map(x -> Vuelo.parse(x))
+				.collect(Collectors.toSet());
 		this.codigosVuelos = this.vuelos.stream().collect(Collectors.toMap(Vuelo::codigo,x->x));
 	}
 
@@ -50,9 +55,9 @@ public class Vuelos {
 
 	
 	public static void main(String[] args) {
-		Aeropuertos.parse("ficheros/aeropuertos.csv");
-		Aerolineas.parse("ficheros/aerolineas.csv");
-		Vuelos.parse("ficheros/vuelos.csv");
+		Aeropuertos.of();
+		Aerolineas.of();
+		Vuelos.of();
 	}
 	
 }

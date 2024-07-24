@@ -8,10 +8,14 @@ import us.lsi.tools.File2;
 public class Matriculas {
 
 	public static Matriculas gestorDeMatriculas = null;
-
+	
 	public static Matriculas of() {
+        return Matriculas.of("centro/matriculas.txt");
+	}
+
+	public static Matriculas of(String file) {
 		if (Matriculas.gestorDeMatriculas == null)
-			Matriculas.gestorDeMatriculas = Matriculas.parse("centro/matriculas.txt");
+			Matriculas.gestorDeMatriculas = new Matriculas(file);
 		return Matriculas.gestorDeMatriculas;
 	}
 
@@ -27,10 +31,16 @@ public class Matriculas {
 	}
 
 	private Set<Matricula> matriculas;
-
+	
 	private Matriculas(Set<Matricula> matriculas) {
 		super();
 		this.matriculas = matriculas;
+	}
+
+	private Matriculas(String file) {
+		super();
+		this.matriculas = File2.streamDeFichero(file, "utf-8").map(ln -> Matricula.parse(ln))
+				.collect(Collectors.toSet());;
 	}
 
 	public Integer size() {

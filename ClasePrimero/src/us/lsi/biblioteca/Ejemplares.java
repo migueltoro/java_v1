@@ -15,28 +15,33 @@ public class Ejemplares {
 	public static Ejemplares gestorDeEjemplares = null;
 	
 	public static Ejemplares of() {
+		return Ejemplares.of("biblioteca/Ejemplares.txt");
+	}
+	
+	public static Ejemplares of(String file) {
 		if (Ejemplares.gestorDeEjemplares == null)
-			Ejemplares.gestorDeEjemplares = Ejemplares.parse("biblioteca/Ejemplares.txt");
+			Ejemplares.gestorDeEjemplares = new Ejemplares(file);
         return Ejemplares.gestorDeEjemplares;
 	}
 	
-	public static Ejemplares parse(String file) {
-		Set<Ejemplar> ejemplares = File2.streamDeFichero(file,"utf-8")
-        		.map(ln->Ejemplar.parse(ln)).collect(Collectors.toSet());    	
-		Ejemplares.gestorDeEjemplares = new Ejemplares(ejemplares);
-		return Ejemplares.gestorDeEjemplares;
-	}
-	
-	public static Ejemplares of(Set<Ejemplar> Ejemplares) {
-		return new Ejemplares(Ejemplares);
+	public static Ejemplares of(Set<Ejemplar> ejemplares) {
+		return new Ejemplares(ejemplares);
 	}
 
 	private Set<Ejemplar> ejemplares;
 	private Map<Pair<String,Integer>,Ejemplar> ejemplaresId; 
-
-	private Ejemplares(Set<Ejemplar> Ejemplares) {
+	
+	private Ejemplares(Set<Ejemplar> ejemplares) {
 		super();
-		this.ejemplares = Ejemplares;
+		this.ejemplares = ejemplares;
+		this.ejemplaresId = this.ejemplares.stream()
+				.collect(Collectors.toMap(p -> Pair.of(p.isbn(), p.codigo()), p -> p));
+	}
+
+	private Ejemplares(String file) {
+		super();
+		this.ejemplares = File2.streamDeFichero(file,"utf-8")
+        		.map(ln->Ejemplar.parse(ln)).collect(Collectors.toSet()); 
 		this.ejemplaresId = this.ejemplares.stream().collect(Collectors.toMap(p->Pair.of(p.isbn(),p.codigo()),p->p));
 	}
     

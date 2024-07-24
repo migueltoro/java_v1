@@ -13,23 +13,21 @@ public class Prestamos {
 	private Set<Prestamo> prestamos;
 	private Map<Integer, Prestamo> prestamosNid;
 
-	private Prestamos(Set<Prestamo> prestamos) {
+	private Prestamos(String file) {
 		super();
-		this.prestamos = prestamos;
-		this.prestamosNid = this.prestamos.stream().collect(Collectors.toMap(p -> p.nid(), p -> p));
-	}
-
-	public static Prestamos of() {
-		if (Prestamos.gestorDePrestamos == null)
-			Prestamos.gestorDePrestamos = Prestamos.parse("bancos/prestamos.txt");
-		return Prestamos.gestorDePrestamos;
-	}
-
-	public static Prestamos parse(String fichero) {
-		Set<Prestamo> prestamos = File2.streamDeFichero(fichero, "UTF-8")
+		this.prestamos = File2.streamDeFichero(file, "UTF-8")
 				.map(ln -> Prestamo.parse(ln))
 				.collect(Collectors.toSet());
-		Prestamos.gestorDePrestamos = new Prestamos(prestamos);
+		this.prestamosNid = this.prestamos.stream().collect(Collectors.toMap(p -> p.nid(), p -> p));
+	}
+	
+	public static Prestamos of() {
+		return Prestamos.of("bancos/prestamos.txt");
+	}
+
+	public static Prestamos of(String file) {
+		if (Prestamos.gestorDePrestamos == null)
+			Prestamos.gestorDePrestamos = new Prestamos(file);
 		return Prestamos.gestorDePrestamos;
 	}
 
@@ -54,7 +52,7 @@ public class Prestamos {
 	}
 
 	public static void main(String[] args) {
-		Prestamos prestamos = Prestamos.parse("bancos/prestamos.txt");
+		Prestamos prestamos = Prestamos.of();
 		System.out.println(prestamos);
 		System.out.println("______________");
 		System.out.println(prestamos.prestamoNid(94));

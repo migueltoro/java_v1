@@ -98,8 +98,8 @@ public record Vuelo(
 		System.out.println(s);
 //		System.out.println(v1.toString2());
 		Vuelo v2 = Vuelo.parse(s);
-		Aeropuertos.parse("ficheros/aeropuertos.csv");
-		Aerolineas.parse("ficheros/aerolineas.csv");
+		Aeropuertos.of();
+		Aerolineas.of();
 //		Vuelo v3 = Vuelo.random();
 		System.out.println(v2);
 	}

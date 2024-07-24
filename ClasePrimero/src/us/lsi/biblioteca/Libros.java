@@ -11,8 +11,12 @@ public class Libros {
 	public static Libros gestorDeLibros = null;
 	
 	public static Libros of() {
+		return Libros.of("biblioteca/Libros.txt");
+	}
+	
+	public static Libros of(String file) {
 		if (Libros.gestorDeLibros == null)
-			Libros.gestorDeLibros = Libros.parse("biblioteca/Libros.txt");
+			Libros.gestorDeLibros = new Libros(file);
         return Libros.gestorDeLibros;
 	}
 	
@@ -23,16 +27,23 @@ public class Libros {
 		return Libros.gestorDeLibros;
 	}
 	
-	public static Libros of(Set<Libro> Libros) {
-		return new Libros(Libros);
+	public static Libros of(Set<Libro> libros) {
+		return new Libros(libros);
 	}
 
 	private Set<Libro> libros;
 	private Map<String,Libro> librosIsbn;
 
-	private Libros(Set<Libro> Libros) {
+	private Libros(Set<Libro> libros) {
 		super();
-		this.libros = Libros;
+		this.libros = libros;
+		this.librosIsbn = this.libros.stream().collect(Collectors.toMap(p -> p.isbn(), p -> p));
+	}
+	
+	private Libros(String file) {
+		super();
+		this.libros = File2.streamDeFichero(file,"utf-8")
+        		.map(ln->Libro.parse(ln)).collect(Collectors.toSet());  ;
 		this.librosIsbn = this.libros.stream().collect(Collectors.toMap(p->p.isbn(),p->p));
 	}
     

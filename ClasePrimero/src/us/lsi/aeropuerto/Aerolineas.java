@@ -12,22 +12,20 @@ public class Aerolineas {
 	private static Aerolineas gestoraAerolineas = null;
 	
 	public static Aerolineas of() {
+		return Aerolineas.of("aeropuertos/aerolineas.csv");
+	}
+	
+	public static Aerolineas of(String file) {
 		if(Aerolineas.gestoraAerolineas == null)
-			Aerolineas.gestoraAerolineas = Aerolineas.parse("aeropuertos/aerolineas.csv");
+			Aerolineas.gestoraAerolineas = new Aerolineas(file);
 		return gestoraAerolineas;
 	}
 	
-	public static Aerolineas parse(String fichero) {
-		Set<Aerolinea> datos = File2.streamDeFichero(fichero,"Windows-1252")
+	public Aerolineas(String file) {
+		super();
+		this.aeroLineas = File2.streamDeFichero(file,"Windows-1252")
 				.map(x ->Aerolinea.parse(x))
 				.collect(Collectors.toSet());
-		Aerolineas aerolineas = new Aerolineas(datos);
-		return aerolineas;
-	}
-	
-	public Aerolineas(Set<Aerolinea> aeroLineas) {
-		super();
-		this.aeroLineas = aeroLineas;
 		this.codigosAerolineas = 
 				this.aeroLineas.stream().collect(Collectors.toMap(a->a.codigo(),a->a));
 	}

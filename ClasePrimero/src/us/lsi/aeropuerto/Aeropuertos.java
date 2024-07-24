@@ -12,17 +12,13 @@ public class Aeropuertos {
 	private static Aeropuertos gestorAeropuertos = null;
 	
 	public static Aeropuertos of() {
-		if(Aeropuertos.gestorAeropuertos == null)
-			Aeropuertos.gestorAeropuertos = Aeropuertos.parse("aeropuertos/aeropuertos.csv");
-		return gestorAeropuertos;
+		return Aeropuertos.of("aeropuertos/aeropuertos.csv");
 	}
 	
-	public static Aeropuertos parse(String fichero) {
-		Set<Aeropuerto> aeropuertos = File2.streamDeFichero(fichero,"Windows-1252")
-				.map(x -> Aeropuerto.parse(x))
-				.collect(Collectors.toSet());	
-		Aeropuertos.gestorAeropuertos =  new Aeropuertos(aeropuertos);
-		return Aeropuertos.gestorAeropuertos;
+	public static Aeropuertos of(String file) {
+		if(Aeropuertos.gestorAeropuertos == null)
+			Aeropuertos.gestorAeropuertos = new Aeropuertos(file);
+		return gestorAeropuertos;
 	}
 	
 	private Set<Aeropuerto> aeropuertos;
@@ -30,9 +26,11 @@ public class Aeropuertos {
 	private Map<String,String> ciudadDeAeropuerto = null;
 	private Map<String,Set<Aeropuerto>> aeropuertosEnCiudad= null;
 	
-	public Aeropuertos(Set<Aeropuerto> aeropuertos) {
+	private Aeropuertos(String file) {
 		super();
-		this.aeropuertos = aeropuertos;
+		this.aeropuertos = File2.streamDeFichero(file,"Windows-1252")
+				.map(x -> Aeropuerto.parse(x))
+				.collect(Collectors.toSet());
 		this.codigosAeropuertos = 
 				this.aeropuertos.stream().collect(Collectors.toMap(a->a.codigo(),a->a));;
 		this.ciudadDeAeropuerto = 

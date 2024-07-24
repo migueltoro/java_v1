@@ -8,20 +8,12 @@ import us.lsi.tools.Preconditions;
 public class Biblioteca {
 	
 	public static Biblioteca of(String nombre, String codigoPostal, String email) {
-		return new Biblioteca(nombre, codigoPostal, email,
-				Usuarios.of(), 
-				Libros.of(), 
-				Ejemplares.of(), 
-				Prestamos.of());
+		return of(nombre, codigoPostal, email, "biblioteca/usuarios.txt", "biblioteca/libros.txt", "biblioteca/ejemplares.txt", "biblioteca/prestamos.txt");
 	}
-	
-	public static Biblioteca parse(String nombre, String codigoPostal, String email, String usuarios,
-			String libros, String ejemplares, String prestamos) {
-		return new Biblioteca(nombre, codigoPostal, email, 
-				Usuarios.parse(usuarios), 
-				Libros.parse(libros), 
-				Ejemplares.parse(ejemplares), 
-				Prestamos.parse(prestamos));
+
+	public static Biblioteca of(String nombre, String codigoPostal, String email, String fusuarios, String flibros,
+			String fejemplares, String fprestamos) {
+		return new Biblioteca(nombre, codigoPostal, email, fusuarios, flibros, fejemplares, fprestamos);
 	}
 
 	private String nombre;
@@ -33,10 +25,8 @@ public class Biblioteca {
 	private Prestamos prestamos;
 	
 	private Biblioteca(String nombre, String codigoPostal, String email, 
-			Usuarios usuarios,
-			Libros libros,
-			Ejemplares ejemplares,
-			Prestamos prestamos) {
+			String fusuarios,
+			String flibros, String fejemplares, String fprestamos) {
 		super();
 		Preconditions.checkNotNull(nombre);
 		Preconditions.checkArgument(compruebaCodigoPostal(codigoPostal),String.format("El codigo postal debe contener 5 d�gitos y es %s",codigoPostal));
@@ -44,10 +34,10 @@ public class Biblioteca {
 		this.nombre = nombre;
 		this.codigoPostal = codigoPostal;
 		this.email = email;
-		this.usuarios = usuarios;
-		this.libros = libros;
-		this.ejemplares = ejemplares;
-		this.prestamos = prestamos;		
+		this.usuarios = Usuarios.of(fusuarios);  
+		this.libros = Libros.of(flibros);
+		this.ejemplares = Ejemplares.of(fejemplares);
+		this.prestamos = Prestamos.of(fprestamos);		
 	}
 
 	private Boolean compruebaEmail(String email) {

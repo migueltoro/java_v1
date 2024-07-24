@@ -13,26 +13,23 @@ public class Empleados {
 	private Set<Empleado> empleados;
 	private Map<String,Empleado> empleadosDni;
     
-    private Empleados(Set<Empleado> empleados) {
+    private Empleados(String file) {
 		super();
-		this.empleados = empleados;
+		this.empleados = File2.streamDeFichero(file,"UTF-8")
+    			.map(ln->Empleado.parse(ln))
+    			.collect(Collectors.toSet());;
 		this.empleadosDni = this.empleados.stream().collect(Collectors.toMap(e->e.dni(),e->e));
 	}
-        
     
     public static Empleados of() {
+    	return Empleados.of("bancos/empleados.txt");
+    }
+    
+    public static Empleados of(String file) {
         if(Empleados.gestorDeEmpleados == null)
-            Empleados.gestorDeEmpleados = Empleados.parse("bancos/empleados.txt");
+            Empleados.gestorDeEmpleados = new Empleados(file);
         return Empleados.gestorDeEmpleados;
     }          
-    
-    public static Empleados parse(String fichero) {
-    	Set<Empleado> empleados = File2.streamDeFichero(fichero,"UTF-8")
-    			.map(ln->Empleado.parse(ln))
-    			.collect(Collectors.toSet());
-        Empleados.gestorDeEmpleados = new Empleados(empleados);
-        return Empleados.gestorDeEmpleados;
-    }
     
    
     public Set<Empleado> todos() {
@@ -58,7 +55,7 @@ public class Empleados {
 	}
     
 	public static void main(String[] args) {
-		Empleados empleados = Empleados.parse("bancos/empleados.txt");
+		Empleados empleados = Empleados.of();
 		System.out.println(empleados);
 	    System.out.println(empleados.empleadoDni("52184462S").get());
 	    System.out.println(Personas.of().personaDni("52184462S").get());

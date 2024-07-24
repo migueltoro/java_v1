@@ -13,22 +13,21 @@ public class Cuentas {
 	private Set<Cuenta> cuentas;
     private Map<String,Cuenta> cuentasIban;
     
-    private Cuentas(Set<Cuenta> cuentas) {
-        this.cuentas = cuentas;
+    private Cuentas(String file) {
+        this.cuentas = File2.streamDeFichero(file,"UTF-8")
+        		.map(ln->Cuenta.parse(ln))
+        		.collect(Collectors.toSet());
         this.cuentasIban = this.cuentas.stream().collect(Collectors.toMap(c->c.iban(),c->c));
     }   
     
     public static Cuentas of() {
+		return Cuentas.of("bancos/cuentas.txt");
+	}
+    
+    
+    public static Cuentas of(String file) {
         if(Cuentas.gestorDeCuentas == null)
-            Cuentas.gestorDeCuentas = Cuentas.parse("bancos/cuentas.txt");
-        return Cuentas.gestorDeCuentas;
-    }
-               
-    public static Cuentas parse(String fichero) {
-        Set<Cuenta> cuentas = File2.streamDeFichero(fichero,"UTF-8")
-        		.map(ln->Cuenta.parse(ln))
-        		.collect(Collectors.toSet());
-        Cuentas.gestorDeCuentas = new Cuentas(cuentas);
+            Cuentas.gestorDeCuentas = new Cuentas(file);
         return Cuentas.gestorDeCuentas;
     }
     
@@ -54,7 +53,7 @@ public class Cuentas {
     }
     
     public static void main(String[] args) {	
-    	Cuentas cuentas = Cuentas.parse("bancos/cuentas.txt");
+    	Cuentas cuentas = Cuentas.of();
         System.out.println(cuentas);
         System.out.println("______________");
         System.out.println(cuentas.cuentaIban("ES5267093500351659831393"));

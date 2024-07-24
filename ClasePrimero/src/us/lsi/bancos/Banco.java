@@ -19,7 +19,7 @@ public class Banco {
 	private Cuentas cuentas;
 	private Prestamos prestamos;
 
-	private Banco(String nombre, Integer codigoPostal, String email, Personas personas, Empleados empleados,
+	public Banco(String nombre, Integer codigoPostal, String email, Personas personas, Empleados empleados,
 			Cuentas cuentas, Prestamos prestamos) {
 		super();
 		this.nombre = nombre;
@@ -45,10 +45,10 @@ public class Banco {
 	public static Banco of(String nombre, Integer codigoPostal, String email, String fp, String fe, String fc,
 			String fpt) {
 		if (Banco.gestorDeBanco == null) {
-			Personas personas = Personas.parse(fp);
-			Empleados empleados = Empleados.parse(fe);
-			Cuentas cuentas = Cuentas.parse(fc);
-			Prestamos prestamos = Prestamos.parse(fpt);
+			Personas personas = Personas.of(fp);
+			Empleados empleados = Empleados.of(fe);
+			Cuentas cuentas = Cuentas.of(fc);
+			Prestamos prestamos = Prestamos.of(fpt);
 			Banco.gestorDeBanco = new Banco(nombre, codigoPostal, email, personas, empleados, cuentas, prestamos);
 		}
 		return Banco.gestorDeBanco;

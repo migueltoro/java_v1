@@ -19,5 +19,6 @@ module java_v1 {
 	requires transitive juniversalchardet;
 	requires transitive commons.math3;
 	requires transitive org.apache.commons.csv;
-	requires org.junit.jupiter.api;
+	requires transitive org.junit.jupiter.api;
+	requires org.mockito;
 }

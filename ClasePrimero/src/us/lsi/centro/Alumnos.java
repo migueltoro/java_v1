@@ -11,16 +11,13 @@ public class Alumnos {
 	private static Alumnos gestorDeAlumnos = null;
 	
 	public static Alumnos of() {
-		if (Alumnos.gestorDeAlumnos == null)
-			Alumnos.gestorDeAlumnos = Alumnos.parse("centro/alumnos.txt");
-        return Alumnos.gestorDeAlumnos;
+		return Alumnos.of("centro/alumnos.txt");
 	}
 	
-	public static Alumnos parse(String file) {
-		Set<Alumno> alumnos = File2.streamDeFichero(file,"utf-8")
-        		.map(ln->Alumno.parse(ln)).collect(Collectors.toSet()); 
-		Alumnos gestorDeAlumnos = new Alumnos(alumnos);
-		return gestorDeAlumnos;
+	public static Alumnos of(String file) {
+		if (Alumnos.gestorDeAlumnos == null)
+			Alumnos.gestorDeAlumnos = new Alumnos(file);
+        return Alumnos.gestorDeAlumnos;
 	}
 
 	public static Alumnos of(Set<Alumno> alumnos) {
@@ -29,11 +26,18 @@ public class Alumnos {
 
 	private Set<Alumno> alumnos;
 	private Map<String, Alumno> alumnosDni;
-
+	
 	private Alumnos(Set<Alumno> alumnos) {
+        super();
+        this.alumnos = alumnos;
+        this.alumnosDni = this.alumnos.stream().collect(Collectors.toMap(a->a.dni(),a->a));
+	}
+
+	private Alumnos(String file) {
 		super();
-		this.alumnos = alumnos;
-		this.alumnosDni = this.alumnos.stream().collect(Collectors.toMap(a->a.dni(),a->a));;
+		this.alumnos = File2.streamDeFichero(file,"utf-8")
+        		.map(ln->Alumno.parse(ln)).collect(Collectors.toSet());
+		this.alumnosDni = this.alumnos.stream().collect(Collectors.toMap(a->a.dni(),a->a));
 	}
 
 	public Alumno alumno(String dni) {

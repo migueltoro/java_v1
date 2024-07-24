@@ -1,7 +1,5 @@
 package us.lsi.aeropuerto;
 
-import us.lsi.tools.File2;
-
 public class EspacioAereo {
 	    
 	    private static EspacioAereo gestorDeEspacioAereo = null;
@@ -11,47 +9,29 @@ public class EspacioAereo {
 		private OcupacionesVuelos ocupacionesVuelos;
 		private Aeropuertos aeropuertos;
 	    
-	    private EspacioAereo(Aerolineas aerolineas,Vuelos vuelos,OcupacionesVuelos ocupacionesVuelos,
-	    		Aeropuertos aeropuertos) {
-	    	this.aerolineas = aerolineas;
-			this.vuelos = vuelos;
-			this.ocupacionesVuelos = ocupacionesVuelos;
-			this.aeropuertos = aeropuertos;
+	    private EspacioAereo(String faerolineas,String fvuelos,String focupacionesVuelos,
+	    		String faeropuertos) {
+	    	this.aerolineas = Aerolineas.of(faerolineas);
+			this.vuelos = Vuelos.of(fvuelos);
+            this.ocupacionesVuelos = OcupacionesVuelos.of(focupacionesVuelos);
+			this.aeropuertos = Aeropuertos.of(faeropuertos);;
 	    }
 	    
-	    public static EspacioAereo of(Aerolineas aerolineas, Vuelos vuelos, OcupacionesVuelos ocupacionesVuelos,
-				Aeropuertos aeropuertos) {
-			return new EspacioAereo(aerolineas, vuelos, ocupacionesVuelos, aeropuertos);
-		}
 	    
 	    public static EspacioAereo of() {
-	    	return EspacioAereo.of(File2.root_project());
+	    	return EspacioAereo.of("aeropuertos/aerolineas.csv",
+        			"aeropuertos/vuelos.csv",
+        			"aeropuertos/ocupacionesVuelos.csv",
+        			"aeropuertos/aeropuertos.csv");
 	    }
 	    
-	    public static EspacioAereo of(String root) {
-	        if(EspacioAereo.gestorDeEspacioAereo == null) {
-	            String faeropuertos =File2.absolute_path("aeropuertos/aeropuertos.csv",root);
-	            String faerolineas =File2.absolute_path("aeropuertos/aerolineas.csv",root);         
-	            String fvuelos = File2.absolute_path("aeropuertos/vuelos.csv",root);
-	            String focupacionesVuelos = File2.absolute_path("aeropuertos/ocupacionesVuelos.csv",root);
-	            Aeropuertos aeropuertos = Aeropuertos.parse(faeropuertos);
-	            Aerolineas aerolineas = Aerolineas.parse(faerolineas);
-	            Vuelos vuelos =  Vuelos.parse(fvuelos);
-	            OcupacionesVuelos ocupaciones_vuelos = OcupacionesVuelos.parse(focupacionesVuelos);       
+	    public static EspacioAereo of(String faerolineas,String fvuelos,String focupaciones_vuelos,
+	    		String faeropuertos) {
+	        if(EspacioAereo.gestorDeEspacioAereo == null) {      
 	            EspacioAereo.gestorDeEspacioAereo = 
-	            		EspacioAereo.of(aerolineas, vuelos, ocupaciones_vuelos, aeropuertos);
+	            		new EspacioAereo(faerolineas, fvuelos, focupaciones_vuelos, faeropuertos);
 	        }
 	        return EspacioAereo.gestorDeEspacioAereo;
-	    }
-	    
-	    
-	    public static EspacioAereo parse(String faeropuertos,String faerolineas,String fvuelos,
-	    		String focupacionesVuelos) {
-	        Aeropuertos aeropuertos = Aeropuertos.parse(faeropuertos);
-	        Aerolineas aerolineas = Aerolineas.parse(faerolineas);
-	        Vuelos vuelos =  Vuelos.parse(fvuelos);
-	        OcupacionesVuelos ocupacionesVuelos = OcupacionesVuelos.parse(focupacionesVuelos);     
-	        return EspacioAereo.of(aerolineas, vuelos, ocupacionesVuelos, aeropuertos);
 	    }
 	 
 	    public Aerolineas aerolineas() {

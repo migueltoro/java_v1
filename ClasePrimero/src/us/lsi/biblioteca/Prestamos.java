@@ -13,17 +13,14 @@ public class Prestamos {
 	
 	public static Prestamos gestorDePrestamos = null;
 	
-	public static Prestamos of() {
-		if (Prestamos.gestorDePrestamos == null)
-			Prestamos.gestorDePrestamos = Prestamos.parse("biblioteca/Prestamos.txt");
-        return Prestamos.gestorDePrestamos;
+	public static Prestamos of() {		
+        return Prestamos.of("biblioteca/Prestamos.txt");		
 	}
 	
-	public static Prestamos parse(String file) {
-		Set<Prestamo> prestamos = File2.streamDeFichero(file,"utf-8")
-        		.map(ln->Prestamo.parse(ln)).collect(Collectors.toSet());    	
-		Prestamos.gestorDePrestamos = new Prestamos(prestamos);
-		return Prestamos.gestorDePrestamos;
+	public static Prestamos of(String file) {
+		if (Prestamos.gestorDePrestamos == null)
+			Prestamos.gestorDePrestamos = new Prestamos(file);
+        return Prestamos.gestorDePrestamos;
 	}
 	
 	public static Prestamos of(Set<Prestamo> Prestamos) {
@@ -32,10 +29,17 @@ public class Prestamos {
 
 	private Set<Prestamo> prestamos;
 	private Map<Integer,Prestamo> prestamosId;
-
-	private Prestamos(Set<Prestamo> Prestamos) {
+	
+	private Prestamos(Set<Prestamo> prestamos) {
 		super();
-		this.prestamos = Prestamos;
+		this.prestamos = prestamos;
+		this.prestamosId = this.prestamos.stream().collect(Collectors.toMap(p -> p.codigo(), p -> p));
+	}
+
+	private Prestamos(String file) {
+		super();
+		this.prestamos = File2.streamDeFichero(file,"utf-8")
+        		.map(ln->Prestamo.parse(ln)).collect(Collectors.toSet());;
 		this.prestamosId = this.prestamos.stream().collect(Collectors.toMap(p->p.codigo(),p->p));
 	}
     

@@ -14,24 +14,29 @@ public class OcupacionesVuelos {
 	static OcupacionesVuelos getorOcupacionesVuelos = null;
 	
 	public static OcupacionesVuelos of() {
-		if(OcupacionesVuelos.getorOcupacionesVuelos == null)
-			OcupacionesVuelos.getorOcupacionesVuelos = OcupacionesVuelos.parse("aeropuertos/ocupacionesVuelos.csv");
-		return OcupacionesVuelos.getorOcupacionesVuelos;
+		return OcupacionesVuelos.of("aeropuertos/ocupacionesVuelos.csv");
 	}
-
-	public static OcupacionesVuelos parse(String fichero) {
-		Set<OcupacionVuelo> r = File2.streamDeFichero(fichero,"Windows-1252")
-				.map(x -> OcupacionVuelo.parse(x))
-				.collect(Collectors.toSet());
-		return new OcupacionesVuelos(r);
+	
+	public static OcupacionesVuelos of(String file) {
+		if(OcupacionesVuelos.getorOcupacionesVuelos == null)
+			OcupacionesVuelos.getorOcupacionesVuelos = new OcupacionesVuelos(file);
+		return OcupacionesVuelos.getorOcupacionesVuelos;
 	}
 
 	private Set<OcupacionVuelo> ocupaciones;
 	private Map<Ocv,OcupacionVuelo> map;
-
+	
 	public OcupacionesVuelos(Set<OcupacionVuelo> ocupaciones) {
 		super();
 		this.ocupaciones = ocupaciones;
+		this.map = this.ocupaciones.stream().collect(Collectors.toMap(ov->ov.key(),ov->ov));
+	}
+
+	private OcupacionesVuelos(String file) {
+		super();
+		this.ocupaciones = File2.streamDeFichero(file,"Windows-1252")
+				.map(x -> OcupacionVuelo.parse(x))
+				.collect(Collectors.toSet());
 		this.map = this.ocupaciones.stream().collect(Collectors.toMap(ov->ov.key(),ov->ov));
 	}
 
