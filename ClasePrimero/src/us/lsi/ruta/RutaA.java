@@ -23,10 +23,6 @@ public abstract class RutaA implements Ruta {
 		this.marcas = marcas;
 	}
 
-	public RutaA() {
-		super();
-	}
-
 	@Override
 	public Double velocidadMedia() {
 		return this.longitud()/this.tiempo();

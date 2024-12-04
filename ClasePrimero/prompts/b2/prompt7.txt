@@ -1,0 +1,2 @@
+Me puedes explicar cómo se definen las listas, los conjuntos, los Map y 
+los streams en Java 21?

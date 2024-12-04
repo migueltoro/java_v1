@@ -1,0 +1,1 @@
+¿Cómo puedo iterar sobre los elementos de una lista en Java? ¿Puedes usar tipos para cada variable?

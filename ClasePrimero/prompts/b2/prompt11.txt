@@ -1,0 +1,1 @@
+Me puedes explicar con ejemplos la diferencia de definir un record y una clase en Java?

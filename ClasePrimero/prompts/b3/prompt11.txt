@@ -1,0 +1,18 @@
+Me puedes explicar con ejemplos en que consiste el patrón de diseño singletón en Java?
+Me puedes explicar como se usa este patrón en la clase us.lsi.aeropuertos.Aerolineas que te incluyo:
+
+
+
+public class Aerolineas {
+	
+	private static Aerolineas gestoraAerolineas = null;
+	
+	public static Aerolineas of() {
+		return Aerolineas.of("aeropuertos/aerolineas.csv");
+	}
+	
+	public static Aerolineas of(String file) {
+		if(Aerolineas.gestoraAerolineas == null)
+			Aerolineas.gestoraAerolineas = new Aerolineas(file);
+		return gestoraAerolineas;
+	}

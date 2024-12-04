@@ -11,7 +11,7 @@ import us.lsi.tools.File2;
 
 public class RutaF extends RutaA implements Ruta {
 	
-	public static Ruta of(List<Marca> marcas) {
+	public static Ruta of(List<Marca> marcas) {		
 		return new RutaF(marcas);
 	}
 	
@@ -20,8 +20,8 @@ public class RutaF extends RutaA implements Ruta {
 	}
 
 	public static Ruta of(String fichero) {
-		List<Marca> marcas = File2.streamDeFichero("ficheros/ruta.csv").map(x->Marca.parse(x)).collect(toList());
-		return of(marcas);
+		List<Marca> marcas = File2.streamDeFichero(fichero).map(x->Marca.parse(x)).collect(toList());
+		return new RutaF(marcas);
 	}
 	
 	public static Ruta ofCsv(String fichero) {

@@ -1,0 +1,4 @@
+Me puedes explicar como implementar de forma clásica, es decir usando sólo las estructuras de control for e if, 
+la funcíón genérica reduce, que toma como parámetros un iterable, una función, opcionalmente un valor inicial 
+y devuelve un valor opcional sin disparar ninguna excepción, en Java? 
+Cual es el tipo de sus argumentos?

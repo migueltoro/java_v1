@@ -1,0 +1,1 @@
+Me puedes explicar la diferencia entre un iterable, un stream y una lista en Java y la forma de usarlos?

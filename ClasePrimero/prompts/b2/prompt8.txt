@@ -1,0 +1,2 @@
+Me puedes explicar la diferencia entre un iterable en general, un stream y una lista, un conjunto o un map 
+en Java 21?

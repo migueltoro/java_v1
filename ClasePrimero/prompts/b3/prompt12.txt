@@ -1,0 +1,1 @@
+Me puedes explicar con  ejemplos la diferencia entre un atributo de instancia y estáticos Java?

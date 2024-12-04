@@ -1,0 +1,1 @@
+Me puedes explicar con ejemplos que es un tipo genérico y un parámetro de tipo genérico en Java? 

@@ -1,0 +1,2 @@
+Me puedes explicar en Java la manera de contruir cadenas de caracteres a partir de variables de tipo
+entero, real, fecha, lista, conjunto o Map?

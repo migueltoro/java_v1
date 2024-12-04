@@ -1,0 +1,3 @@
+Me puedes explicar como implementar de forma clásica, es decir usando sólo las estructuras de control for e if, 
+un tipos para contar las frecuencias de cada objeto en un iterable o un stream en Java? 
+

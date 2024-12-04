@@ -1,0 +1,2 @@
+Cual es la diferencia entre una propiedad y un atributo en Java? 
+Como puedo implementar una propiedad mutable a partir de un atributo en Java? Y una inmutable?
