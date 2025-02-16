@@ -1,4 +1,5 @@
-package us.lsi.ejemplos_b1_tipos;
+package us.lsi.geometria;
+
 
 public record Vector2D(Double x,Double y) {
 
@@ -110,15 +111,10 @@ public record Vector2D(Double x,Double y) {
 		Double m2 = p2.modulo();
 		Double a1 = p1.angulo();
 		Double a2 = p2.angulo();
-		Double a12 = p1.angulo(p2);
-		Double a12g = p1.anguloEnGrados(p2);
 		System.out.println(m1);
 		System.out.println(m2);
 		System.out.println(a1);
 		System.out.println(a2);
-		System.out.println(a2);
-		System.out.println(a12);
-		System.out.println(a12g);
 	}
 	
 }

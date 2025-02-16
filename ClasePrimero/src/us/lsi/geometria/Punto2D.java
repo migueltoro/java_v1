@@ -3,8 +3,7 @@ package us.lsi.geometria;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
-import us.lsi.ejemplos_b1_tipos.Cuadrante;
-import us.lsi.ejemplos_b1_tipos.Vector2D;
+
 import us.lsi.tools.Ventana;
 import us.lsi.tools.Ventana.DoublePair;
 
@@ -66,9 +65,10 @@ public record Punto2D(Double x,Double y) implements ObjetoGeometrico2D, Comparab
     public Vector2D vector() {
 		return Vector2D.of(this.x, this.y);
 	}	
+    
     @Override
-	public Punto2D traslada(Vector2D v){
-		return this.add(v);
+	public Punto2D traslada(Vector2D v) {
+    	return this.add(v);
 	}
     
 	@Override
@@ -141,6 +141,8 @@ public record Punto2D(Double x,Double y) implements ObjetoGeometrico2D, Comparab
 		System.out.println(distanciaCentros2);
 		System.out.println(distanciaA(p1,p2));
 	}
+
+	
 
 
 }

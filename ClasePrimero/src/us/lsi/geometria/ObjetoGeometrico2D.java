@@ -1,48 +1,45 @@
 package us.lsi.geometria;
 
-
-
-import us.lsi.ejemplos_b1_tipos.Vector2D;
 import us.lsi.tools.Ventana;
 
 public interface ObjetoGeometrico2D {
 	/**
 	 * @param p 
 	 * @param angulo
-	 * @return El objeto geométrico rotado el ángulo dado con respecto al punto p
+	 * @return El objeto geomï¿½trico rotado el ï¿½ngulo dado con respecto al punto p
 	 */
 	ObjetoGeometrico2D rota(Punto2D p, Double angulo);
 	/**
 	 * @param v
-	 * @return El objeto geométrico trasladado según el vector v
+	 * @return El objeto geomï¿½trico trasladado segï¿½n el vector v
 	 */
 	ObjetoGeometrico2D traslada(Vector2D v);
 	/**
 	 * @param p
 	 * @param factor
-	 * @return El objeto geométrico homotético con respecto a p y el factor dado
+	 * @return El objeto geomï¿½trico homotï¿½tico con respecto a p y el factor dado
 	 */
 	ObjetoGeometrico2D homotecia(Punto2D p, Double factor);
 	/**
 	 * @param r
-	 * @return La proyección del objeto geométrico sobre la recta r
+	 * @return La proyecciï¿½n del objeto geomï¿½trico sobre la recta r
 	 */
 	ObjetoGeometrico2D proyectaSobre(Recta2D r);
 	/**
 	 * @param r
-	 * @return El objeto geométrico simetrico con respecto a la recta r
+	 * @return El objeto geomï¿½trico simetrico con respecto a la recta r
 	 */
 	ObjetoGeometrico2D simetrico(Recta2D r);
 	
 	/**
 	 * @param v Una ventana
-	 * @return El objeto geométrico transformado para ser pintado en la ventana
+	 * @return El objeto geomï¿½trico transformado para ser pintado en la ventana
 	 */
 	ObjetoGeometrico2D transform(Ventana v);
 	
 	/**
-	 * @param v Una ventana donde se representará el objeto
-	 * @post La representación del objeto geométrico en la ventana
+	 * @param v Una ventana donde se representarï¿½ el objeto
+	 * @post La representaciï¿½n del objeto geomï¿½trico en la ventana
 	 */
 	void show(Ventana v);
 		

@@ -2,7 +2,7 @@ package us.lsi.universo;
 
 import java.awt.Color;
 
-import us.lsi.ejemplos_b1_tipos.Vector2D;
+import us.lsi.geometria.Vector2D;
 import us.lsi.geometria.Punto2D;
 
 

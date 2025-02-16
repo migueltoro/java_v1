@@ -1,7 +1,5 @@
 package us.lsi.geometria;
 
-import us.lsi.ejemplos_b1_tipos.Vector2D;
-
 public record Recta2D(Punto2D punto, Vector2D vector)  {
 	
 	public static Recta2D of(Punto2D punto, Vector2D vector) {
