@@ -1,13 +1,19 @@
 package us.lsi.problemas;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import us.lsi.tools.Enumerate;
 import us.lsi.tools.Pair;
+import us.lsi.tools.Set2;
+import us.lsi.tools.Stream2;
 
 public class Problemas1 {
 	
@@ -54,8 +60,90 @@ public class Problemas1 {
                         Collectors.mapping(Map.Entry::getValue, Collectors.toSet())
                 ));
     }
-
     
+    
+    /**
+
+    Joins two streams based on a common key extracted from each element.
+    *
+    @param  the type of elements in the first stream
+    @param  the type of elements in the second stream
+    @param  the type of the key used for joining
+    @param s1 the first stream
+    @param s2 the second stream
+    @param k1 a function to extract the key from elements of the first stream
+    @param k2 a function to extract the key from elements of the second stream
+    @return a stream of pairs where each pair consists of an element from the first stream and an element from the second stream that share the same key
+    */
+    
+    public static <T, U, K> Stream<Pair<T,U>> join(
+			Stream<T> s1, 
+			Stream<U> s2, 
+			Function<T, K> k1,
+			Function<U, K> k2) {
+		Map<K, List<T>> m1 = s1.collect(Collectors.groupingBy(k1));
+		Map<K, List<U>> m2 = s2.collect(Collectors.groupingBy(k2));
+		Set<K> sk = Set2.intersection(m1.keySet(),m2.keySet());
+		return sk.stream().flatMap(k->Stream2.cartesianProduct(m1.get(k).stream(),m2.get(k).stream()));
+	}
+
+	public <T, U, K> List<Pair<T, U>> joinI(List<T> s1, List<U> s2, Function<T, K> k1, Function<U, K> k2) {
+		Map<K, List<T>> map1 = new HashMap<>();
+		Map<K, List<U>> map2 = new HashMap<>();
+		// Populate map1
+		for (T element : s1) {
+			K key = k1.apply(element);
+			map1.computeIfAbsent(key, k -> new ArrayList<>()).add(element);
+		}
+		// Populate map2
+		for (U element : s2) {
+			K key = k2.apply(element);
+			map2.computeIfAbsent(key, k -> new ArrayList<>()).add(element);
+		}
+		// Find common keys and create pairs
+		List<Pair<T, U>> result = new ArrayList<>();
+		for (K key : map1.keySet()) {
+			if (map2.containsKey(key)) {
+				for (T t : map1.get(key)) {
+					for (U u : map2.get(key)) {
+						result.add(Pair.of(t, u));
+					}
+				}
+			}
+		}
+		return result;
+	}
+	
+	/**
+
+	Generates the Cartesian product of two streams.
+	*
+	@param  the type of elements in the first stream
+	@param  the type of elements in the second stream
+	@param s1 the first stream
+	@param s2 the second stream
+	@return a stream of pairs where each pair consists of an element from the first stream and an element from the second stream
+	*/
+	public static <T, U> Stream<Pair<T, U>> cartesianProduct(Stream<T> s1, Stream<U> s2) {
+		List<U> ls = s2.collect(Collectors.toList());
+		return s1.flatMap(x -> ls.stream().map(y -> Pair.of(x, y)));
+	}
+	
+	/**
+
+	Applies a flatMap operation on a stream of Enumerate objects.
+	*
+	@param  the type of elements in the input stream
+	@param  the type of elements in the resulting stream
+	@param stream the input stream of Enumerate objects
+	@param f a function that takes an element of type E and returns a stream of elements of type R
+	@return a stream of Enumerate objects where each element is the result of applying the function f to the value of the input Enumerate object
+	*/
+	
+	public static <E,R> Stream<Enumerate<R>> flatMapEnumerate(Stream<Enumerate<E>> stream,Function<E,Stream<R>> f){
+		return stream.flatMap(p->f.apply(p.value())
+				.map(v->Enumerate.of(p.counter(),v)));
+	}
 
 	public static void main(String[] args) {
 		Map<String, Integer> colores = Map.of("a", 1, "b", 2, "c", 3, "d", 4);
@@ -64,6 +152,7 @@ public class Problemas1 {
 		System.out.println(coloresVecinos(colores, vecinos));
 		System.out.println(coloresVecinosF(colores, vecinos));
 		// {a=[2, 3], b=[1, 3, 4], c=[1, 2, 4], d=[2, 3]}
+		
 	}
 
 }

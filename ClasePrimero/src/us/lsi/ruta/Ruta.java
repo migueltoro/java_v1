@@ -48,5 +48,13 @@ public interface Ruta {
 	Set<Intervalo> llanos();
 	
 	Integer numMarcas();
+	
+	Map<Type, List<Intervalo>> agrupaPorTipoLista();
+	
+	Map<Type, List<Intervalo>> limita(Map<Type, List<Intervalo>> m, Integer n);
+	
+	Map<Type, Set<Intervalo>> agrupaPorTipoConjunto();
+	
+	String  imprimeGrupos(Map<Type, List<Intervalo>> m);
 
 }
