@@ -10,7 +10,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import us.lsi.tools.Enumerate;
 import us.lsi.tools.Pair;
 import us.lsi.tools.Set2;
 import us.lsi.tools.Stream2;
@@ -127,22 +126,6 @@ public class Problemas1 {
 	public static <T, U> Stream<Pair<T, U>> cartesianProduct(Stream<T> s1, Stream<U> s2) {
 		List<U> ls = s2.collect(Collectors.toList());
 		return s1.flatMap(x -> ls.stream().map(y -> Pair.of(x, y)));
-	}
-	
-	/**
-
-	Applies a flatMap operation on a stream of Enumerate objects.
-	*
-	@param  the type of elements in the input stream
-	@param  the type of elements in the resulting stream
-	@param stream the input stream of Enumerate objects
-	@param f a function that takes an element of type E and returns a stream of elements of type R
-	@return a stream of Enumerate objects where each element is the result of applying the function f to the value of the input Enumerate object
-	*/
-	
-	public static <E,R> Stream<Enumerate<R>> flatMapEnumerate(Stream<Enumerate<E>> stream,Function<E,Stream<R>> f){
-		return stream.flatMap(p->f.apply(p.value())
-				.map(v->Enumerate.of(p.counter(),v)));
 	}
 
 	public static void main(String[] args) {

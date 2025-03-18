@@ -115,9 +115,10 @@ public class LibroF implements Libro {
 	@Override
 	public SortedMap<String,Set<Integer>> lineasDePalabra(String file){
 		Set<String> palabrasHuecas = LibroF.of().palabrasHuecas("ficheros/palabras_huecas.txt");
-		Stream<Enumerate<String>> se = Stream2.enumerate(File2.streamDeFichero(file)).filter(p->!p.value().isEmpty());
+		Stream<Enumerate<String>> se = Stream2.enumerate(File2.streamDeFichero(file))
+				.filter(p->!p.value().isEmpty());
 		Stream<Enumerate<String>> se2 = 
-				Stream2.<String,String>flatMapEnumerate(se,ln->Arrays.stream(ln.split(separadores)))
+				se.flatMap(p->p.stream(ln->Arrays.stream(ln.split(separadores))))
 				 .filter(p->!palabrasHuecas.contains(p.value()));
 	    return	se2.collect(Collectors.groupingBy(p->p.value(),
 						 ()->new TreeMap<>(),

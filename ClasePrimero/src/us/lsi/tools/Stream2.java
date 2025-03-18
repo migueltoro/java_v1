@@ -80,10 +80,6 @@ public class Stream2 {
 		return enumerate(stream, 0);
 	}
 	
-	public static <E,R> Stream<Enumerate<R>> flatMapEnumerate(Stream<Enumerate<E>> stream,Function<E,Stream<R>> f){
-		return stream.flatMap(p->f.apply(p.value()).map(v->Enumerate.of(p.counter(),v)));
-	}
-	
 	public static <T, U, K> Stream<Pair<T,U>> join(
 			Stream<T> s1, 
 			Stream<U> s2, 
