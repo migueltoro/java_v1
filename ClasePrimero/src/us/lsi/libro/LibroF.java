@@ -10,9 +10,9 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.BinaryOperator;
 
+import us.lsi.problemas.Problemas;
 import us.lsi.tools.Enumerate;
 import us.lsi.tools.File2;
-import us.lsi.tools.Stream2;
 
 public class LibroF implements Libro {
 	
@@ -77,7 +77,7 @@ public class LibroF implements Libro {
 	}
 	
 	public Integer numeroDeLineaConPalabra(String file, String palabra) {
-		return Stream2.enumerate(File2.streamDeFichero(file,"WINDOWS-1252"))
+		return Problemas.enumerate(File2.streamDeFichero(file,"WINDOWS-1252"))
 				.filter(p->p.value().contains(palabra))
 				.findFirst()
 				.get()
@@ -86,7 +86,7 @@ public class LibroF implements Libro {
 	
 	@Override
 	public String lineaNumero(String file, Integer n) {
-		return Stream2.enumerate(File2.streamDeFichero(file,"WINDOWS-1252"))
+		return Problemas.enumerate(File2.streamDeFichero(file,"WINDOWS-1252"))
 				.filter(p->p.counter().equals(n))
 				.findFirst()
 				.get()
@@ -115,7 +115,7 @@ public class LibroF implements Libro {
 	@Override
 	public SortedMap<String,Set<Integer>> lineasDePalabra(String file){
 		Set<String> palabrasHuecas = LibroF.of().palabrasHuecas("ficheros/palabras_huecas.txt");
-		Stream<Enumerate<String>> se = Stream2.enumerate(File2.streamDeFichero(file))
+		Stream<Enumerate<String>> se = Problemas.enumerate(File2.streamDeFichero(file))
 				.filter(p->!p.value().isEmpty());
 		Stream<Enumerate<String>> se2 = 
 				se.flatMap(p->p.stream(ln->Arrays.stream(ln.split(separadores))))

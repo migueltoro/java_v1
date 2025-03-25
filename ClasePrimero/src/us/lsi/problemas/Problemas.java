@@ -6,15 +6,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Spliterator;
+import java.util.Spliterators.AbstractSpliterator;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
+import us.lsi.tools.Enumerate;
 import us.lsi.tools.Pair;
 import us.lsi.tools.Set2;
 import us.lsi.tools.Stream2;
 
-public class Problemas1 {
+
+public class Problemas {
 	
 	/**
 	 * This method takes a map of elements and their associated colors, and a set of pairs representing neighboring elements.
@@ -89,17 +96,14 @@ public class Problemas1 {
 	public <T, U, K> List<Pair<T, U>> joinI(List<T> s1, List<U> s2, Function<T, K> k1, Function<U, K> k2) {
 		Map<K, List<T>> map1 = new HashMap<>();
 		Map<K, List<U>> map2 = new HashMap<>();
-		// Populate map1
 		for (T element : s1) {
 			K key = k1.apply(element);
 			map1.computeIfAbsent(key, k -> new ArrayList<>()).add(element);
 		}
-		// Populate map2
 		for (U element : s2) {
 			K key = k2.apply(element);
 			map2.computeIfAbsent(key, k -> new ArrayList<>()).add(element);
 		}
-		// Find common keys and create pairs
 		List<Pair<T, U>> result = new ArrayList<>();
 		for (K key : map1.keySet()) {
 			if (map2.containsKey(key)) {
@@ -113,6 +117,51 @@ public class Problemas1 {
 		return result;
 	}
 	
+	public static <L, R, T> Spliterator<T> zip(Spliterator<L> lefts, Spliterator<R> rights, BiFunction<L, R, T> combiner) {
+		return new AbstractSpliterator<T>(
+				Long.min(lefts.estimateSize(), rights.estimateSize()),
+				lefts.characteristics() & rights.characteristics()) {
+			@Override
+			public boolean tryAdvance(Consumer<? super T> action) {
+				return lefts.tryAdvance(left -> rights.tryAdvance(right -> action.accept(combiner.apply(left, right))));
+			}
+		};
+	}
+	
+	/**
+	 * Combines two streams into a single stream using a specified combiner function.
+	 *
+	 * @param <L> the type of elements in the first stream
+	 * @param <R> the type of elements in the second stream
+	 * @param <T> the type of elements in the resulting stream
+	 * @param leftStream the first stream
+	 * @param rightStream the second stream
+	 * @param combiner a function that combines an element from the first stream and an element from the second stream into an element of the resulting stream
+	 * @return a stream of combined elements
+	 */
+	public static <L, R, T> Stream<T> zip(Stream<L> leftStream, Stream<R> rightStream, BiFunction<L, R, T> combiner) {
+		Spliterator<L> lefts = leftStream.spliterator();
+		Spliterator<R> rights = rightStream.spliterator();
+		return StreamSupport.stream(Problemas.zip(lefts, rights, combiner), leftStream.isParallel() || rightStream.isParallel());
+	}
+	
+	/**
+	 * Enumerates the elements of a stream starting from a given integer.
+	 *
+	 * @param <E> the type of elements in the stream
+	 * @param stream the input stream to be enumerated
+	 * @param start the starting integer for enumeration
+	 * @return a stream of Enumerate objects where each element is paired with its enumeration index
+	 */
+	public static <E> Stream<Enumerate<E>> enumerate(Stream<E> stream, Integer start) {
+		Stream<Integer> st = Stream.iterate(start, e -> e + 1);
+		return zip(stream, st, (e, n) -> Enumerate.of(n, e));
+	}
+
+	public static <E> Stream<Enumerate<E>> enumerate(Stream<E> stream) {
+		return enumerate(stream, 0);
+	}
+
 	/**
 
 	Generates the Cartesian product of two streams.
@@ -127,6 +176,33 @@ public class Problemas1 {
 		List<U> ls = s2.collect(Collectors.toList());
 		return s1.flatMap(x -> ls.stream().map(y -> Pair.of(x, y)));
 	}
+	
+	/**
+	 * Generates a stream of consecutive pairs from the input stream.
+	 *
+	 * @param <T> the type of elements in the input stream
+	 * @param s the input stream
+	 * @return a stream of pairs where each pair consists of two consecutive elements from the input stream
+	 */
+	public static <T> Stream<Pair<T,T>> consecutivePairs(Stream<T> s) {
+		List<T> ls = s.toList();
+		return zip(ls.stream(), ls.subList(1,ls.size()).stream(), Pair::of);
+	}
+	
+	/**
+	 * Generates a stream of consecutive pairs from the input stream.
+	 *
+	 * @param <T> the type of elements in the input stream
+	 * @param s the input stream
+	 * @return a stream of pairs where each pair consists of two consecutive elements from the input stream
+	 */
+	public static <T> Stream<Pair<T,T>> consecutivePairs2(Stream<T> s) {
+		@SuppressWarnings("unchecked")
+		T[] old = (T[]) new Object[2];
+		old[0] = null;
+		old[1] = null;
+		return s.peek(e->{old[0]=old[1];old[1]=e;}).map(e->Pair.of(old[0],old[1])).filter(p->p.first()!=null);
+	}
 
 	public static void main(String[] args) {
 		Map<String, Integer> colores = Map.of("a", 1, "b", 2, "c", 3, "d", 4);
@@ -135,7 +211,15 @@ public class Problemas1 {
 		System.out.println(coloresVecinos(colores, vecinos));
 		System.out.println(coloresVecinosF(colores, vecinos));
 		// {a=[2, 3], b=[1, 3, 4], c=[1, 2, 4], d=[2, 3]}
-		
+		List<Integer> ls = List.of(2, 3, 5, 7);
+		List<Pair<Integer, Integer>> ls2 = consecutivePairs(ls.stream()).toList();
+		System.out.println(ls2);
+		ls2 = consecutivePairs2(ls.stream()).toList();
+		System.out.println(ls2);
+		List<Double> ls3 = List.of(2.3,3.4,5.6,7.8);
+		List<Pair<Integer,Double>> ls4 = enumerate(ls3.stream()).map(e->Pair.of(e.counter(),e.value()))
+				.toList();
+		System.out.println(ls4);
 	}
 
 }

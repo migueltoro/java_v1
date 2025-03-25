@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import us.lsi.problemas.Problemas;
 
 public class List2 {
 	
 	public static <E> List<E> choose(List<E> ls, List<Integer> indices){
-		return Stream2.enumerate(ls.stream())
+		return Problemas.enumerate(ls.stream())
 				.filter(p->indices.contains(p.counter()))
 				.map(p->p.value())
 				.toList();
