@@ -3,8 +3,10 @@ package us.lsi.problemas;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators.AbstractSpliterator;
@@ -146,6 +148,19 @@ public class Problemas {
 	}
 	
 	/**
+	 * Combines two streams into a single stream using a specified combiner function.
+	 * The best implimentation is the one before
+	 * 
+	*/
+	public static <L, R, T> Stream<T> zip2(Stream<L> leftStream, Stream<R> rightStream, BiFunction<L, R, T> combiner) {
+		List<L> left = leftStream.collect(Collectors.toList());
+		List<R> right = rightStream.collect(Collectors.toList());
+		return Stream.iterate(0, i -> i + 1)
+				.limit(Math.min(left.size(), right.size()))
+				.map(i -> combiner.apply(left.get(i), right.get(i)));
+	}
+	
+	/**
 	 * Enumerates the elements of a stream starting from a given integer.
 	 *
 	 * @param <E> the type of elements in the stream
@@ -203,6 +218,26 @@ public class Problemas {
 		old[1] = null;
 		return s.peek(e->{old[0]=old[1];old[1]=e;}).map(e->Pair.of(old[0],old[1])).filter(p->p.first()!=null);
 	}
+	
+	/**
+	 * Generates pair with the optional first element and the rest of stream
+	 *
+	 * @param <T> the type of elements in the input stream
+	 * @param s the input stream
+	 * @return pair with the optional first element and the rest of stream
+	 */
+	
+	public static <T> Pair<Optional<T>, Stream<T>> firstAndRest(Stream<T> s) {
+	    Iterator<T> iterator = s.iterator();
+	    Optional<T> first = iterator.hasNext() ? Optional.of(iterator.next()) : Optional.empty();
+	    Iterable<T> restIterable = () -> iterator;
+		if (first.isEmpty()) {
+			return Pair.of(first, Stream.empty());
+		} else {
+			Stream<T> rest = StreamSupport.stream(restIterable.spliterator(), false);
+			return Pair.of(first, rest);
+		}
+	}
 
 	public static void main(String[] args) {
 		Map<String, Integer> colores = Map.of("a", 1, "b", 2, "c", 3, "d", 4);
@@ -220,6 +255,18 @@ public class Problemas {
 		List<Pair<Integer,Double>> ls4 = enumerate(ls3.stream()).map(e->Pair.of(e.counter(),e.value()))
 				.toList();
 		System.out.println(ls4);
+        Stream<Integer> stream = Stream.of(1, 2, 3, 4);
+        Pair<Optional<Integer>, Stream<Integer>> r3 = Problemas.firstAndRest(stream);
+		Pair<Integer, List<Integer>> r2 = Pair.of(r3.first().get(), r3.second().toList());
+        System.out.println(r2);
+        Stream<Integer> stream1 = Stream.of(1, 2, 3, 4);
+        Stream<Integer> stream2 = Stream.of(1, 2, 3, 4,7);
+        Stream<Pair<Integer, Integer>> r4 = Problemas.zip(stream1, stream2, Pair::of);
+        stream1 = Stream.of(1, 2, 3, 4);
+        stream2 = Stream.of(1, 2, 3, 4,7);
+        Stream<Pair<Integer, Integer>> r5 = Problemas.zip2(stream1, stream2, Pair::of);
+        System.out.println(r4.collect(Collectors.toList()));
+        System.out.println(r5.collect(Collectors.toList()));
 	}
 
 }
