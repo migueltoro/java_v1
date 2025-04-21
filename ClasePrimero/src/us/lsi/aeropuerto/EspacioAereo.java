@@ -9,15 +9,15 @@ public class EspacioAereo {
 	    private static EspacioAereo gestorDeEspacioAereo = null;
 	    
 	    private Aerolineas aerolineas;
-		private Vuelos vuelos;
-		private OcupacionesVuelos ocupacionesVuelos;
+		private VuelosProgramados vuelos;
+		private Vuelos ocupacionesVuelos;
 		private Aeropuertos aeropuertos;
 	    
 	    private EspacioAereo(String faerolineas,String fvuelos,String focupacionesVuelos,
 	    		String faeropuertos) {
 	    	this.aerolineas = Aerolineas.of(faerolineas);
-			this.vuelos = Vuelos.of(fvuelos);
-            this.ocupacionesVuelos = OcupacionesVuelos.of(focupacionesVuelos);
+			this.vuelos = VuelosProgramados.of(fvuelos);
+            this.ocupacionesVuelos = Vuelos.of(focupacionesVuelos);
 			this.aeropuertos = Aeropuertos.of(faeropuertos);;
 	    }
 	    
@@ -42,11 +42,11 @@ public class EspacioAereo {
 	        return this.aerolineas;
 	    }
 	    
-	    public Vuelos vuelos() {
+	    public VuelosProgramados vuelos() {
 	        return this.vuelos;
 	    }
 	    
-	    public OcupacionesVuelos ocupacionesVuelos() {
+	    public Vuelos ocupacionesVuelos() {
 	        return this.ocupacionesVuelos;
 	    }
 	    
@@ -67,15 +67,15 @@ public class EspacioAereo {
 			if (fecha.isBefore(LocalDateTime.now())) {
 				throw new IllegalArgumentException("La fecha debe estar en el futuro");
 			}
-			Vuelos vuelos = Vuelos.of();
-			OcupacionesVuelos ocupaciones = OcupacionesVuelos.of();
+			VuelosProgramados vuelos = VuelosProgramados.of();
+			Vuelos ocupaciones = Vuelos.of();
 			return vuelos.todos().stream().filter(
 					vuelo -> vuelo.codigoOrigen().equals(codigoOrigen) && vuelo.hora().isAfter(fecha.toLocalTime()))
 					.filter(vuelo -> {
-						OcupacionVuelo ocupacion = ocupaciones.ocupacionVuelo(vuelo.codigo(), fecha).orElse(null);
+						Vuelo ocupacion = ocupaciones.ocupacionVuelo(vuelo.codigo(), fecha).orElse(null);
 						return ocupacion == null || (vuelo.numPlazas() - ocupacion.numPasajeros() > n);
 					})
-					.map(Vuelo::codigoDestino)
+					.map(VueloProgramado::codigoDestino)
 					.collect(Collectors.toSet());
 		}
 

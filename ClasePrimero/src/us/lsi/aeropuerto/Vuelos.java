@@ -1,63 +1,60 @@
 package us.lsi.aeropuerto;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import us.lsi.aeropuerto.Vuelo.Ocv;
 import us.lsi.tools.File2;
 
 public class Vuelos {
 	
-	private static Vuelos gestorVuelos = null;
+	static Vuelos getorOcupacionesVuelos = null;
 	
 	public static Vuelos of() {
-		return Vuelos.of("aeropuertos/vuelos.csv");
+		return Vuelos.of("aeropuertos/ocupacionesVuelos.csv");
 	}
 	
 	public static Vuelos of(String file) {
-		if(Vuelos.gestorVuelos == null) 
-			Vuelos.gestorVuelos = new Vuelos(file);
-		return Vuelos.gestorVuelos;
+		if(Vuelos.getorOcupacionesVuelos == null)
+			Vuelos.getorOcupacionesVuelos = new Vuelos(file);
+		return Vuelos.getorOcupacionesVuelos;
 	}
+
+	private Set<Vuelo> ocupaciones;
+	private Map<Ocv,Vuelo> map;
 	
-	private Set<Vuelo> vuelos;
-	private Map<String, Vuelo> codigosVuelos;
-	
-	public Vuelos(Set<Vuelo> vuelos) {
-		this.vuelos = vuelos;
-		this.codigosVuelos = this.vuelos.stream().collect(Collectors.toMap(Vuelo::codigo,x->x));
+	public Vuelos(Set<Vuelo> ocupaciones) {
+		super();
+		this.ocupaciones = ocupaciones;
+		this.map = this.ocupaciones.stream().collect(Collectors.toMap(ov->ov.key(),ov->ov));
 	}
-	
+
 	private Vuelos(String file) {
 		super();
-		this.vuelos = File2.streamDeFichero(file,"Windows-1252")
+		this.ocupaciones = File2.streamDeFichero(file,"Windows-1252")
 				.map(x -> Vuelo.parse(x))
 				.collect(Collectors.toSet());
-		this.codigosVuelos = this.vuelos.stream().collect(Collectors.toMap(Vuelo::codigo,x->x));
+		this.map = this.ocupaciones.stream().collect(Collectors.toMap(ov->ov.key(),ov->ov));
 	}
 
-	public Set<Vuelo> todos() {
-		return this.vuelos;
-	}
-
-	public Optional<Vuelo> vuelo(String codigo) {
-		return Optional.ofNullable(this.codigosVuelos.get(codigo));
+	public Set<Vuelo> todas() {
+		return this.ocupaciones;
 	}
 	
-	public Vuelo get(Integer index) {
-		return this.vuelos.stream().toList().get(index);
+	public Vuelo get(Integer i) {
+		return this.ocupaciones.stream().toList().get(i);
 	}
-
+	
+	public Optional<Vuelo> ocupacionVuelo(String codigoVuelo, LocalDateTime fecha) {
+		return Optional.ofNullable(this.map.get(Ocv.of(codigoVuelo,fecha)));
+	}
+	
+	
 	public Integer size() {
-		return this.vuelos.size();
-	}
-
-	
-	public static void main(String[] args) {
-		Aeropuertos.of();
-		Aerolineas.of();
-		Vuelos.of();
+		return this.ocupaciones.size();
 	}
 	
 }

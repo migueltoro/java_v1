@@ -93,10 +93,13 @@ public interface Preguntas {
 	
 	// 16. Devuelve un Map que haga corresponder a cada ciudad destino el vuelo de m�s barato
 	
-	public Map<String,Vuelo> masBarato();
+	public Map<String,VueloProgramado> masBarato();
 	
 	// 17. Devuelve un Map que haga corresponder a cada destino el n�mero de fechas
 	// distintas en las que hay vuelos a ese destino.
 
 	public Map<String, Integer> fechasDistintas();
+	
+	// 18. Calcula el número de vuelos atrasados por año
+	public Map<Integer, Integer> vuelosAtrasados();
 }

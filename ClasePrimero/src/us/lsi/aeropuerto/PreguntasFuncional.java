@@ -29,7 +29,7 @@ public class PreguntasFuncional implements Preguntas {
 	// como prefijo s (esto es, comienzan por s).
 
 	public Integer numeroDepasajeros(String prefix) {
-		IntStream st = OcupacionesVuelos.of().todas().stream()
+		IntStream st = Vuelos.of().todas().stream()
 				.filter(ocp -> ocp.vuelo().ciudadDestino().startsWith(prefix))
 				.mapToInt(v -> v.numPasajeros());
 		return 	st.sum();
@@ -40,7 +40,7 @@ public class PreguntasFuncional implements Preguntas {
 	// existe un vuelo en la fecha f con destino en s.
 
 	public Boolean hayDestino(Set<String> destinos, LocalDate f) {
-		Stream<OcupacionVuelo> st = OcupacionesVuelos.of().todas().stream()
+		Stream<Vuelo> st = Vuelos.of().todas().stream()
 			.filter(ocp -> ocp.fecha().toLocalDate().equals(f));
 		
 		return st.anyMatch(ocp -> destinos.contains(ocp.vuelo().ciudadDestino()));
@@ -48,7 +48,7 @@ public class PreguntasFuncional implements Preguntas {
 	
 	
 	public Boolean hayDestino2(Set<String> destinos, LocalDate f) {
-		Stream<OcupacionVuelo> st = OcupacionesVuelos.of().todas().stream()
+		Stream<Vuelo> st = Vuelos.of().todas().stream()
 			.filter(ocp -> ocp.fecha().toLocalDate().equals(f))
 			.filter(ocp -> destinos.contains(ocp.vuelo().ciudadDestino()));
 		
@@ -60,7 +60,7 @@ public class PreguntasFuncional implements Preguntas {
 	// los vuelos de fecha f
 
 	public Set<String> destinosDiferentes(LocalDate f) {
-		Stream<String> st = OcupacionesVuelos.of().todas().stream()
+		Stream<String> st = Vuelos.of().todas().stream()
 			.filter(ocp -> ocp.fecha().toLocalDate().equals(f))
 			.map(ocp -> ocp.vuelo().ciudadDestino());
 		
@@ -68,7 +68,7 @@ public class PreguntasFuncional implements Preguntas {
 	}
 	
 	public SortedSet<String> destinosDiferentes2(LocalDate f) {
-		Stream<String> st = OcupacionesVuelos.of().todas().stream()
+		Stream<String> st = Vuelos.of().todas().stream()
 				.filter(ocp -> ocp.fecha().toLocalDate().equals(f))
 				.map(ocp -> ocp.vuelo().ciudadDestino());
 			
@@ -76,7 +76,7 @@ public class PreguntasFuncional implements Preguntas {
 	}
 	
 	public List<String> destinosDiferentes3(LocalDate f) {
-		Stream<String> st = OcupacionesVuelos.of().todas().stream()
+		Stream<String> st = Vuelos.of().todas().stream()
 				.filter(ocp -> ocp.fecha().toLocalDate().equals(f))
 				.map(ocp -> ocp.vuelo().ciudadDestino())
 				.distinct()
@@ -90,7 +90,7 @@ public class PreguntasFuncional implements Preguntas {
 	// total de pasajeros a ese destino en el a�o anyo
 
 	public SortedMap<String, Integer> totalPasajerosADestino(Integer a) {
-		Stream<OcupacionVuelo> st = OcupacionesVuelos.of().todas().stream()
+		Stream<Vuelo> st = Vuelos.of().todas().stream()
 				.filter(ocp -> ocp.fecha().getYear() == a);
 			
 		return	st.collect(Collectors.groupingBy(ocp -> ocp.vuelo().ciudadDestino(),
@@ -102,12 +102,12 @@ public class PreguntasFuncional implements Preguntas {
 	// destino
 
 	public String primerVuelo(String destino) {
-		Stream<OcupacionVuelo> st = OcupacionesVuelos.of().todas().stream()
+		Stream<Vuelo> st = Vuelos.of().todas().stream()
 				.filter(ocp -> ocp.vuelo().ciudadDestino().equals(destino))
 				.filter(ocp->ocp.vuelo().numPlazas() > ocp.numPasajeros())
 				.filter(ocp -> ocp.fecha().isAfter(LocalDateTime.now()));
 			
-		return st.min(Comparator.comparing(OcupacionVuelo::fecha))
+		return st.min(Comparator.comparing(Vuelo::fecha))
 					.get()
 					.vuelo()
 					.codigoAerolinea();
@@ -117,12 +117,12 @@ public class PreguntasFuncional implements Preguntas {
 	//6. Devuelve para los vuelos con n asientos vacíos un Map que haga corresponder a cada ciudad
 	// destino la media de los precios de los vuelos a ese destino.
 		
-		private Double preM(List<OcupacionVuelo> ls){
+		private Double preM(List<Vuelo> ls){
 			return ls.stream().mapToDouble(ocp->ocp.vuelo().precio()).average().getAsDouble();
 		}
 
 		public Map<String, Double> precioMedio(Integer n ) {
-			Stream<OcupacionVuelo> st = OcupacionesVuelos.of().todas().stream()
+			Stream<Vuelo> st = Vuelos.of().todas().stream()
 					.filter(ocp -> ocp.vuelo().numPlazas()-ocp.numPasajeros() == n);
 			
 			return st.collect(Collectors.groupingBy(ocp -> ocp.vuelo().ciudadDestino(),
@@ -133,11 +133,11 @@ public class PreguntasFuncional implements Preguntas {
 		//7. Devuelve un Map tal que dado un entero n haga corresponder
 		// a cada fecha la lista de los n destinos con los vuelos de mayor duraci�n.
 		
-		private static Comparator<OcupacionVuelo> cmp = 
-				Comparator.comparing((OcupacionVuelo ocp) -> 
+		private static Comparator<Vuelo> cmp = 
+				Comparator.comparing((Vuelo ocp) -> 
 				ocp.vuelo().duracion().getSeconds()).reversed();
 		
-		private List<String> mayorDuracion(List<OcupacionVuelo> ls,Integer n){
+		private List<String> mayorDuracion(List<Vuelo> ls,Integer n){
 			Stream<String> st = ls.stream()
 					.sorted(cmp)
 					.limit(n)
@@ -147,7 +147,7 @@ public class PreguntasFuncional implements Preguntas {
 		}
 
 		public Map<LocalDate, List<String>> destinosConMayorDuracion(Integer n) {
-			Stream<OcupacionVuelo> st =  OcupacionesVuelos.of().todas().stream();
+			Stream<Vuelo> st =  Vuelos.of().todas().stream();
 			
 			return st.collect(Collectors.groupingBy(oc -> oc.fecha().toLocalDate(),
 					Collectors.collectingAndThen(Collectors.toList(),ls->mayorDuracion(ls,n))));
@@ -158,7 +158,7 @@ public class PreguntasFuncional implements Preguntas {
 		// a f. Si no hubiera vuelos devuelve 0.0
 
 		public Double precioMedio(LocalDateTime f) {
-			DoubleStream st = OcupacionesVuelos.of().todas().stream()
+			DoubleStream st = Vuelos.of().todas().stream()
 					.filter(ocp -> ocp.fecha().isAfter(f))
 					.mapToDouble(ocp -> ocp.vuelo().precio());
 			
@@ -171,18 +171,18 @@ public class PreguntasFuncional implements Preguntas {
 		// fechas de los vuelos a ese destino.
 
 		public Map<String, Set<LocalDate>> fechasADestino() {
-			Stream<OcupacionVuelo> st = OcupacionesVuelos.of().todas().stream();
+			Stream<Vuelo> st = Vuelos.of().todas().stream();
 			
 			return st.collect(Collectors.groupingBy(ocp -> ocp.vuelo().ciudadDestino(),
-					Collectors.mapping(OcupacionVuelo::fechaSalida,Collectors.toSet())));
+					Collectors.mapping(Vuelo::fechaSalida,Collectors.toSet())));
 		}
 		
 		
 		//10. Devuelve el destino con mayor n�mero de vuelos
 		
 		public String destinoConMasVuelos() {	
-			Map<String,Integer> numVuelosDeDestino = Vuelos.of().todos().stream()
-					 .collect(Collectors.groupingBy(Vuelo::codigoDestino,
+			Map<String,Integer> numVuelosDeDestino = VuelosProgramados.of().todos().stream()
+					 .collect(Collectors.groupingBy(VueloProgramado::codigoDestino,
 							  Collectors.collectingAndThen(Collectors.counting(),Long::intValue)));
 			return 	numVuelosDeDestino.keySet().stream()
 					.max(Comparator.comparing(d->numVuelosDeDestino.get(d)))
@@ -193,8 +193,8 @@ public class PreguntasFuncional implements Preguntas {
 		//11. Dado un entero m devuelve un conjunto ordenado con las duraciones de todos los vuelos cuya duraci�n es mayor que m minutos.
 		
 		public SortedSet<Duration> duraciones(Integer m) {
-			Stream<Duration> st = Vuelos.of().todos().stream()
-					.map(Vuelo::duracion)
+			Stream<Duration> st = VuelosProgramados.of().todos().stream()
+					.map(VueloProgramado::duracion)
 					.filter(d->d.getSeconds()/60. > m);
 
 			return st.collect(Collectors.toCollection(()->new TreeSet<>()));
@@ -204,10 +204,10 @@ public class PreguntasFuncional implements Preguntas {
 		//12. Dado un n�mero n devuelve un conjunto con los destinos de los vuelos que est�n entre los n que m�s duraci�n tienen.
 		
 		public Set<String> destinosMayorDuracion(Integer n) {
-			Stream<String> st = Vuelos.of().todos().stream()
-					.sorted(Comparator.comparing(Vuelo::duracion).reversed())
+			Stream<String> st = VuelosProgramados.of().todos().stream()
+					.sorted(Comparator.comparing(VueloProgramado::duracion).reversed())
 					.limit(n)
-					.map(Vuelo::codigoDestino);
+					.map(VueloProgramado::codigoDestino);
 			
 			return st.collect(Collectors.toSet());
 		}
@@ -215,8 +215,8 @@ public class PreguntasFuncional implements Preguntas {
 		//13. Dado un n�mero n devuelve un conjunto con los n destinos con m�s vuelos
 		
 		public Set<String> entreLosMasVuelos(Integer n) {			
-			Map<String,Long> vuelosADestino = Vuelos.of().todos().stream()
-					.collect(Collectors.groupingBy(Vuelo::codigoDestino, Collectors.counting()));
+			Map<String,Long> vuelosADestino = VuelosProgramados.of().todos().stream()
+					.collect(Collectors.groupingBy(VueloProgramado::codigoDestino, Collectors.counting()));
 			
 			return vuelosADestino.keySet().stream()
 					.sorted(Comparator.comparing(d->vuelosADestino.get(d)).reversed())
@@ -229,8 +229,8 @@ public class PreguntasFuncional implements Preguntas {
 		// 14. Dado un n�mero entero n devuelve una lista con los destinos que tienen m�s de n vuelos
 		
 		public List<String> masDeNVuelos(Integer n) {
-			Map<String,Long> vuelosADestino = Vuelos.of().todos().stream()
-					.collect(Collectors.groupingBy(Vuelo::codigoDestino,Collectors.counting()));
+			Map<String,Long> vuelosADestino = VuelosProgramados.of().todos().stream()
+					.collect(Collectors.groupingBy(VueloProgramado::codigoDestino,Collectors.counting()));
 			
 			return vuelosADestino.keySet().stream()
 					.filter(d->vuelosADestino.get(d) > n)
@@ -241,37 +241,37 @@ public class PreguntasFuncional implements Preguntas {
 		// 15. Devuelve un Map que relaci�n cada destino con el porcentaje de los vuelos del total que van a ese destino.
 		
 		public Map<String,Double>  porcentajeADestino() {
-			Integer n = Vuelos.of().size();
+			Integer n = VuelosProgramados.of().size();
 			
-			return Vuelos.of().todos().stream().collect(Collectors.groupingBy(Vuelo::codigoDestino,
+			return VuelosProgramados.of().todos().stream().collect(Collectors.groupingBy(VueloProgramado::codigoDestino,
 					Collectors.collectingAndThen(Collectors.toList(),g->(1.0*g.size())/n)));
 		}
 		
 		public Map<String,Double>  porcentajeADestinoOcupacionesVuelos() {
-			Integer n = OcupacionesVuelos.of().size();
+			Integer n = Vuelos.of().size();
 			
-			return OcupacionesVuelos.of().todas().stream()
+			return Vuelos.of().todas().stream()
 					.map(ocp->ocp.vuelo())
-					.collect(Collectors.groupingBy(Vuelo::codigoDestino,
+					.collect(Collectors.groupingBy(VueloProgramado::codigoDestino,
 					    Collectors.collectingAndThen(Collectors.toList(),g->(1.0*g.size())/n)));
 		}
 		
 		// 16. Devuelve un Map que haga corresponder a cada ciudad destino el vuelo de m�s barato
 		
-		public Map<String,Vuelo> masBarato() {
+		public Map<String,VueloProgramado> masBarato() {
 			
-			return Vuelos.of().todos().stream().collect(Collectors.groupingBy(Vuelo::ciudadDestino,
+			return VuelosProgramados.of().todos().stream().collect(Collectors.groupingBy(VueloProgramado::ciudadDestino,
 					Collectors.collectingAndThen(
-							Collectors.reducing(BinaryOperator.minBy(Comparator.comparing(Vuelo::precio))),
+							Collectors.reducing(BinaryOperator.minBy(Comparator.comparing(VueloProgramado::precio))),
 							e->e.get())));
 		}
 		
-		public Map<String,Vuelo> masBarato2() {
+		public Map<String,VueloProgramado> masBarato2() {
 			
-			return Vuelos.of().todos().stream()
-					.collect(Collectors.groupingBy(Vuelo::ciudadDestino,
+			return VuelosProgramados.of().todos().stream()
+					.collect(Collectors.groupingBy(VueloProgramado::ciudadDestino,
 							Collectors.collectingAndThen(
-									Collectors.minBy(Comparator.comparing(Vuelo::precio)),
+									Collectors.minBy(Comparator.comparing(VueloProgramado::precio)),
 										x->x.get())));
 		}
 	
@@ -281,11 +281,20 @@ public class PreguntasFuncional implements Preguntas {
 		// distintas en las que hay vuelos a ese destino.
 
 		public Map<String, Integer> fechasDistintas() {
-			Stream<OcupacionVuelo> st = OcupacionesVuelos.of().todas().stream();
+			Stream<Vuelo> st = Vuelos.of().todas().stream();
 	
 			return st.collect(Collectors.groupingBy(ocp -> ocp.vuelo().ciudadDestino(),
-					Collectors.mapping(OcupacionVuelo::fecha,
+					Collectors.mapping(Vuelo::fecha,
 							Collectors.collectingAndThen(Collectors.toSet(),s->s.size()))));
 		}
 
+		// 18. Calcula el número de vuelos atrasados por año
+		
+		public Map<Integer, Integer> vuelosAtrasados() {
+			Stream<Vuelo> st = Vuelos.of().todas().stream()
+					.filter(ocp -> ocp.vuelo().hora().isBefore(ocp.horaSalida()));
+
+			return st.collect(Collectors.groupingBy(ocp -> ocp.fecha().getYear(),
+					Collectors.collectingAndThen(Collectors.toList(), lns -> lns.size())));
+		}	
 }

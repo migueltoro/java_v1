@@ -17,7 +17,7 @@ public class GenDatos {
 	
 	public static void main(String[] args) {
 		System.out.println(GenDatos.random());
-		OcupacionVuelo ocp = GenDatos.random(Vuelos.of().get(0),2020);
+		Vuelo ocp = GenDatos.random(VuelosProgramados.of().get(0),2020);
 		System.out.println(ocp);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		System.out.println(ocp.fecha().format(formatter));
@@ -25,7 +25,7 @@ public class GenDatos {
 	
 	public static Random rnd = new Random(System.nanoTime());
 
-	public static Vuelo random() {
+	public static VueloProgramado random() {
 		Integer e = GenDatos.rnd.nextInt(Aerolineas.of().size());
 		String codigo = Aerolineas.of().get(e).codigo();
 		String numero = String.format("%04d",GenDatos.rnd.nextInt(1000));
@@ -41,15 +41,15 @@ public class GenDatos {
 		Duration duracion = Duration.of(GenDatos.rnd.nextInt(360), ChronoUnit.MINUTES);
 		LocalTime hora = LocalTime.of(GenDatos.rnd.nextInt(24),GenDatos.rnd.nextInt(60));
 		DayOfWeek diaSemana = DayOfWeek.of(1+GenDatos.rnd.nextInt(7));
-		return new Vuelo(codigo,numero,codeDestino,codeOrigen,precio,numPlazas,duracion,hora,diaSemana);
+		return new VueloProgramado(codigo,numero,codeDestino,codeOrigen,precio,numPlazas,duracion,hora,diaSemana);
 	}
 	
-	public static Vuelos random(Integer numVuelos) {
-		Set<Vuelo> vuelos = IntStream.range(0,numVuelos).boxed().map(e->random()).collect(Collectors.toSet());
-		return new Vuelos(vuelos);
+	public static VuelosProgramados random(Integer numVuelos) {
+		Set<VueloProgramado> vuelos = IntStream.range(0,numVuelos).boxed().map(e->random()).collect(Collectors.toSet());
+		return new VuelosProgramados(vuelos);
 	}
 
-	public static OcupacionVuelo random(Vuelo v, Integer anyo) {
+	public static Vuelo random(VueloProgramado v, Integer anyo) {
 		String codeVuelo = v.codigo();
 		Integer np = v.numPlazas();
 		LocalTime t = v.hora();
@@ -61,16 +61,16 @@ public class GenDatos {
 		d = d.plus(7*GenDatos.rnd.nextInt(53),ChronoUnit.DAYS); //53 semanas en un a�o
 		LocalDateTime fecha = LocalDateTime.of(d, t);
 	    Integer numPasajeros = np>0?GenDatos.rnd.nextInt(np):0;
-		return new OcupacionVuelo(codeVuelo,fecha,numPasajeros);
+		return new Vuelo(codeVuelo,fecha,numPasajeros);
 	}
 
-	public static OcupacionesVuelos random(Integer numOcupaciones, Integer anyo) {
-		Integer n = Vuelos.of().size();
-		Set<OcupacionVuelo> r = IntStream.range(0, numOcupaciones).boxed()
-				.map(e -> random(Vuelos.of().get(GenDatos.rnd.nextInt(n)), anyo))
+	public static Vuelos random(Integer numOcupaciones, Integer anyo) {
+		Integer n = VuelosProgramados.of().size();
+		Set<Vuelo> r = IntStream.range(0, numOcupaciones).boxed()
+				.map(e -> random(VuelosProgramados.of().get(GenDatos.rnd.nextInt(n)), anyo))
 				.collect(Collectors.toSet());
-		OcupacionesVuelos.getorOcupacionesVuelos =  new OcupacionesVuelos(r);
-		return OcupacionesVuelos.getorOcupacionesVuelos;
+		Vuelos.getorOcupacionesVuelos =  new Vuelos(r);
+		return Vuelos.getorOcupacionesVuelos;
 	}
 
 }

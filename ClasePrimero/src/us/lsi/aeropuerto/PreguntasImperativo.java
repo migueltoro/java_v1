@@ -26,9 +26,9 @@ public class PreguntasImperativo implements Preguntas {
 	// como prefijo s (esto es, comienzan por s).
 	
 	public Integer numeroDepasajeros(String prefix) {
-		OcupacionesVuelos ls = OcupacionesVuelos.of();
+		Vuelos ls = Vuelos.of();
 		Integer sum = 0;
-		for(OcupacionVuelo ocp:ls.todas()) {
+		for(Vuelo ocp:ls.todas()) {
 			if(ocp.vuelo().ciudadDestino().startsWith(prefix)) {
 				Integer numPasajeros = ocp.numPasajeros();
 				sum = sum + numPasajeros;
@@ -41,9 +41,9 @@ public class PreguntasImperativo implements Preguntas {
 	// existe un vuelo en la fecha f con destino en s.
 	
 	public Boolean hayDestino(Set<String> destinos, LocalDate f) {
-		OcupacionesVuelos ls = OcupacionesVuelos.of();
+		Vuelos ls = Vuelos.of();
 		Boolean a = false;
-		for(OcupacionVuelo ocp:ls.todas()) {
+		for(Vuelo ocp:ls.todas()) {
 			if(ocp.fecha().toLocalDate().equals(f)) {
 				if(destinos.contains(ocp.vuelo().ciudadDestino())) {
 					a = true;
@@ -55,9 +55,9 @@ public class PreguntasImperativo implements Preguntas {
 	}
 	
 	public Boolean hayDestino2(Set<String> destinos, LocalDate f) {
-		OcupacionesVuelos ls = OcupacionesVuelos.of();
-		OcupacionVuelo a = null;
-		for(OcupacionVuelo ocp:ls.todas()) {
+		Vuelos ls = Vuelos.of();
+		Vuelo a = null;
+		for(Vuelo ocp:ls.todas()) {
 			if(ocp.fecha().toLocalDate().equals(f) &&
 			  destinos.contains(ocp.vuelo().ciudadDestino())) {
 					a = ocp;
@@ -71,9 +71,9 @@ public class PreguntasImperativo implements Preguntas {
 	// los vuelos de fecha f
 	
 	public Set<String> destinosDiferentes(LocalDate f) {
-		OcupacionesVuelos ls = OcupacionesVuelos.of();
+		Vuelos ls = Vuelos.of();
 		Set<String> a = new HashSet<>();
-		for(OcupacionVuelo ocp:ls.todas()) {
+		for(Vuelo ocp:ls.todas()) {
 			if(ocp.fecha().toLocalDate().equals(f)) {
 				String ciudadDestino = ocp.vuelo().ciudadDestino();
 				a.add(ciudadDestino);			
@@ -84,9 +84,9 @@ public class PreguntasImperativo implements Preguntas {
 	
 	
 	public SortedSet<String> destinosDiferentes2(LocalDate f) {
-		OcupacionesVuelos ls = OcupacionesVuelos.of();
+		Vuelos ls = Vuelos.of();
 		SortedSet<String> a = new TreeSet<>(Comparator.naturalOrder());
-		for(OcupacionVuelo ocp:ls.todas()) {
+		for(Vuelo ocp:ls.todas()) {
 			if(ocp.fecha().toLocalDate().equals(f)) {
 				String ciudadDestino = ocp.vuelo().ciudadDestino();
 				a.add(ciudadDestino);			
@@ -96,9 +96,9 @@ public class PreguntasImperativo implements Preguntas {
 	}
 	
 	public List<String> destinosDiferentes3(LocalDate f) {
-		OcupacionesVuelos ls = OcupacionesVuelos.of();
+		Vuelos ls = Vuelos.of();
 		Set<String> a = new HashSet<>();
-		for(OcupacionVuelo ocp:ls.todas()) {
+		for(Vuelo ocp:ls.todas()) {
 			if(ocp.fecha().toLocalDate().equals(f)) {
 				String ciudadDestino = ocp.vuelo().ciudadDestino();
 				a.add(ciudadDestino);			
@@ -116,9 +116,9 @@ public class PreguntasImperativo implements Preguntas {
 	// total de pasajeros a ese destino en el a�o anyo
 	
 	public SortedMap<String, Integer> totalPasajerosADestino(Integer any) {
-		OcupacionesVuelos ls = OcupacionesVuelos.of();
+		Vuelos ls = Vuelos.of();
 		SortedMap<String,Integer> a = new TreeMap<String, Integer>(Comparator.reverseOrder());
-		for(OcupacionVuelo ocp:ls.todas()) {
+		for(Vuelo ocp:ls.todas()) {
 			if(ocp.fecha().getYear() == any) {
 				String key = ocp.vuelo().ciudadDestino();
 				if(a.containsKey(key)) {
@@ -136,9 +136,9 @@ public class PreguntasImperativo implements Preguntas {
 	// destino
 	
 	public String primerVuelo(String destino) {
-		OcupacionesVuelos ls = OcupacionesVuelos.of();
-		OcupacionVuelo a = null;
-		for(OcupacionVuelo ocp:ls.todas()) {
+		Vuelos ls = Vuelos.of();
+		Vuelo a = null;
+		for(Vuelo ocp:ls.todas()) {
 			if(ocp.vuelo().ciudadDestino().equals(destino) &&
 			   ocp.vuelo().numPlazas() > ocp.numPasajeros() &&	
 			   ocp.fecha().isAfter(LocalDateTime.now())  &&
@@ -153,10 +153,10 @@ public class PreguntasImperativo implements Preguntas {
 	//6. Devuelve para los vuelos completos un Map que haga corresponder a cada ciudad
 	// destino la media de los precios de los vuelos a ese destino.
 	
-	private Double preM(List<OcupacionVuelo> ls){
+	private Double preM(List<Vuelo> ls){
 		Double sum = 0.;
 		Integer n = 0;
-		for(OcupacionVuelo ocp:ls) {
+		for(Vuelo ocp:ls) {
 			sum = sum + ocp.vuelo().precio();
 			n = n +1;
 		}
@@ -165,15 +165,15 @@ public class PreguntasImperativo implements Preguntas {
 	}
 	
 	public Map<String, Double> precioMedio(Integer n) {
-		OcupacionesVuelos ls = OcupacionesVuelos.of();
-		Map<String, List<OcupacionVuelo>> a = new HashMap<>();
-		for(OcupacionVuelo ocp:ls.todas()) {
+		Vuelos ls = Vuelos.of();
+		Map<String, List<Vuelo>> a = new HashMap<>();
+		for(Vuelo ocp:ls.todas()) {
 			if(ocp.vuelo().numPlazas()-ocp.numPasajeros()==n) {
 				String key = ocp.vuelo().ciudadDestino();
 				if(a.containsKey(key)) {
 					a.get(key).add(ocp);
 				} else {
-					List<OcupacionVuelo> lsn = new ArrayList<>();
+					List<Vuelo> lsn = new ArrayList<>();
 					lsn.add(ocp);
 					a.put(key, lsn);
 				}
@@ -189,34 +189,34 @@ public class PreguntasImperativo implements Preguntas {
 	//7. Devuelve un Map tal que dado un entero n haga corresponder
 	// a cada fecha la lista de los n destinos con los vuelos de mayor duraci�n.
 	
-	private static Comparator<OcupacionVuelo> cmp = 
-			Comparator.comparing((OcupacionVuelo ocp) -> 
+	private static Comparator<Vuelo> cmp = 
+			Comparator.comparing((Vuelo ocp) -> 
 			ocp.vuelo().duracion().getSeconds()).reversed();
 	
-	private List<String> mayorDuracion(List<OcupacionVuelo> ls,Integer n){
+	private List<String> mayorDuracion(List<Vuelo> ls,Integer n){
 //		Stream<String> st = ls.stream()
 //				.sorted(cmp)
 //				.limit(n)
 //				.map(ocp -> ocp.vuelo().ciudadDestino());
-		List<OcupacionVuelo> ls2 = new ArrayList<>(ls);
+		List<Vuelo> ls2 = new ArrayList<>(ls);
 		Collections.sort(ls2,cmp);
-		List<OcupacionVuelo> ls3 = ls2.subList(0, n);
+		List<Vuelo> ls3 = ls2.subList(0, n);
 		List<String> ls4 = new ArrayList<>();
-		for(OcupacionVuelo ocp:ls3) {
+		for(Vuelo ocp:ls3) {
 			ls4.add(ocp.vuelo().ciudadDestino());
 		}
 		return	ls4;
 	}
 	
 	public Map<LocalDate, List<String>> destinosConMayorDuracion(Integer n) {
-		OcupacionesVuelos ls = OcupacionesVuelos.of();
-		Map<LocalDate, List<OcupacionVuelo>> a = new HashMap<>();
-		for(OcupacionVuelo ocp:ls.todas()) {
+		Vuelos ls = Vuelos.of();
+		Map<LocalDate, List<Vuelo>> a = new HashMap<>();
+		for(Vuelo ocp:ls.todas()) {
 				LocalDate key = ocp.fecha().toLocalDate();
 				if(a.containsKey(key)) {
 					a.get(key).add(ocp);
 				} else {
-					List<OcupacionVuelo> lsn = new ArrayList<>();
+					List<Vuelo> lsn = new ArrayList<>();
 					lsn.add(ocp);
 					a.put(key, lsn);
 				}
@@ -233,10 +233,10 @@ public class PreguntasImperativo implements Preguntas {
 	// a f. Si no hubiera vuelos devuelve 0.0
 	
 	public Double precioMedio(LocalDateTime f) {
-		OcupacionesVuelos ls = OcupacionesVuelos.of();
+		Vuelos ls = Vuelos.of();
 		Double sum = 0.;
 		Integer n = 0;
-		for(OcupacionVuelo ocp: ls.todas()) {
+		for(Vuelo ocp: ls.todas()) {
 			if(ocp.fecha().isAfter(f)) {
 				Double precio = ocp.vuelo().precio();
 				sum = sum +precio;
@@ -250,9 +250,9 @@ public class PreguntasImperativo implements Preguntas {
 	// fechas de los vuelos a ese destino.
 	
 	public Map<String, Set<LocalDate>> fechasADestino() {
-		OcupacionesVuelos ls = OcupacionesVuelos.of();
+		Vuelos ls = Vuelos.of();
 		Map<String, Set<LocalDate>> a = new HashMap<>();
-		for(OcupacionVuelo ocp: ls.todas()) {
+		for(Vuelo ocp: ls.todas()) {
 			String key = ocp.vuelo().ciudadDestino();
 			LocalDate fecha = ocp.fechaSalida();
 			if(a.containsKey(key)) {
@@ -271,7 +271,7 @@ public class PreguntasImperativo implements Preguntas {
 	@Override
 	public String destinoConMasVuelos() {
 		Map<String,Integer> numVuelosDeDestino = new HashMap<>();
-		for(Vuelo v:Vuelos.of().todos()) {
+		for(VueloProgramado v:VuelosProgramados.of().todos()) {
 			String key = v.codigoDestino();
 			if(numVuelosDeDestino.containsKey(key)) {
 				numVuelosDeDestino.put(key, numVuelosDeDestino.get(key)+1);
@@ -339,11 +339,11 @@ public class PreguntasImperativo implements Preguntas {
 	// 16. Devuelve un Map que haga corresponder a cada ciudad destino el vuelo de m�s barato
 	
 	@Override
-	public Map<String, Vuelo> masBarato() {
-		Vuelos ls =Vuelos.of();
-		Map<String,Vuelo> res = new HashMap<String,Vuelo>();
+	public Map<String, VueloProgramado> masBarato() {
+		VuelosProgramados ls =VuelosProgramados.of();
+		Map<String,VueloProgramado> res = new HashMap<String,VueloProgramado>();
 
-		for(Vuelo v:ls.todos()) {
+		for(VueloProgramado v:ls.todos()) {
 			String key = v.ciudadDestino();
 			if(!res.containsKey(key)) {
 				res.put(key, v);
@@ -364,5 +364,22 @@ public class PreguntasImperativo implements Preguntas {
 		return null;
 	}
 
+	// 18. Calcula el número de vuelos atrasados por año
+	@Override
+	public Map<Integer, Integer> vuelosAtrasados() {
+		Vuelos ls = Vuelos.of();
+		Map<Integer, Integer> a = new HashMap<>();
+		for (Vuelo ocp : ls.todas()) {
+			if (ocp.vuelo().hora().isBefore(ocp.horaSalida())) {
+				Integer key = ocp.fecha().getYear();
+				if (a.containsKey(key)) {
+					a.put(key, a.get(key) + 1);
+				} else {
+					a.put(key, 1);
+				}
+			}
+		}
+		return a;
+	}
 
 }
