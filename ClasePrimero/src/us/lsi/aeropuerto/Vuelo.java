@@ -33,7 +33,7 @@ public record Vuelo(String codigoVueloProgramado, LocalDateTime fecha, Integer n
 		return Ocv.of(this.codigoVueloProgramado,this.fecha);
 	}
 	
-	public VueloProgramado vuelo() {
+	public VueloProgramado vueloProgramado() {
 		Optional<VueloProgramado> ov = VuelosProgramados.of().vuelo(this.codigoVueloProgramado);
 		VueloProgramado v = ov.orElse(null);
 		return v;

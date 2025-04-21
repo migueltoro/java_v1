@@ -29,7 +29,7 @@ public class PreguntasImperativo implements Preguntas {
 		Vuelos ls = Vuelos.of();
 		Integer sum = 0;
 		for(Vuelo ocp:ls.todas()) {
-			if(ocp.vuelo().ciudadDestino().startsWith(prefix)) {
+			if(ocp.vueloProgramado().ciudadDestino().startsWith(prefix)) {
 				Integer numPasajeros = ocp.numPasajeros();
 				sum = sum + numPasajeros;
 			}
@@ -45,7 +45,7 @@ public class PreguntasImperativo implements Preguntas {
 		Boolean a = false;
 		for(Vuelo ocp:ls.todas()) {
 			if(ocp.fecha().toLocalDate().equals(f)) {
-				if(destinos.contains(ocp.vuelo().ciudadDestino())) {
+				if(destinos.contains(ocp.vueloProgramado().ciudadDestino())) {
 					a = true;
 					break;
 				}
@@ -59,7 +59,7 @@ public class PreguntasImperativo implements Preguntas {
 		Vuelo a = null;
 		for(Vuelo ocp:ls.todas()) {
 			if(ocp.fecha().toLocalDate().equals(f) &&
-			  destinos.contains(ocp.vuelo().ciudadDestino())) {
+			  destinos.contains(ocp.vueloProgramado().ciudadDestino())) {
 					a = ocp;
 					break;
 			}
@@ -75,7 +75,7 @@ public class PreguntasImperativo implements Preguntas {
 		Set<String> a = new HashSet<>();
 		for(Vuelo ocp:ls.todas()) {
 			if(ocp.fecha().toLocalDate().equals(f)) {
-				String ciudadDestino = ocp.vuelo().ciudadDestino();
+				String ciudadDestino = ocp.vueloProgramado().ciudadDestino();
 				a.add(ciudadDestino);			
 			}
 		}
@@ -88,7 +88,7 @@ public class PreguntasImperativo implements Preguntas {
 		SortedSet<String> a = new TreeSet<>(Comparator.naturalOrder());
 		for(Vuelo ocp:ls.todas()) {
 			if(ocp.fecha().toLocalDate().equals(f)) {
-				String ciudadDestino = ocp.vuelo().ciudadDestino();
+				String ciudadDestino = ocp.vueloProgramado().ciudadDestino();
 				a.add(ciudadDestino);			
 			}
 		}
@@ -100,7 +100,7 @@ public class PreguntasImperativo implements Preguntas {
 		Set<String> a = new HashSet<>();
 		for(Vuelo ocp:ls.todas()) {
 			if(ocp.fecha().toLocalDate().equals(f)) {
-				String ciudadDestino = ocp.vuelo().ciudadDestino();
+				String ciudadDestino = ocp.vueloProgramado().ciudadDestino();
 				a.add(ciudadDestino);			
 			}
 		}
@@ -120,7 +120,7 @@ public class PreguntasImperativo implements Preguntas {
 		SortedMap<String,Integer> a = new TreeMap<String, Integer>(Comparator.reverseOrder());
 		for(Vuelo ocp:ls.todas()) {
 			if(ocp.fecha().getYear() == any) {
-				String key = ocp.vuelo().ciudadDestino();
+				String key = ocp.vueloProgramado().ciudadDestino();
 				if(a.containsKey(key)) {
 					Integer numPasajeros = a.get(key)+ocp.numPasajeros();
 					a.put(key,numPasajeros);
@@ -139,15 +139,15 @@ public class PreguntasImperativo implements Preguntas {
 		Vuelos ls = Vuelos.of();
 		Vuelo a = null;
 		for(Vuelo ocp:ls.todas()) {
-			if(ocp.vuelo().ciudadDestino().equals(destino) &&
-			   ocp.vuelo().numPlazas() > ocp.numPasajeros() &&	
+			if(ocp.vueloProgramado().ciudadDestino().equals(destino) &&
+			   ocp.vueloProgramado().numPlazas() > ocp.numPasajeros() &&	
 			   ocp.fecha().isAfter(LocalDateTime.now())  &&
 			   (a==null || ocp.fecha().isBefore(a.fecha()))) {
 				   a = ocp;
 			   }
 		}
 		if(a==null) throw new IllegalArgumentException("La lista est� vac�a");
-		return a.vuelo().codigoAerolinea();
+		return a.vueloProgramado().codigoAerolinea();
 	}
 
 	//6. Devuelve para los vuelos completos un Map que haga corresponder a cada ciudad
@@ -157,7 +157,7 @@ public class PreguntasImperativo implements Preguntas {
 		Double sum = 0.;
 		Integer n = 0;
 		for(Vuelo ocp:ls) {
-			sum = sum + ocp.vuelo().precio();
+			sum = sum + ocp.vueloProgramado().precio();
 			n = n +1;
 		}
 		if(n==0) throw new IllegalArgumentException("El grupo est� vac�o");
@@ -168,8 +168,8 @@ public class PreguntasImperativo implements Preguntas {
 		Vuelos ls = Vuelos.of();
 		Map<String, List<Vuelo>> a = new HashMap<>();
 		for(Vuelo ocp:ls.todas()) {
-			if(ocp.vuelo().numPlazas()-ocp.numPasajeros()==n) {
-				String key = ocp.vuelo().ciudadDestino();
+			if(ocp.vueloProgramado().numPlazas()-ocp.numPasajeros()==n) {
+				String key = ocp.vueloProgramado().ciudadDestino();
 				if(a.containsKey(key)) {
 					a.get(key).add(ocp);
 				} else {
@@ -191,7 +191,7 @@ public class PreguntasImperativo implements Preguntas {
 	
 	private static Comparator<Vuelo> cmp = 
 			Comparator.comparing((Vuelo ocp) -> 
-			ocp.vuelo().duracion().getSeconds()).reversed();
+			ocp.vueloProgramado().duracion().getSeconds()).reversed();
 	
 	private List<String> mayorDuracion(List<Vuelo> ls,Integer n){
 //		Stream<String> st = ls.stream()
@@ -203,7 +203,7 @@ public class PreguntasImperativo implements Preguntas {
 		List<Vuelo> ls3 = ls2.subList(0, n);
 		List<String> ls4 = new ArrayList<>();
 		for(Vuelo ocp:ls3) {
-			ls4.add(ocp.vuelo().ciudadDestino());
+			ls4.add(ocp.vueloProgramado().ciudadDestino());
 		}
 		return	ls4;
 	}
@@ -238,7 +238,7 @@ public class PreguntasImperativo implements Preguntas {
 		Integer n = 0;
 		for(Vuelo ocp: ls.todas()) {
 			if(ocp.fecha().isAfter(f)) {
-				Double precio = ocp.vuelo().precio();
+				Double precio = ocp.vueloProgramado().precio();
 				sum = sum +precio;
 				n= n+1;
 			}
@@ -253,7 +253,7 @@ public class PreguntasImperativo implements Preguntas {
 		Vuelos ls = Vuelos.of();
 		Map<String, Set<LocalDate>> a = new HashMap<>();
 		for(Vuelo ocp: ls.todas()) {
-			String key = ocp.vuelo().ciudadDestino();
+			String key = ocp.vueloProgramado().ciudadDestino();
 			LocalDate fecha = ocp.fechaSalida();
 			if(a.containsKey(key)) {
 				a.get(key).add(fecha);
@@ -370,7 +370,7 @@ public class PreguntasImperativo implements Preguntas {
 		Vuelos ls = Vuelos.of();
 		Map<Integer, Integer> a = new HashMap<>();
 		for (Vuelo ocp : ls.todas()) {
-			if (ocp.vuelo().hora().isBefore(ocp.horaSalida())) {
+			if (ocp.vueloProgramado().hora().isBefore(ocp.horaSalida())) {
 				Integer key = ocp.fecha().getYear();
 				if (a.containsKey(key)) {
 					a.put(key, a.get(key) + 1);

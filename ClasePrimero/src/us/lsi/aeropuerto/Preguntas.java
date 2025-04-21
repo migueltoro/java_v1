@@ -101,5 +101,6 @@ public interface Preguntas {
 	public Map<String, Integer> fechasDistintas();
 	
 	// 18. Calcula el número de vuelos atrasados por año
+	
 	public Map<Integer, Integer> vuelosAtrasados();
 }

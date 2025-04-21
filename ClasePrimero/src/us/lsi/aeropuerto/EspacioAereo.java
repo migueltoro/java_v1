@@ -24,8 +24,8 @@ public class EspacioAereo {
 	    
 	    public static EspacioAereo of() {
 	    	return EspacioAereo.of("aeropuertos/aerolineas.csv",
+        			"aeropuertos/vuelosProgramados.csv",
         			"aeropuertos/vuelos.csv",
-        			"aeropuertos/ocupacionesVuelos.csv",
         			"aeropuertos/aeropuertos.csv");
 	    }
 	    
@@ -42,11 +42,11 @@ public class EspacioAereo {
 	        return this.aerolineas;
 	    }
 	    
-	    public VuelosProgramados vuelos() {
+	    public VuelosProgramados vuelosProgramados() {
 	        return this.vuelos;
 	    }
 	    
-	    public Vuelos ocupacionesVuelos() {
+	    public Vuelos vuelos() {
 	        return this.ocupacionesVuelos;
 	    }
 	    
