@@ -255,7 +255,8 @@ public class PreguntasFuncional implements Preguntas {
 					.collect(Collectors.groupingBy(VueloProgramado::codigoDestino,
 					    Collectors.collectingAndThen(Collectors.toList(),g->(1.0*g.size())/n)));
 		}
-		
+
+	
 
 		// 16. Devuelve un Map que haga corresponder a cada ciudad destino el vuelo de m�s barato
 		
