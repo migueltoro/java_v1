@@ -8,6 +8,7 @@ public record Aerolinea(String codigo, String nombre) {
 		String nombre = campos[1].trim();
 		return new Aerolinea(codigo,nombre);
 	}
+
 	
 	public static Aerolinea of(String codigo, String nombre) {
 		return new Aerolinea(codigo,nombre);
