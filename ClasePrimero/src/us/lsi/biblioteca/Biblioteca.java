@@ -7,6 +7,14 @@ import us.lsi.tools.Preconditions;
 
 public class Biblioteca {
 	
+	public static Biblioteca of(String root) {
+		return of("Reina Mercedes", "41012", "lsi@us.es", 
+				root+"/"+"biblioteca/usuarios.txt", 
+				root+"/"+"biblioteca/libros.txt", 
+				root+"/"+"biblioteca/ejemplares.txt", 
+				root+"/"+"biblioteca/prestamos.txt");
+	}
+	
 	public static Biblioteca of(String nombre, String codigoPostal, String email) {
 		return of(nombre, codigoPostal, email, "biblioteca/usuarios.txt", "biblioteca/libros.txt", "biblioteca/ejemplares.txt", "biblioteca/prestamos.txt");
 	}

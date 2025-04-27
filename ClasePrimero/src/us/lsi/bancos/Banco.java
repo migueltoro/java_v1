@@ -41,6 +41,17 @@ public class Banco {
 		String fpt = "bancos/prestamos.txt";
 		return Banco.of(nombre, codigoPostal, email, fp, fe, fc, fpt);
 	}
+	
+	public static Banco of(String root) {
+		String nombre = "Reina Mercedes";
+	    Integer codigoPostal = 41012;
+	    String email = "bib@us.es";
+		String fp = root+"/"+"bancos/personas.txt";
+		String fe = root+"/"+"bancos/empleados.txt";
+		String fc = root+"/"+"bancos/cuentas.txt";
+		String fpt = root+"/"+"bancos/prestamos.txt";
+		return Banco.of(nombre, codigoPostal, email, fp, fe, fc, fpt);
+	}
 
 	public static Banco of(String nombre, Integer codigoPostal, String email, String fp, String fe, String fc,
 			String fpt) {

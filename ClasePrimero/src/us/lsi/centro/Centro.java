@@ -13,6 +13,14 @@ public class Centro {
 					"centro/matriculas.txt",
 					"centro/asignaciones.txt");
 	}
+	
+	public static Centro of(String root) {
+		return Centro.of(root+"/"+"centro/alumnos.txt",
+				root+"/"+"centro/profesores.txt",
+				root+"/"+"centro/asignaturas.txt",
+				root+"/"+"centro/matriculas.txt",
+				root+"/"+"centro/asignaciones.txt");
+	}
 
 	public static Centro of(String falumnos, String fprofesores, String fasignaturas, String fmatriculas,
 			String fasignaciones) {

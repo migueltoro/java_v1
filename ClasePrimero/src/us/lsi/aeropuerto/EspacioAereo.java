@@ -29,6 +29,13 @@ public class EspacioAereo {
         			"aeropuertos/aeropuertos.csv");
 	    }
 	    
+	    public static EspacioAereo of(String root) {    	
+	    	return EspacioAereo.of(root+"/"+"aeropuertos/aerolineas.csv",
+	    			root+"/"+"aeropuertos/vuelosProgramados.csv",
+	    			root+"/"+"aeropuertos/vuelos.csv",
+	    			root+"/"+"aeropuertos/aeropuertos.csv");
+	    }
+	    
 	    public static EspacioAereo of(String faerolineas,String fvuelos,String focupaciones_vuelos,
 	    		String faeropuertos) {
 	        if(EspacioAereo.gestorDeEspacioAereo == null) {      
