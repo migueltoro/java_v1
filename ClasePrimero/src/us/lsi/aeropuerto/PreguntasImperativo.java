@@ -381,5 +381,11 @@ public class PreguntasImperativo implements Preguntas {
 		}
 		return a;
 	}
-
+	
+	public static void main(String[] args) {
+		PreguntasImperativo prueba = new PreguntasImperativo();
+		String prefix = "S";
+		Integer num = prueba.numeroDepasajeros(prefix);
+		System.out.println("Total de pasajeros: " + num);
+		}
 }

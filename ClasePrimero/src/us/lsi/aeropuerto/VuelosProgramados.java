@@ -12,7 +12,7 @@ public class VuelosProgramados {
 	private static VuelosProgramados gestorVuelos = null;
 	
 	public static VuelosProgramados of() {
-		return VuelosProgramados.of("aeropuertos/vuelos.csv");
+		return VuelosProgramados.of("aeropuertos/vuelosProgramados.csv");
 	}
 	
 	public static VuelosProgramados of(String file) {

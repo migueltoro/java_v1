@@ -17,15 +17,15 @@ public class TestAeropuerto {
 	}
 
 	public static void main(String[] args) throws IOException {
-//		System.out.println(File2.getFileEncoding("aeropuertos/aerolineas.csv"));
-//		VuelosProgramados v = EspacioAereo.of().vuelos();
-//		System.out.println(v.size());
+		System.out.println(File2.getFileEncoding("aeropuertos/aerolineas.csv"));
+		Vuelos v = EspacioAereo.of().vuelos();
+		System.out.println(v.size());
 		Set<Vuelo> r = EspacioAereo.of().vuelos().todas();
 		System.out.println(r.size());
 		Preguntas p = Preguntas.funcional();
 		Preguntas p2 = Preguntas.imperativo();
-//		System.out.println(Map2.toString(p.destinosConMayorDuracion(2)));
-//		System.out.println(Map2.toString(p2.precioMedio(10)));
+		System.out.println(Map2.toString(p.destinosConMayorDuracion(2)));
+		System.out.println(Map2.toString(p2.precioMedio(10)));
 		System.out.println(p.vuelosAtrasados());
 	}
 	

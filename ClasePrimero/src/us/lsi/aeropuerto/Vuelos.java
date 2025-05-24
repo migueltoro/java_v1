@@ -14,7 +14,7 @@ public class Vuelos {
 	static Vuelos getorOcupacionesVuelos = null;
 	
 	public static Vuelos of() {
-		return Vuelos.of("aeropuertos/ocupacionesVuelos.csv");
+		return Vuelos.of("aeropuertos/vuelos.csv");
 	}
 	
 	public static Vuelos of(String file) {
