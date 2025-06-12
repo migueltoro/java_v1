@@ -5,17 +5,16 @@ import java.util.Locale;
 
 import org.apache.commons.math3.complex.Complex;
 
-import us.lsi.tools.Preconditions;
 
 public class Funciones_2 {
 	
 	public static Double solEcuacionPrimerGrado(Double a, Double b) {
-		Preconditions.checkArgument(a > 0, String.format("El coeficiente a debe ser distinto de cero y es %.2f", a));
+		assert a > 0 : String.format("El coeficiente a debe ser distinto de cero y es %.2f", a);
 		return -b / a;
 	}
 
 	public static Solucion2G solEcuacionSegundoGrado(Double a, Double b, Double c) {
-		Preconditions.checkArgument(a > 0, String.format("El coeficiente a debe ser distinto de cero y es %.2f", a));
+		assert  a > 0 : String.format("El coeficiente a debe ser distinto de cero y es %.2f", a);
 		Double disc = b * b - 4 * a * c;
 		if (disc >= 0) {
 			Double r1 = -b / (2 * a);

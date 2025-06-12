@@ -3,8 +3,6 @@ package us.lsi.poker;
 import java.util.Arrays;
 import java.util.List;
 
-import us.lsi.tools.Preconditions;
-
 public record Card(Integer id, Integer palo, Integer valor) implements Comparable<Card> {
 	
 	public static Card parse(String text) {
@@ -16,7 +14,7 @@ public record Card(Integer id, Integer palo, Integer valor) implements Comparabl
 	}
 	
 	public static Card of(Integer id) {
-		Preconditions.checkArgument(id >= 0 && id < 52,"No es posible");
+		assert id >= 0 && id < 52 :"No es posible";
 		Integer palo = id % 4;
 		Integer valor = id % 13;
 		return new Card(id,palo,valor);
@@ -54,7 +52,7 @@ public record Card(Integer id, Integer palo, Integer valor) implements Comparabl
 			case 12: r = String.format("resources/images/ace_of_%s.svg",Card.nombrePalos.get(palo)); break;
 //			case 13: r = "resources/images/red_joker.svg"; break;
 //			case 14: r = "resources/images/black_joker.svg"; break;
-			default:  Preconditions.checkArgument(false,"Indentificador nop posible");
+			default:  assert false : "Indentificador no es posible";
 			}
 		}
 		return r;

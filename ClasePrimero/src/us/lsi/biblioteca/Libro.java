@@ -4,8 +4,6 @@ package us.lsi.biblioteca;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import us.lsi.tools.Preconditions;
-
 public record Libro(String isbn, String titulo, String autor, Integer numeroDePaginas, Double precio,
 		LocalDate fechaPublicacion, Integer estimacionDeVentas) {
 	
@@ -14,14 +12,14 @@ public record Libro(String isbn, String titulo, String autor, Integer numeroDePa
 	public static Libro of(String ISBN, String titulo, String autor, Integer numeroDePaginas, Double precio,
 			LocalDate fechaPublicacion, Integer estimacionDeVentas) {
 
-		Preconditions.checkArgument(numeroDePaginas > 0,
-				String.format("El numero de paginas debe ser positivo y es %d", numeroDePaginas));
-		Preconditions.checkArgument(precio > 0, String.format("El precio debe ser positivo y es %.2f", precio));
-		Preconditions.checkArgument(estimacionDeVentas > 0,
-				String.format("La estimacion de ventas debe ser positiva y es %d", estimacionDeVentas));
+		assert numeroDePaginas > 0 :
+				String.format("El numero de paginas debe ser positivo y es %d", numeroDePaginas);
+		assert  precio > 0 ; String.format("El precio debe ser positivo y es %.2f", precio);
+		assert  estimacionDeVentas > 0 :
+				String.format("La estimacion de ventas debe ser positiva y es %d", estimacionDeVentas);
 		String ISBN2 = ISBN.replaceAll("-", "");
-		Preconditions.checkArgument(ISBN2.length() == 10 || ISBN2.length() == 13,
-				String.format("El ISBN -- %s -- debe tener 10 o 13 caracteres y tiene %d, ", ISBN2 ,ISBN2.length()));
+		assert ISBN2.length() == 10 || ISBN2.length() == 13 :
+				String.format("El ISBN -- %s -- debe tener 10 o 13 caracteres y tiene %d, ", ISBN2 ,ISBN2.length());
 		
 		return new Libro(ISBN, titulo, autor, numeroDePaginas, precio, fechaPublicacion, estimacionDeVentas);
 	}

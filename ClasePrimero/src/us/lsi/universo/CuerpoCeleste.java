@@ -3,7 +3,6 @@ package us.lsi.universo;
 import java.awt.Color;
 
 import us.lsi.geometria.Punto2D;
-import us.lsi.tools.Preconditions;
 
 public abstract class CuerpoCeleste {
 	public static enum Location {
@@ -86,7 +85,7 @@ public abstract class CuerpoCeleste {
     
 	public void comprobarPosicion() {
 		CuerpoCeleste.Location p = this.location();
-		Preconditions.checkState(p.equals(CuerpoCeleste.Location.Inside), String.format("El cuerpo está fuera de la ventana %s", p));
+		assert p.equals(CuerpoCeleste.Location.Inside): String.format("El cuerpo estï¿½ fuera de la ventana %s", p);
 	}
 	
 	public Boolean esVisible() {

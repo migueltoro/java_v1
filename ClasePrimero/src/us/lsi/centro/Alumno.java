@@ -6,7 +6,6 @@ import java.util.List;
 
 import us.lsi.ejemplos_b1_tipos.Direccion;
 import us.lsi.ejemplos_b1_tipos.Persona;
-import us.lsi.tools.Preconditions;
 
 public class Alumno extends Persona {
     
@@ -26,8 +25,8 @@ public class Alumno extends Persona {
 	}
 
 	public static Alumno of(Persona p, Double nota) {
-		Preconditions.checkArgument(0 <= nota && nota <= 14,
-				String.format("La nota debe estar comprendida entre 0 y 14 y es %.2f", nota));
+		assert  0 <= nota && nota <= 14 :
+				String.format("La nota debe estar comprendida entre 0 y 14 y es %.2f", nota);
 		return new Alumno(p.apellidos(), p.nombre(), p.fechaDeNacimiento(), p.dni(), p.telefono(),
 				p.direccion(), nota);
 	}

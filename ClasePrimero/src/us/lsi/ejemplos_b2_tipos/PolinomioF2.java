@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.math.Fraction;
 
-import us.lsi.tools.Preconditions;
-
 public record PolinomioF2(List<Fraction> coeficientes) implements Polinomio<Fraction> {
 	
 	public static  PolinomioF2 of(List<Fraction> coeficientes){
@@ -110,7 +108,7 @@ public record PolinomioF2(List<Fraction> coeficientes) implements Polinomio<Frac
 
 	@Override
 	public PolinomioF2 pow(Integer n) {
-		Preconditions.checkArgument(n >=0,String.format("El exponente no puede ser negativo y es %d",n));
+		assert n >=0 : String.format("El exponente no puede ser negativo y es %d",n);
         PolinomioF2 r = PolinomioF2.one();
         for(int i=0; i<n; i++) {
             r = r.multiply(this);

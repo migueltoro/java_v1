@@ -3,8 +3,6 @@ package us.lsi.biblioteca;
 
 import java.util.stream.IntStream;
 
-import us.lsi.tools.Preconditions;
-
 public class Biblioteca {
 	
 	public static Biblioteca of(String root) {
@@ -36,9 +34,9 @@ public class Biblioteca {
 			String fusuarios,
 			String flibros, String fejemplares, String fprestamos) {
 		super();
-		Preconditions.checkNotNull(nombre);
-		Preconditions.checkArgument(compruebaCodigoPostal(codigoPostal),String.format("El codigo postal debe contener 5 d�gitos y es %s",codigoPostal));
-		Preconditions.checkArgument(compruebaEmail(email),String.format("El email debe tener un solo @ y un solo . y es %s",email));
+		assert nombre !=null && !nombre.isBlank() : "El nombre no puede ser nulo o estar en blanco";
+		assert compruebaCodigoPostal(codigoPostal): String.format("El codigo postal debe contener 5 d�gitos y es %s",codigoPostal);
+		assert compruebaEmail(email):String.format("El email debe tener un solo @ y un solo . y es %s",email);
 		this.nombre = nombre;
 		this.codigoPostal = codigoPostal;
 		this.email = email;

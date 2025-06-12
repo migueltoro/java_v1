@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import us.lsi.tools.Preconditions;
 import us.lsi.tools.Ventana;
 
 public record Poligono2D(List<Punto2D> vertices) implements ObjetoGeometrico2D {
@@ -85,20 +84,20 @@ public record Poligono2D(List<Punto2D> vertices) implements ObjetoGeometrico2D {
 	
 	public Punto2D vertice(Integer i) {
 		Integer n = this.numeroDeVertices();
-		Preconditions.checkElementIndex(i, n);
+		assert 0<=i && i <n : "Indice fuera de rango: " + i + ", numero de vertices: " + n;
 		return vertices.get(i);
 	}
 
 	public Vector2D lado(Integer i) {
 		Integer n = this.numeroDeVertices();
-		Preconditions.checkElementIndex(i, n);
+		assert 0<=i && i <n : "Indice fuera de rango: " + i + ", numero de vertices: " + n;
 		return Vector2D.of(this.vertices.get(i), this.vertices.get((i + 1) % n));
 	}
 
 	public Vector2D diagonal(Integer i, Integer j) {
 		Integer n = this.numeroDeVertices();
-		Preconditions.checkElementIndex(i, n);
-		Preconditions.checkElementIndex(j, n);
+		assert 0<=i && i <n : "Indice fuera de rango: " + i + ", numero de vertices: " + n;
+		assert 0<=j && j <n : "Indice fuera de rango: " + j + ", numero de vertices: " + n;
 		return Vector2D.of(this.vertices.get(i), this.vertices.get(j));
 	}
 

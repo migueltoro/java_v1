@@ -5,8 +5,6 @@ import java.time.LocalTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import us.lsi.tools.Preconditions;
-
 public record Mensaje(LocalDate fecha, LocalTime hora, String usuario,String texto) {
 	
 	public static Mensaje of(LocalDate fecha, LocalTime hora, String usuario, String texto) {
@@ -16,8 +14,8 @@ public record Mensaje(LocalDate fecha, LocalTime hora, String usuario,String tex
 	public static Mensaje parse(String mensaje) {
 		Matcher m = Mensaje.pattern.matcher(mensaje);
 		
-		Preconditions.checkArgument(m.find() && m.groupCount() == 4, 
-				String.format("Formato incorrecto en grupos = %d, mensaje = %s", m.groupCount(), mensaje));
+		assert m.find() && m.groupCount() == 4:
+				String.format("Formato incorrecto en grupos = %d, mensaje = %s", m.groupCount(), mensaje);
 		String[] pf = m.group("fecha").split("/");
 		LocalDate fecha = LocalDate.of(Integer.parseInt("20"+pf[2]),Integer.parseInt(pf[1]),Integer.parseInt(pf[0]));
 		String[] ph =  m.group("hora").split(":");

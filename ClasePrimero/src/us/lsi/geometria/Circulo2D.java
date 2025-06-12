@@ -3,13 +3,12 @@ package us.lsi.geometria;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
-import us.lsi.tools.Preconditions;
 import us.lsi.tools.Ventana;
 
 public record Circulo2D(Punto2D centro,Double radio)  implements ObjetoGeometrico2D, ShapeDeObjeto{
 	
 	public static Circulo2D of(Punto2D centro, Double radio) {
-		Preconditions.checkArgument(radio>=0, String.format("El radio debe ser mayor o igual a cero y es %.2f",radio));
+		assert radio>=0 : String.format("El radio debe ser mayor o igual a cero y es %.2f",radio);
 		return new Circulo2D(centro, radio);
 	}
 	

@@ -21,7 +21,7 @@ import us.lsi.problemas.Problemas;
 import us.lsi.tools.Enumerate;
 import us.lsi.tools.File2;
 import us.lsi.tools.List2;
-import us.lsi.tools.Preconditions;
+
 
 class DataFrameI implements DataFrame {
 	
@@ -35,8 +35,8 @@ class DataFrameI implements DataFrame {
 	}
 	
 	static DataFrameI of(Map<String,List<String>> data, List<String> columNames) {
-		Preconditions.checkArgument(data.keySet().equals(new HashSet<>(columNames)),
-				String.format("Las cabeceras %s == %s no coinciden",data.keySet(),columNames));
+		assert data.keySet().equals(new HashSet<>(columNames)) :
+				String.format("Las cabeceras %s == %s no coinciden",data.keySet(),columNames);
 		Map<String,Integer> columIndex = new HashMap<>();
 		Integer i=0;		
 		for(String key:columNames) {
@@ -209,7 +209,7 @@ class DataFrameI implements DataFrame {
 
 	@Override
 	public List<String> row(String row, String colum) {
-		Preconditions.checkArgument(DataFrameI.allDifferent(this.colum(colum)));
+		assert DataFrameI.allDifferent(this.colum(colum));
 		Integer r = this.colum(colum).indexOf(row);
 		return this.rows.get(r);
 	}

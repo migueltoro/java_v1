@@ -3,8 +3,6 @@ package us.lsi.ejemplos_b1;
 import java.util.List;
 import java.util.Scanner;
 
-import us.lsi.tools.Preconditions;
-
 public class SentenciasDeControl {
 	
 	public static Double media(List<Integer> ls) {
@@ -14,7 +12,7 @@ public class SentenciasDeControl {
 	    	n = n+1;
 	    	s = s+e;
 	    }
-	    Preconditions.checkArgument(n>0,"La lista esta vacia");
+	    assert n>0 :"La lista esta vacia";
 	    return s/n;
 	}
 
@@ -27,7 +25,7 @@ public class SentenciasDeControl {
 	    	s = s+e;
 	    	s2 = s2 +e*e;
 	    }
-	    Preconditions.checkArgument(n>0,"La lista esta vacia");
+	    assert n>0 : "La lista esta vacia";
 	    Double md = s/n;
 	    return Math.sqrt(s2/n-md*md);
 	}
@@ -66,8 +64,8 @@ public class SentenciasDeControl {
 	public static record Mcd(Integer a, Integer b) {}
 
 	public static Integer mcd(Integer a, Integer b) {
-	    Preconditions.checkArgument(a>=0 && b>0,
-	    		String.format("El coeficiente a debe ser mayor o igual que cero y b mayor que cero y son: a = %d, b = %d",a,b));
+		assert  a>=0 && b>0 :
+	    		String.format("El coeficiente a debe ser mayor o igual que cero y b mayor que cero y son: a = %d, b = %d",a,b);
 	    Mcd d = new Mcd(a,b);
 	    while(d.b() > 0) 
 //	    	a, b = b, a%b

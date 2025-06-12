@@ -9,8 +9,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.math.Fraction;
-
-import us.lsi.tools.Preconditions;
 import us.lsi.tools.Stream2;
 
 public record PolinomioF1(List<Fraction> coeficientes) implements Polinomio<Fraction> {
@@ -103,7 +101,7 @@ public record PolinomioF1(List<Fraction> coeficientes) implements Polinomio<Frac
         
 	@Override
 	public PolinomioF1 pow(Integer n){
-		Preconditions.checkArgument(n >=0,String.format("El exponente no puede ser negativo y es %d",n));
+		assert n >=0:String.format("El exponente no puede ser negativo y es %d",n);
         Stream<PolinomioF1> r = IntStream.range(0,n).boxed().map(i->this);
         return r.collect(Collectors.reducing(PolinomioF1.one(),(x,y)->x.multiply(y)));
 	}

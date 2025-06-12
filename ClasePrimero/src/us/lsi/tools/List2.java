@@ -22,7 +22,7 @@ public class List2 {
 	 * @return Su primer elemento
 	 */
 	public static <E> E first(List<E> ls){
-		Preconditions.checkArgument(!ls.isEmpty(), "La lista no puede estar vac�a");
+		assert !ls.isEmpty(): "La lista no puede estar vac�a";
 		return ls.get(0);
 	}
 	
@@ -33,7 +33,7 @@ public class List2 {
 	 * @return Su �ltimo elemento
 	 */
 	public static <E> E last(List<E> ls){
-		Preconditions.checkArgument(!ls.isEmpty(), "La lista no puede estar vac�a");
+		assert !ls.isEmpty(): "La lista no puede estar vac�a";
 		int n = ls.size();
 		return ls.get(n-1);
 	}

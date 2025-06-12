@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 import us.lsi.coordenadas.Coordenadas2D;
 import us.lsi.tools.File2;
-import us.lsi.tools.Preconditions;
 
 public class RedI extends RedA implements Red{
 	
@@ -38,8 +37,8 @@ public class RedI extends RedA implements Red{
 			for (Estacion e : super.estaciones()) {
 				Integer key = e.numero();
 				if (m.containsKey(key)) {
-					Preconditions.checkArgument(false,
-							String.format("El numero %d de estacion esta repetido", e.numero()));
+					assert false:
+							String.format("El numero %d de estacion esta repetido", e.numero());
 				} else {
 					m.put(key, e);
 				}

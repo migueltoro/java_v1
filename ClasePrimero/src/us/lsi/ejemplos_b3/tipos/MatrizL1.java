@@ -5,7 +5,6 @@ import java.util.function.BiFunction;
 import java.util.stream.IntStream;
 
 import us.lsi.tools.IntPair;
-import us.lsi.tools.Preconditions;
 
 public class MatrizL1 extends Matriz1<Long> implements MatrizL {
 	
@@ -40,8 +39,8 @@ public class MatrizL1 extends Matriz1<Long> implements MatrizL {
 
 	@Override
 	public MatrizL add(MatrizL m) {
-		Preconditions.checkArgument(this.nf() == m.nf() && this.nc() == m.nc(), 
-				String.format("No se pueden sumar"));
+		assert this.nf() == m.nf() && this.nc() == m.nc(): 
+				String.format("No se pueden sumar");
 		List<List<Long>> datos = IntStream.range(0, this.nc()).boxed()
 				.map(f->IntStream.range(0, this.nf()).boxed()
 						.map(c -> this.get(f, c) + m.get(f, c)).toList()).toList();
@@ -50,8 +49,8 @@ public class MatrizL1 extends Matriz1<Long> implements MatrizL {
 
 	@Override
 	public MatrizL subtract(MatrizL m) {
-		Preconditions.checkArgument(this.nf() == m.nf() && this.nc() == m.nc(), 
-				String.format("No se pueden restar"));
+		assert  this.nf() == m.nf() && this.nc() == m.nc(): 
+				String.format("No se pueden restar");
 		List<List<Long>> datos = IntStream.range(0, this.nc()).boxed()
 				.map(f->IntStream.range(0, this.nf()).boxed()
 						.map(c -> this.get(f, c) - m.get(f, c)).toList()).toList();
@@ -60,7 +59,7 @@ public class MatrizL1 extends Matriz1<Long> implements MatrizL {
 
 	@Override
 	public MatrizL multiply(MatrizL m) {
-		Preconditions.checkArgument(this.nc() == m.nf(), String.format("No se pueden multiplicar"));
+		assert this.nc() == m.nf() : String.format("No se pueden multiplicar");
 		BiFunction<Integer, Integer, Long> ss = (f, c) -> IntStream.range(0, this.nc()).boxed()
 				.map(k -> this.get(f, k) * m.get(k, c))
 				.reduce(0L,(x, y) -> x+y);

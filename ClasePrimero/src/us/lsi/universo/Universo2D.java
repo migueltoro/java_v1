@@ -7,9 +7,6 @@ import java.util.List;
 import us.lsi.geometria.Punto2D;
 import us.lsi.tools.Canvas;
 import us.lsi.tools.IntPair;
-import us.lsi.tools.Preconditions;
-
-
 
 public class Universo2D  {
 	
@@ -44,8 +41,8 @@ public class Universo2D  {
 	protected List<CuerpoCeleste> cuerposCelestes;
 
 	protected Universo2D(String nombre, int xMax, int yMax, Color colorFondo) {
-		Preconditions.checkArgument(xMax > 300, "La anchura de un universo debe ser al menos 300");
-		Preconditions.checkArgument(yMax > 300, "La altura de un universo debe ser al menos 300");
+		assert xMax > 300: "La anchura de un universo debe ser al menos 300";
+		assert yMax > 300: "La altura de un universo debe ser al menos 300";
 		this.ventana = Canvas.of(nombre, xMax, yMax, colorFondo);
 		this.xMax = xMax;
 		this.yMax = yMax;

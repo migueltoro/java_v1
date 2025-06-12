@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import us.lsi.tools.File2;
-import us.lsi.tools.Preconditions;
 
 public class Matriz2<E> extends MatrizA<E>{
 	 
@@ -18,13 +17,13 @@ public class Matriz2<E> extends MatrizA<E>{
 	}
 
     //#===========================================================================
-    //# MÉTODOS DE FACTOR�?A
+    //# MÉTODOS DE FACTOR�?A
     //#===========================================================================
 
 	
 	public static <E> Matriz2<E> of(List<List<E>> datos) {
-		Preconditions.checkArgument(datos.size() > 0, 
-    		String.format("El número de filas tiene que ser mayor que cero"));
+		assert  datos.size() > 0 : 
+    		String.format("El número de filas tiene que ser mayor que cero");
 		Boolean r1 = true;
 		for(List<E> e: datos) {
 			if(e.size() == 0) {
@@ -32,8 +31,8 @@ public class Matriz2<E> extends MatrizA<E>{
 				break;
 			}
 		}
-		Preconditions.checkArgument(r1, 
-    		String.format("El número de columnas para cada filatiene que ser mayor que cero"));
+		assert  r1: 
+    		String.format("El número de columnas para cada filatiene que ser mayor que cero");
 		Boolean r2 = true;
 		for(List<E> e: datos) {
 			if(e.size() != datos.get(0).size()) {
@@ -41,8 +40,8 @@ public class Matriz2<E> extends MatrizA<E>{
 				break;
 			}
 		}
-		Preconditions.checkArgument(r2, 
-    		String.format("Todas las filas tienen que tener el mismo número de columnas"));
+		assert r2 : 
+    		String.format("Todas las filas tienen que tener el mismo número de columnas");
 		return new Matriz2<>(datos);
     }
 

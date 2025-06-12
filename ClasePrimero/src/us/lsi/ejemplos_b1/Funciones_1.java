@@ -1,7 +1,5 @@
 package us.lsi.ejemplos_b1;
 
-import us.lsi.tools.Preconditions;
-
 public class Funciones_1 {
 		
 	public static Integer parteEntera(Double a) {
@@ -17,14 +15,14 @@ public class Funciones_1 {
 	}
 
 	public static Double areaCirculo(Double radio) {
-		Preconditions.checkArgument(radio >= 0,
-				String.format("El radio debe ser mayor o igual a cero y es %.2f", radio));
+		assert radio >= 0 :
+				String.format("El radio debe ser mayor o igual a cero y es %.2f", radio);
 		return Math.PI * radio * radio;
 	}
 
     public static Double longitudCircunferencia(Double radio) {
-    	Preconditions.checkArgument(radio>=0,
-    			String.format("El radio debe ser mayor o igual a cero y es %.2f}",radio));
+    	assert radio>=0 :
+    			String.format("El radio debe ser mayor o igual a cero y es %.2f}",radio);
 		return Math.PI*radio;
     }
 

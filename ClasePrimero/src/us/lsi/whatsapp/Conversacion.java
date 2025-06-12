@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 import us.lsi.tools.File2;
 import us.lsi.tools.Graphics;
 import us.lsi.tools.List2;
-import us.lsi.tools.Preconditions;
 
 public class Conversacion {
 	
@@ -51,8 +50,8 @@ public class Conversacion {
 	}
 	
 	public Integer getNumeroDeMensajesPorUsuario(String usuario) {
-		Preconditions.checkArgument(this.mensajesPorUsuario.containsKey(usuario), 
-				String.format("No existe el usuario %s",usuario));
+		assert this.mensajesPorUsuario.containsKey(usuario):
+				String.format("No existe el usuario %s",usuario);
 		return this.mensajesPorUsuario.get(usuario).size();
 	}
 	
@@ -66,8 +65,8 @@ public class Conversacion {
 	}
 	
 	public Integer getNumeroDeMensajesPorDiaDeSemana(DayOfWeek diaSemana) {
-		Preconditions.checkArgument(this.mensajesPorDiaDeSemana.containsKey(diaSemana), 
-				String.format("No existe la fecha %s",diaSemana.toString()));
+		assert this.mensajesPorDiaDeSemana.containsKey(diaSemana):
+				String.format("No existe la fecha %s",diaSemana.toString());
 		return this.mensajesPorDiaDeSemana.get(diaSemana).size();
 	}
 	
@@ -97,8 +96,8 @@ public class Conversacion {
 	}
 	
 	public Integer getNumeroDeMensajesPorFecha(LocalDate fecha) {
-		Preconditions.checkArgument(this.mensajesPorFecha.containsKey(fecha), 
-				String.format("No existe la fecha %s",fecha.toString()));
+		assert this.mensajesPorFecha.containsKey(fecha): 
+				String.format("No existe la fecha %s",fecha.toString());
 		return this.mensajesPorFecha.get(fecha).size();
 	}
 	
@@ -112,8 +111,8 @@ public class Conversacion {
 	}
 	
 	public Integer getNumeroDeMensajesPorHora(LocalTime hora) {
-		Preconditions.checkArgument(this.mensajesPorHora.containsKey(hora), 
-				String.format("No existe la fecha %s",hora.toString()));
+		assert this.mensajesPorHora.containsKey(hora): 
+				String.format("No existe la fecha %s",hora.toString());
 		return this.mensajesPorHora.get(hora).size();
 	}
 	

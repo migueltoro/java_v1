@@ -3,8 +3,6 @@ package us.lsi.ejemplos_b3.tipos;
 import java.util.ArrayList;
 import java.util.List;
 
-import us.lsi.tools.Preconditions;
-
 public class MatrizL2 extends Matriz1<Long> implements MatrizL {
 	
 	public static MatrizL2 as(Matriz2<Long> m) {
@@ -103,7 +101,7 @@ public class MatrizL2 extends Matriz1<Long> implements MatrizL {
 	
 	@Override
 	public MatrizL pow(Integer n) {
-		Preconditions.checkArgument(this.nf() == this.nc(), String.format("No se pueden elevar"));
+		assert this.nf() == this.nc(); String.format("No se pueden elevar");
 		MatrizL m = MatrizL2.identity(this.nf());
 		for(int i=0;i<n;i++) {
 			m = m.multiply(this);

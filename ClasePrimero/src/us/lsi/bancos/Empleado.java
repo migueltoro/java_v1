@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import us.lsi.ejemplos_b1_tipos.Persona;
-import us.lsi.tools.Preconditions;
 import java.util.Optional;
 
 public record Empleado(String dni,LocalDate fechaDeContrado,Double salario_mensual) {
@@ -26,8 +25,8 @@ public record Empleado(String dni,LocalDate fechaDeContrado,Double salario_mensu
 	
     public Persona persona() {
         Optional<Persona> p = Personas.of().personaDni(this.dni());
-        Preconditions.checkArgument(p.isPresent(), 
-        		String.format("El empleado %s no está dado de alta como persona",this.dni()));
+        assert p.isPresent() : 
+        		String.format("El empleado %s no está dado de alta como persona",this.dni());
         return p.get();
     }
     
