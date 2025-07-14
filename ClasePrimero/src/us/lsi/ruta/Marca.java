@@ -27,8 +27,7 @@ public record Marca(LocalTime time, Coordenadas3D coordenadas) {
 	}
 	
 	public Marca {
-		if (time == null || coordenadas == null)
-			throw new IllegalArgumentException("Marca no puede ser null");
+		assert time != null || coordenadas != null : "Marca no puede ser null";
 	}
 
 	@Override

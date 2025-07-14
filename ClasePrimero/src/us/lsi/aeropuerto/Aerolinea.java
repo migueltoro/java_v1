@@ -15,8 +15,7 @@ public record Aerolinea(String codigo, String nombre) {
 	}
 	
 	public Aerolinea {
-		if (codigo == null || nombre == null)
-			throw new IllegalArgumentException("Aerolinea no puede ser null");
+		assert codigo != null && nombre != null :"Los campos no pueden ser null";
 	}
 
 }

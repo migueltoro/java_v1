@@ -10,17 +10,7 @@ public record Libro(String isbn, String titulo, String autor, Integer numeroDePa
 	private static Integer LIMITE_BEST_SELLER = 500000;
 
 	public static Libro of(String ISBN, String titulo, String autor, Integer numeroDePaginas, Double precio,
-			LocalDate fechaPublicacion, Integer estimacionDeVentas) {
-
-		assert numeroDePaginas > 0 :
-				String.format("El numero de paginas debe ser positivo y es %d", numeroDePaginas);
-		assert  precio > 0 ; String.format("El precio debe ser positivo y es %.2f", precio);
-		assert  estimacionDeVentas > 0 :
-				String.format("La estimacion de ventas debe ser positiva y es %d", estimacionDeVentas);
-		String ISBN2 = ISBN.replaceAll("-", "");
-		assert ISBN2.length() == 10 || ISBN2.length() == 13 :
-				String.format("El ISBN -- %s -- debe tener 10 o 13 caracteres y tiene %d, ", ISBN2 ,ISBN2.length());
-		
+			LocalDate fechaPublicacion, Integer estimacionDeVentas) {	
 		return new Libro(ISBN, titulo, autor, numeroDePaginas, precio, fechaPublicacion, estimacionDeVentas);
 	}
 	
@@ -34,6 +24,18 @@ public record Libro(String isbn, String titulo, String autor, Integer numeroDePa
 	     LocalDate fechaPublicacion = LocalDate.parse(partes[5],DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		 Integer estimacionVentas = Integer.parseInt(partes[6]);
 	     return Libro.of(isbn, titulo, autor, numeroPaginas, precio, fechaPublicacion, estimacionVentas);
+	}
+	
+	public Libro {
+		assert isbn != null && titulo != null && autor != null : "Los campos isbn, titulo y autor no pueden ser nulos";
+		assert fechaPublicacion != null : "El campo fechaPublicacion no puede ser nulo";
+		assert estimacionDeVentas != null : "El campo estimacionDeVentas no puede ser nulo";
+		assert numeroDePaginas > 0 : String.format("El numero de paginas debe ser positivo y es %d", numeroDePaginas);
+		assert precio > 0 : String.format("El precio debe ser positivo y es %.2f", precio);
+		assert estimacionDeVentas > 0 : String.format("La estimacion de ventas debe ser positiva y es %d", estimacionDeVentas);
+		String isbn2 = isbn.replaceAll("-", "");
+		assert isbn2.length() == 10 || isbn2.length() == 13 :
+			String.format("El ISBN -- %s -- debe tener 10 o 13 caracteres y tiene %d, ", isbn2 ,isbn2.length());
 	}
 
 	public Boolean isBestSeller() {

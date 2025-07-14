@@ -20,6 +20,7 @@ public abstract class RutaA implements Ruta {
 	
 	protected RutaA(List<Marca> marcas) {
 		super();
+		assert marcas != null && marcas.size() > 1 : "Lista de marcas debe tener al menos dos marcas";
 		this.marcas = marcas;
 	}
 

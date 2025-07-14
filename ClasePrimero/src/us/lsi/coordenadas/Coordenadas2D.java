@@ -8,6 +8,10 @@ public record Coordenadas2D(Double latitud, Double longitud) {
 		return new Coordenadas2D(latitud, longitud);
 	}
 	
+	public Coordenadas2D {
+		assert latitud != null && longitud != null : "La parámetros no pueden ser nulos";
+	}
+	
 	public Coordenadas2D toRadians() {
 		Double latitud = Math.toRadians(this.latitud);
 		Double longitud = Math.toRadians(this.longitud);

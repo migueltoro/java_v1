@@ -17,10 +17,10 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import us.lsi.problemas.Problemas;
 import us.lsi.tools.Enumerate;
 import us.lsi.tools.File2;
 import us.lsi.tools.List2;
+import us.lsi.tools.Stream2;
 
 
 class DataFrameI implements DataFrame {
@@ -384,7 +384,7 @@ class DataFrameI implements DataFrame {
 		Integer t = tam;
 		String r = this.format(" ",this.columNames(),t);
 		String line = this.line(this.columNames().size()+1, t);
-		String r3 = Problemas.enumerate(this.rows.stream()).map(x->this.format(x,t))
+		String r3 = Stream2.enumerate(this.rows.stream()).map(x->this.format(x,t))
 				.collect(Collectors.joining("\n", r+"\n"+line+"\n", "\n"));
 		return r3;
 	}

@@ -14,6 +14,7 @@ public abstract class RedA implements Red{
 
 	protected RedA(Set<Estacion> estaciones) {
 		super();
+		assert estaciones != null && estaciones.size() > 0 : "Lista de estaciones debe tener al menos una estacion";
 		this.estaciones = estaciones;
 		this.indices = null;
 	}

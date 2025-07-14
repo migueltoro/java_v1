@@ -11,8 +11,7 @@ public record Intervalo(Marca principio, Marca fin) {
 	}
 	
 	public Intervalo {
-		if (principio.time().isAfter(fin.time()))
-			throw new IllegalArgumentException("Marca principio debe ser anterior a marca fin");
+		assert principio.time().isBefore(fin.time()):"Marca principio debe ser anterior a marca fin";
 	}
 
 	@Override

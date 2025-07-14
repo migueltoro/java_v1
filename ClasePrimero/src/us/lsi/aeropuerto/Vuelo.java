@@ -29,6 +29,10 @@ public record Vuelo(String codigoVueloProgramado, LocalDateTime fecha, Integer n
 		return new Vuelo(codeVuelo,fecha,numPasajeros);	
 	}
 	
+	public Vuelo {
+		assert codigoVueloProgramado !=null && fecha !=null && numPasajeros !=null && numPasajeros >=0 :"Los campos no pueden ser null";
+	}
+	
 	public Ocv key() {
 		return Ocv.of(this.codigoVueloProgramado,this.fecha);
 	}

@@ -1,6 +1,11 @@
 package us.lsi.coordenadas;
 
 public record Coordenadas3D(Double latitud, Double longitud, Double altitud) {
+	
+	public Coordenadas3D {
+		assert latitud != null && longitud != null && altitud != null && altitud >= 0. : 
+			"La parámetros no pueden ser nulos y la altitud debe ser mayor o igual a cero.";
+	}
 
 	public static Coordenadas3D of(Double latitud, Double longitud, Double altitud) {
 		return new Coordenadas3D(latitud, longitud, altitud);

@@ -11,6 +11,10 @@ public record Asignacion(String dni, Integer ida, Integer idg) {
         return Asignacion.of(partes[0],Integer.parseInt(partes[1]),Integer.parseInt(partes[2]));
 	}
     
+	public Asignacion {
+		assert dni != null && ida != null && idg != null : "Los campos no pueden ser null";
+	}
+    
     public Grupo grupo() {
     	return Grupo.of(ida, idg);
     }

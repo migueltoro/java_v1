@@ -14,6 +14,7 @@ public class Cuenta {
 
 	private Cuenta(String iban, String dni, LocalDate fechaDeCreacion, Double saldo) {
 		super();
+		assert iban != null && dni != null && fechaDeCreacion != null && saldo != null : "Los campos no pueden ser null";
 		this.iban = iban;
 		this.dni = dni;
 		this.fechaDeCreacion = fechaDeCreacion;

@@ -8,8 +8,7 @@ public interface Libro {
 	
 	public static enum TipoImplementacion{Imperativa,Funcional}
 
-	
-	public static String separadores = "[- ,;.\n()?¿!¡:\"]";
+	public static String separadores = "[- ,;.\n()?ï¿½!ï¿½:\"]";
 	
 	public static Libro of(TipoImplementacion tipo) {
 		Libro r = null;

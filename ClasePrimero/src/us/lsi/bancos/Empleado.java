@@ -8,12 +8,10 @@ import us.lsi.ejemplos_b1_tipos.Persona;
 import java.util.Optional;
 
 public record Empleado(String dni,LocalDate fechaDeContrado,Double salario_mensual) {
-
 	     
 	 public static Empleado of(String dni,LocalDate  fechaDeContrado,Double salarioMensual) {
 	        return new Empleado(dni,fechaDeContrado,salarioMensual);
-	 }
-	        
+	 }        
 	    
 	 public static Empleado parse(String text) {
 		 DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -25,8 +23,7 @@ public record Empleado(String dni,LocalDate fechaDeContrado,Double salario_mensu
 	
     public Persona persona() {
         Optional<Persona> p = Personas.of().personaDni(this.dni());
-        assert p.isPresent() : 
-        		String.format("El empleado %s no está dado de alta como persona",this.dni());
+        assert p.isPresent() : String.format("El empleado %s no está dado de alta como persona",this.dni());
         return p.get();
     }
     

@@ -29,10 +29,6 @@ public class Persona implements Comparable<Persona> {
 	
 	public static Persona of(String apellidos, String nombre, LocalDateTime fechaDeNacimiento, String dni,
 			String telefono, Direccion direccion) {
-		assert  apellidos.strip().length() > 0: String.format("Los apellidos no pueden estar en blanco");
-		assert  nombre.strip().length() > 0: String.format("El nombre no puede estar en blanco");
-		assert  fechaDeNacimiento.isBefore(LocalDateTime.now()): String.format("La fecha debe estar en el pasado");
-		assert  Persona.checkDni(dni): String.format("El dni no es correcto");
 		return new Persona(apellidos, nombre, fechaDeNacimiento, dni, telefono, direccion);
 	}
 	
@@ -75,6 +71,10 @@ public class Persona implements Comparable<Persona> {
 	protected Persona(String apellidos, String nombre, LocalDateTime fechaDeNacimiento, String dni, String telefono,
 			Direccion direccion) {
 		super();
+		assert  apellidos.strip().length() > 0: String.format("Los apellidos no pueden estar en blanco");
+		assert  nombre.strip().length() > 0: String.format("El nombre no puede estar en blanco");
+		assert  fechaDeNacimiento.isBefore(LocalDateTime.now()): String.format("La fecha debe estar en el pasado");
+		assert  Persona.checkDni(dni): String.format("El dni no es correcto");
 		this.apellidos = apellidos;
 		this.nombre = nombre;
 		this.fechaDeNacimiento = fechaDeNacimiento;

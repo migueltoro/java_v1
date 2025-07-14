@@ -17,6 +17,7 @@ public class Profesor extends Persona {
     private Profesor(String apellidos, String nombre,  LocalDateTime fechaDeNacimiento, String dni, String telefono,
 			Direccion direccion,Titulo titulo) {
 		super(apellidos, nombre, fechaDeNacimiento, dni, telefono, direccion);
+		assert titulo != null : "El titulo no puede ser null";
 		this.titulo = titulo;
 	}
 

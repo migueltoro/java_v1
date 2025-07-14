@@ -49,9 +49,10 @@ public record VueloProgramado(
 	}
 	
 	public VueloProgramado {
-		if (codigoAerolinea == null || numero == null || codigoDestino == null || codigoOrigen == null || precio == null
-				|| numPlazas == null || duracion == null || hora == null || diaSemana == null)
-			throw new IllegalArgumentException("Vuelo no puede ser null");
+		assert codigoAerolinea != null && numero != null && codigoDestino != null && 
+				codigoOrigen != null && precio != null
+				&& numPlazas != null && duracion != null && hora != null && diaSemana != null :
+			"Los campos no pueden ser null";
 	}
 
 	@Override

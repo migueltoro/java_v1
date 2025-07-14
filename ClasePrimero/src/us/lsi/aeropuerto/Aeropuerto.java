@@ -18,6 +18,8 @@ public record Aeropuerto(String codigo, String ciudad, String pais, String nombr
 		return new Aeropuerto(codigo,ciudad,pais,nombre);	
 	}
 	
-	
+	public Aeropuerto {
+		assert codigo != null &&  ciudad != null && pais != null && nombre != null :"Los campos no pueden ser null";
+	}
 	
 }

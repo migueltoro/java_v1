@@ -17,9 +17,6 @@ public record Estacion(Integer numero,
 		Integer slots= Integer.parseInt(partes[1]);
 		Integer empty_slots = Integer.parseInt(partes[2]);
 		Integer free_bikes = Integer.parseInt(partes[3]);
-		assert slots >=0:String.format("Slots %d en %s",slots,linea);
-		assert empty_slots >=0:String.format("Empty_Slots %d en %s",empty_slots,linea);
-		assert free_bikes >=0:String.format("Free_Bikes %d en %s",free_bikes,linea);
 		Coordenadas2D coordenadas = Coordenadas2D.of(Double.parseDouble(partes[4]), Double.parseDouble(partes[5]));
 		return new Estacion(numero,name,slots,empty_slots,free_bikes,coordenadas);
 	}

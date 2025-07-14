@@ -24,6 +24,11 @@ public record Prestamo(Integer nid, String dniCliente, Double cantidad, LocalDat
 		Integer duracion = Integer.parseInt(partes[4]);
 		return Prestamo.of(nid, partes[1], cantidad, fechaComienzo, duracion, interes, partes[2]);
 	}
+	
+	public Prestamo {
+		assert nid != null && dniCliente != null && cantidad != null && fechaComienzo != null && duracion != null
+				&& interes != null && dniEmpleado != null : "Los campos no pueden ser null";
+	}
 
 	public LocalDate fechaVencimiento() {
 		return this.fechaComienzo.plusMonths(duracion);

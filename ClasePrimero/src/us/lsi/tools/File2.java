@@ -37,7 +37,16 @@ public class File2 {
 	public static String absolute_path(String file, String root_project) {
 		return root_project+file;
 	}
-	
+	/**
+	 * Retrieves the character encoding of a given file.
+	 *
+	 * This method opens the specified file and uses an InputStreamReader
+	 * to determine the character encoding.
+	 *
+	 * @param filePath the path to the file whose encoding is to be determined
+	 * @return the character encoding of the file
+	 * @throws IllegalArgumentException if the file is not found or cannot be read
+	 */
 	public static String getFileEncoding(String filePath) {
 	    try (InputStreamReader reader = new InputStreamReader(new FileInputStream(filePath))) {
 	        return reader.getEncoding();
@@ -45,7 +54,17 @@ public class File2 {
 	        throw new IllegalArgumentException("File not found: " + filePath, e);
 	    }
 	}
-	
+	/**
+	 * Detects the character encoding of a given file.
+	 *
+	 * This method uses the `UniversalDetector` from the Mozilla Universal Charset Detector
+	 * library to determine the encoding of the file. It reads the file in chunks and processes
+	 * the data until the encoding is detected or the end of the file is reached.
+	 *
+	 * @param fileName the path to the file whose encoding is to be detected
+	 * @return the detected character encoding of the file, or null if the encoding could not be determined
+	 * @throws IllegalArgumentException if the file is not found or cannot be read
+	 */
 	public static String detectEncoding(String fileName) {
 	    byte[] buf = new byte[4096];
 	    FileInputStream fis = null;
@@ -76,7 +95,15 @@ public class File2 {
 		Charset charSet = Charset.defaultCharset();
 		return streamDeFichero(file, charSet.toString());
 	}
-	
+	/**
+	 * Reads a file and returns its content as a stream of strings, where each string
+	 * represents a line in the file. The file is read using the specified character set.
+	 *
+	 * @param file the path to the file to be read
+	 * @param charSet the character set to use for decoding the file
+	 * @return a stream of strings, where each string represents a line in the file
+	 * @throws IllegalArgumentException if the file cannot be found or read
+	 */
 	public static Stream<String> streamDeFichero(String file, String charSet) {
 		Stream<String> r = null;
 		try {
@@ -92,7 +119,14 @@ public class File2 {
 		return lineasDeFichero(file, charSet.toString());
 	}
 	
-	
+	/**
+	 * Reads all lines from a file using the specified character set.
+	 *
+	 * @param file the path to the file to be read
+	 * @param charSet the character set to use for decoding the file
+	 * @return a list of strings, where each string represents a line in the file
+	 * @throws IllegalArgumentException if the file cannot be read
+	 */
 	public static List<String> lineasDeFichero(String file, String charSet) {
 		List<String> lineas = null;
 		try {		
@@ -133,6 +167,16 @@ public class File2 {
 		return lineasDeCsv(file,",");
 	}
 	
+	/**
+	 * Reads a CSV file and returns its content as a list of lists of strings.
+	 * Each inner list represents a row in the CSV file, and each string in the
+	 * inner list represents a cell in that row.
+	 *
+	 * @param file the path to the CSV file
+	 * @param delimiter the delimiter used to separate values in the CSV file
+	 * @return a list of lists of strings, where each inner list represents a row
+	 * @throws IOException if an I/O error occurs while reading the file
+	 */
 	public static List<List<String>> lineasDeCsv(String file, String delimiter) {
 		CSVParser parser=null;
 		try {
@@ -153,6 +197,16 @@ public class File2 {
 		return mapDeCsv(file,",");
 	}
 	
+	/**
+	 * Reads a CSV file and maps its content into a structure where each header
+	 * corresponds to a list of values from the respective column.
+	 *
+	 * @param file the path to the CSV file
+	 * @param delimiter the delimiter used to separate values in the CSV file
+	 * @return a map where each key is a column header and the value is a list of strings
+	 *         containing all the values under that header
+	 * @throws IllegalArgumentException if the file is not found or an I/O error occurs
+	 */
 	public static Map<String,List<String>> mapDeCsv(String file,String delimiter) {
 		Map<String,List<String>> rt = new HashMap<>();
 		Iterable<CSVRecord> records = null;

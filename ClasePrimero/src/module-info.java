@@ -15,7 +15,6 @@ module java_v1 {
 	exports us.lsi.universo;
 	exports us.lsi.poker;
 	exports us.lsi.whatsapp;
-	exports us.lsi.problemas;
 	
 	requires transitive org.apache.commons.lang3;
 	requires transitive java.desktop;
