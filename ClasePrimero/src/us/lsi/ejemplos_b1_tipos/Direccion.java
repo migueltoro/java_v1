@@ -21,7 +21,6 @@ public record Direccion(String calle, String ciudad, Integer zipCode) implements
 		if (r == 0) r = this.ciudad().compareTo(other.ciudad());
 		if (r == 0) r = this.calle().compareTo(other.calle());
 		return r;
-
 	}
 
 	public static void main(String[] args) {

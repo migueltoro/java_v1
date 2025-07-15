@@ -6,7 +6,6 @@ Propiedades
 
 - latitud: float, en grados, básica
 - longitud: float, en grados, básica
-- copy: Coordenadas2D, derivada
 
 Métodos individuales
 
@@ -47,8 +46,7 @@ Propiedades
 - latitud: float, en grados, básica
 - longitud: float, en grados, básica
 - altura, float, en kilómetros, básica
-- copy: Coordenadas3D, derivada
-- to2D: Coordenadas2D, derivada, las coordenadas 2D asociadas
+- to2D(): Coordenadas2D, derivada, las coordenadas 2D asociadas
 
 Métodos individuales
 
@@ -73,7 +71,7 @@ Explicación
 
 Sea 
 
-- c21 = c1.to2D
-- c22 = c2.to2D
+- c21 = c1.to2D()
+- c22 = c2.to2D()
 - d2 = c21.distancia(c22)
-- $d = \sqrt{{(c1.altitud-c2.altitud)}^2 + d2^2}$
+- $d = \sqrt{{(c1.altitud()-c2.altitud())}^2 + d2^2}$

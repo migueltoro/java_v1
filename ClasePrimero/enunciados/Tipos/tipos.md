@@ -44,140 +44,178 @@ Las factorías de las poblaciones las diseñaremos generalmente son el patrón d
 
 ## Implementación
 
-Los tipos se pueden implementar usando una *class* o el mecanismo de *dataclass*. El mecanismo de *dataclass* se usa para tipos inmutables y la *class* para tipos mutables aunque también se puede usar para tipos inmutables.
+Los tipos se pueden implementar usando una *class* o el mecanismo de *record*. El mecanismo de *record* se usa para tipos inmutables y la *class* para tipos mutables aunque también se puede usar para tipos inmutables.
 
-### dataclass
+### record
 
-El mecanismo de *dataclass* sirve para implmentar tipos que pueden estar dotados de orden natural y ser inmutables. El mecanismo nos proporciona:
+El mecanismo de *record* sirve para implementar tipos que pueden estar dotados de orden natural y ser inmutables. El mecanismo nos proporciona:
 
 - un constructor definido automáticamente
 - una igualdad y un hashcode definidos automáticmente
 - una representación definida automáticamente
 
-De manera sencilla se puede especificar si el tipo es inmutable y si tiene orden natural. Esto se consegue dando valores a los parámetros frozen y order.
 
 ```
-@dataclass(frozen=True,order=True)
-class Persona:
-	apellidos: str
-	nombre: str
-	dni: str
-	fecha_de_nacimiento: datetime
-	telefono: str
-	direccion:Direccion
+public record Vector2D(Double x,Double y) {
 	...
+}
 ```
-El tipo Persona anterior es inmutable, *frozen=True* y tiene orden natural *order=True*.
-Las propiedades básicas son las indicadas después de la línea *class Persona*.
-La igualdad viene definida por la igualdad de las propidades básicas
-Si tiene orden natural este se establece comparando las propidades básicas por el orden establecido
-El constructor Persona(...) viene definido, aunque sólo lo usaremos entro de los métodos de factoría
-La representación viene definida aunque se puede sobrescribir diseñando el método
+El tipo Vector2D anterior es inmutable y no tiene orden natural.
+Las propiedades básicas son las indicadas después de la línea *record Vector2D(...)*.
+La igualdad viene definida por la igualdad de las propiedades básicas.
+El hashcode ya está implementado.
+Si tiene orden natural este se establece implementando el tipo Comparable<E> lo que nos obliga a implementar el método compareTo(...) donde se establece el mecanismo concreto de ordenación.
 
 ```
-def __str__(self)->str:
+record Direccion(String calle, String ciudad, Integer zipCode) implements Comparable<Direccion> {	
 	...
+	@Override
+	public int compareTo(Direccion other) {
+		Integer r = this.zipCode().compareTo(other.zipCode());
+		if (r == 0) r = this.ciudad().compareTo(other.ciudad());
+		if (r == 0) r = this.calle().compareTo(other.calle());
+		return r;
+	}
 ```
 
-El método *__post_init__* que se al final del constructor puede usarse para acumular comprobación de restricciones.
+El constructor Direccion(...) viene definido, aunque sólo lo usaremos entro de los métodos de factoría.
 
 ```
-def __post_init__(self):
-	assert len(self.apellidos.strip()) > 0, f'Los apellidos no pueden estar en blanco'
-	assert len(self.nombre.strip()) > 0, f'El nombre no puede estar en blanco'
-	assert self.fecha_de_nacimiento < datetime.now(), f'La fecha debe estar en el pasado'
-	assert Persona._check_dni(self.dni), f'El dni no es correcto'
+record Direccion(String calle, String ciudad, Integer zipCode) implements Comparable<Direccion> {
+
+	public static Direccion of(String calle, String ciudad, Integer zipCode) {
+		return new Direccion(calle, ciudad, zipCode);
+	}
 ```
 
+El constructor puede ser ajustado a las necesidades del usuario para acumular comprobación de restricciones.
+
+```
+record Circulo2D(Punto2D centro,Double radio)  {
+	
+	public Circulo2D  {
+		assert radio >= 0 : String.format("El radio debe ser mayor o igual a cero y es %.2f", radio);
+		assert centro != null : "El centro no puede ser nulo";
+	}
+```
+
+La representación viene definida aunque se puede sobrescribir diseñando el método *toString*.
+
+```
+public String toString() {
+	return String.format("%s,%s,%d", this.calle(), this.ciudad(), this.zipCode());
+}
+```
+
+El uso de *record* es útil para tipos inmutables, pero tiene alguns restricciones: los tipos impelementados de esta manera pueden implentar un *interface*, pero no pueden heredar de otroa clase ni ser heredados.
 
 ### class
 
-La implementación de tipos mediante *class* es más flexible que con dataclass, pero tenemos que implementar más detalles.
+La implementación de tipos mediante *class* es más flexible que con record, pero tenemos que implementar más detalles.
 
 Sirve par implementar tipos mutables e inmutables.
 
 En una *class* hay que tener en cuanta atributos y métodos. Estos, a su vez, pueden ser públicos, privados y compartidos. También pueden ser individuales y compartidos.
 
-Los *atributos* son un conjunto de valores que forman el *estado* del objeto. Usualmente los declaramos privados y por eso su ientificador empezará por un subrayado como en *_numerador*. Si empiezan por dos subrayados entonces serán protegidos como en *__numerador*. Si no empiezan por un subrayado entonces serán públicos como en *numerador*. 
+Los *atributos* son un conjunto de valores que forman el *estado* del objeto. Usualmente los declaramos privados (*private*) o protegidos (*protected*). También pueden ser publicos (*public*) pero no se recomienda. 
 
 Cada clase debe tener un método *__init__*.
 
 ```
-@total_ordering
-class Fraccion:
+public class Persona implements Comparable<Persona> {
 	
-	def __init__(self,n:int,d:int)->None:
-		self.__numerador = n
-		self.__denominador = d
+	private String apellidos;
+	private String nombre;
+	private LocalDateTime fechaDeNacimiento;
+	private String dni;
+	private String telefono;
+	private Direccion direccion;
 ```
 
-Este método define el constructor, los atributos y los métodos que se usan para construir un objeto. El constructor asociado es *Fraccion(n,d)*.
-
-Junto con el anterior está disponible el método *__post_init__* que se ejecuta detrás del anterior y donde se pueden acumular comprobaciópn d restricciones y normalizaciones de datos:
+El el constructor se usa para construir un objeto. El constructor del tipo *Persona* es:
 
 ```
-def __post_init__(self)->None:
-	assert self.__denominador != 0,f'El denominador no puede ser cero y es {self.__denominador}'
-	self.__normaliza()
+protected Persona(String apellidos, String nombre, LocalDateTime fechaDeNacimiento, String dni, 
+		String telefono,Direccion direccion) {
+		super();
+		assert  apellidos.strip().length() > 0: 
+				String.format("Los apellidos no pueden estar en blanco");
+		assert  nombre.strip().length() > 0: 
+				String.format("El nombre no puede estar en blanco");
+		assert  fechaDeNacimiento.isBefore(LocalDateTime.now()): 
+				String.format("La fecha debe estar en el pasado");
+		assert  Persona.checkDni(dni): String.format("El dni no es correcto");
+		this.apellidos = apellidos;
+		this.nombre = nombre;
+		this.fechaDeNacimiento = fechaDeNacimiento;
+		this.dni = dni;
+		this.telefono = telefono;
+		this.direccion = direccion;
+	}
 ```
 
-Las propiedades son métodos públicos sin parámetros con la anotación *@property* como en:
+En el constructor acumulan la comprobaciópn de restricciones y normalizaciones de datos:
+
+Las propiedades son métodos públicos sin parámetros con la anotación como en:
 
 ```
-@property
-def numerador(self)->int:
-    return self.__numerador
+public Integer edad() {
+		LocalDateTime now = LocalDateTime.now();
+		Period p = Period.between(this.fechaDeNacimiento.toLocalDate(), now.toLocalDate());
+		return p.getYears();
+}
 ```
-
 Los métodos pueden ser clasificados en observadores y modificadores. Los métodos obervadores no modifican los atributos, los modificadores si y se llaman *operaciones*. Si el tipo no tiene operaciones y sus atributos son privados o pretegidos el tipo es inmutable.
 
-La igualdad se define con el método *__eq__*.
+La igualdad y el hashcode se definen con los métodos *equals, hashCode*.
 
 ```
-def __eq__(self, other)->bool:
-	if isinstance(other, Fraccion):
-		return self.numerador == other.numerador and self.denominador == other.denominador
-    return False
+@Override
+public int hashCode() {
+	return Objects.hash(apellidos, direccion, dni, fechaDeNacimiento, nombre, telefono);
+}
+
+@Override
+public boolean equals(Object obj) {
+	if (this == obj)
+		return true;
+	if (obj == null)
+		return false;
+	if (getClass() != obj.getClass())
+		return false;
+	Persona other = (Persona) obj;
+	return Objects.equals(apellidos, other.apellidos) && Objects.equals(direccion, other.direccion)
+			&& Objects.equals(dni, other.dni) && Objects.equals(fechaDeNacimiento, 				other.fechaDeNacimiento)
+			&& Objects.equals(nombre, other.nombre) && Objects.equals(telefono, other.telefono);
+	}
 ```
+Un tipo sin *hashCode* no puede ser la clace de un Map. Ambos métodos *equals, hashCode* es conveniente hacerlos automáticamente con las herramientas proporcionadas por entornos como *Eclipse*.
 
-El hashcode se cálcula con el método *__hash__*. Un tipo sin este método no puede ser la clace de un diccionario.
+En Java no hay métodos predefinidos para que representen operadores. 
 
-```
-def __hash__(self)->int:
-	return  hash(self.numerador)*31 + hash(self.denominador)
-```
+## Herencia 
 
-El orden natural del tipo se establece con los métodos *__lt__,__eq__*  y la etiqueta *@total_ordering*.
+En Java una clase puede heredar de otra (*extend*). Esto implica que dispone de sus atributos y métodos públicos y protegidos a los que puede refererise con el prefijo *super...*. Tambien dispone del contructor si es público o pretegido al que se refiere con *super(...)*.
 
 ```
-def __lt__(self, other)->bool:
-	return self.numerador*other.denominador < self.denominador*other.numerador
+public class Alumno extends Persona {
+    
+	private Double nota;
+
+    private Alumno(String apellidos, String nombre, LocalDateTime fechaDeNacimiento, 
+    	String dni, String telefono,Direccion direccion, Double nota) {
+		super(apellidos, nombre, fechaDeNacimiento, dni, telefono, direccion);
+		assert  0 <= nota && nota <= 14 : 
+				String.format("La nota debe estar comprendida entre 0 y 14 y es %.2f", nota);
+		this.nota = nota;
+	}
+	...
 ```
-La representación se hace con el método *__str__*.
-
-En Python algunos métodos están predefinidos para que representen operadores. Una lista no completa es:
-
-- __add__(self, other): Define el comportamiento de la suma (+).
-- __sub__(self, other): Define el comportamiento de la resta (-).
-- __mul__(self, other): Define el comportamiento de la multiplicación (*).
-- __truediv__(self, other): Define el comportamiento de la división (/).
-- __eq__(self, other): Define el comportamiento de la comparación de igualdad (==).
-- __lt__(self, other): Define el comportamiento de la comparación "menor que" (<).
-- __getitem__(self, key): Permite acceder a elementos de un objeto como si fuera una estructura de datos, usando corchetes (ej., objeto[key]).
-- __setitem__(self, key, value): Permite modificar elementos de un objeto usando corchetes (ej., objeto[key] = value).
-- __len__(self): Define el comportamiento del método len() para objetos de la clase.
-- __str__(self): Define la representación en cadena del objeto (lo que se muestra al usar str()).
-- __repr__(self): Define la representación formal del objeto (lo que se muestra al usar repr()).    
-
-Las poblaciones de un tipo solemos diseñarlas mediante *class* porque usualmente son mutables.
-
-Las factorías de las poblaciones las diseñaremos generalmente son el patrón de diseño *singleton*. Este es un mecanismo de factoría que nos permite obtener siempre el mismo valor en las sucesivas llamadas a la factoría. 
-
 ## Ejemplos
 
-[Direccion](https://github.com/migueltoro/pyhton_v1/blob/master/Python_v1/us/lsi/ejemplos_types/Direccion.py)
-[Persona](https://github.com/migueltoro/pyhton_v1/blob/master/Python_v1/enunciados/Persona/persona.md)
-[Alumno](https://github.com/migueltoro/pyhton_v1/blob/master/Python_v1/enunciados/Persona/persona.md)
-[Coordenadas](https://github.com/migueltoro/pyhton_v1/blob/master/Python_v1/enunciados/Coordenadas/coordenadas.md)
-[Fracción](https://github.com/migueltoro/pyhton_v1/blob/master/Python_v1/us/lsi/ejemplos_types/Fraccion.py)
+[Direccion](https://github.com/migueltoro/java_v1/blob/master/ClasePrimero/src/us/lsi/ejemplos_b1_tipos/Direccion.java)
+[Persona](https://github.com/migueltoro/java_v1/blob/master/ClasePrimero/enunciados/Persona/persona.md)
+[Alumno](https://github.com/migueltoro/java_v1/blob/master/ClasePrimero/enunciados/Persona/persona.md)
+[Coordenadas](https://github.com/migueltoro/java_v1/blob/master/ClasePrimero/enunciados/Coordenadas/coordenadas.md)
+
 
