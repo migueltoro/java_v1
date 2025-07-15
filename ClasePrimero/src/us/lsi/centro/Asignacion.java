@@ -1,5 +1,7 @@
 package us.lsi.centro;
 
+import us.lsi.tools.Utils;
+
 public record Asignacion(String dni, Integer ida, Integer idg) {
     
     public static Asignacion of(String dni,Integer ida,Integer idg) {
@@ -12,7 +14,7 @@ public record Asignacion(String dni, Integer ida, Integer idg) {
 	}
     
 	public Asignacion {
-		assert dni != null && ida != null && idg != null : "Los campos no pueden ser null";
+		assert Utils.allNotNull(dni, ida, idg) : "Los campos no pueden ser null";
 	}
     
     public Grupo grupo() {

@@ -3,6 +3,8 @@ package us.lsi.biblioteca;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import us.lsi.tools.Utils;
+
 public record Prestamo(Integer codigo, String isbn, Integer codigoEjemplar, String dni,
 		LocalDate fechaPrestamo,TipoPrestamo tipo) {
 	
@@ -21,6 +23,12 @@ public record Prestamo(Integer codigo, String isbn, Integer codigoEjemplar, Stri
 		Integer n = np;
 		np++;
 		return Prestamo.of(n,ls[0],Integer.parseInt(ls[1]),ls[2],fecha,TipoPrestamo.valueOf(ls[4]));
+	}
+	
+	public Prestamo {
+		assert Utils.allNotNull(isbn, codigoEjemplar, dni, fechaPrestamo, tipo) : "Los campos no pueden ser nulos";
+		assert codigo >= 0 : "El codigo debe ser positivo o cero";
+		assert codigoEjemplar >= 0 : "El codigo del ejemplar debe ser positivo o cero";
 	}
 	
 	public static Integer diasDePrestamo(TipoPrestamo tipo) {

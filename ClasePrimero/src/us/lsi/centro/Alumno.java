@@ -17,7 +17,7 @@ public class Alumno extends Persona {
     private Alumno(String apellidos, String nombre, LocalDateTime fechaDeNacimiento, String dni, String telefono,
 			Direccion direccion, Double nota) {
 		super(apellidos, nombre, fechaDeNacimiento, dni, telefono, direccion);
-		assert  0 <= nota && nota <= 14 : String.format("La nota debe estar comprendida entre 0 y 14 y es %.2f", nota);
+		assert  nota !=null && 0 <= nota && nota <= 14 : String.format("La nota debe estar comprendida entre 0 y 14 y es %.2f", nota);
 		this.nota = nota;
 	}
 	

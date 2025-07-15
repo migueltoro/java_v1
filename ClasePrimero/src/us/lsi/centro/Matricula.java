@@ -1,5 +1,7 @@
 package us.lsi.centro;
 
+import us.lsi.tools.Utils;
+
 public record Matricula(String dni, Integer ida, Integer idg) {
 	    
 	    
@@ -13,7 +15,7 @@ public record Matricula(String dni, Integer ida, Integer idg) {
 	    }
 	    
 		public Matricula {
-			assert dni != null && ida != null && idg != null : "Los campos no pueden ser null";
+			assert Utils.allNotNull(dni, ida, idg) : "Los campos no pueden ser null";
 		}
 	    
 	    public Grupo grupo() {

@@ -1,5 +1,7 @@
 package us.lsi.aeropuerto;
 
+import us.lsi.tools.Utils;
+
 public record Aerolinea(String codigo, String nombre) {
 	
 	public static Aerolinea parse(String text) {
@@ -15,7 +17,7 @@ public record Aerolinea(String codigo, String nombre) {
 	}
 	
 	public Aerolinea {
-		assert codigo != null && nombre != null :"Los campos no pueden ser null";
+		assert Utils.allNotNull(codigo, nombre) : "Los campos no pueden ser null";
 	}
 
 }

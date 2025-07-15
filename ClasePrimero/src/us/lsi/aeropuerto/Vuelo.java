@@ -6,6 +6,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+import us.lsi.tools.Utils;
+
 public record Vuelo(String codigoVueloProgramado, LocalDateTime fecha, Integer numPasajeros) {
 	
 	public static record Ocv(String codigoVuelo, LocalDateTime fecha) {
@@ -30,7 +32,7 @@ public record Vuelo(String codigoVueloProgramado, LocalDateTime fecha, Integer n
 	}
 	
 	public Vuelo {
-		assert codigoVueloProgramado !=null && fecha !=null && numPasajeros !=null && numPasajeros >=0 :"Los campos no pueden ser null";
+		assert Utils.allNotNull(codigoVueloProgramado, fecha, numPasajeros) && numPasajeros >=0 :"Los campos no pueden ser null";
 	}
 	
 	public Ocv key() {

@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
+import us.lsi.tools.Utils;
+
 public class Cuenta {
 
 	private String iban;
@@ -14,7 +16,7 @@ public class Cuenta {
 
 	private Cuenta(String iban, String dni, LocalDate fechaDeCreacion, Double saldo) {
 		super();
-		assert iban != null && dni != null && fechaDeCreacion != null && saldo != null : "Los campos no pueden ser null";
+		assert Utils.allNotNull(iban, dni, fechaDeCreacion, saldo) : "Los campos no pueden ser null";
 		this.iban = iban;
 		this.dni = dni;
 		this.fechaDeCreacion = fechaDeCreacion;

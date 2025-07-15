@@ -15,6 +15,7 @@ public class Usuario extends Persona {
 	private Usuario(String apellidos, String nombre, LocalDateTime fechaNacimiento,  String dni,
 			String telefono,Direccion direccion, LocalDate fechaAlta) {
 		super(apellidos, nombre, fechaNacimiento, dni, telefono,direccion);
+		assert fechaAlta != null : "La fecha de alta no puede ser nula";
 	    this.fechaAlta = fechaAlta;	
 	}
 

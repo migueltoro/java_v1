@@ -7,6 +7,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 
+import us.lsi.tools.Utils;
+
 public record VueloProgramado(
 		String codigoAerolinea,
 		String numero,
@@ -49,10 +51,9 @@ public record VueloProgramado(
 	}
 	
 	public VueloProgramado {
-		assert codigoAerolinea != null && numero != null && codigoDestino != null && 
-				codigoOrigen != null && precio != null
-				&& numPlazas != null && duracion != null && hora != null && diaSemana != null :
-			"Los campos no pueden ser null";
+		assert Utils.allNotNull(codigoAerolinea, numero, codigoDestino, codigoOrigen, precio, numPlazas, duracion,
+				hora, diaSemana) && numPlazas >= 0 && precio >= 0.0
+				: "Los campos no pueden ser null y numPlazas y precio deben ser >= 0";
 	}
 
 	@Override

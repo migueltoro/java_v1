@@ -4,6 +4,8 @@ package us.lsi.biblioteca;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import us.lsi.tools.Utils;
+
 public record Libro(String isbn, String titulo, String autor, Integer numeroDePaginas, Double precio,
 		LocalDate fechaPublicacion, Integer estimacionDeVentas) {
 	
@@ -27,9 +29,7 @@ public record Libro(String isbn, String titulo, String autor, Integer numeroDePa
 	}
 	
 	public Libro {
-		assert isbn != null && titulo != null && autor != null : "Los campos isbn, titulo y autor no pueden ser nulos";
-		assert fechaPublicacion != null : "El campo fechaPublicacion no puede ser nulo";
-		assert estimacionDeVentas != null : "El campo estimacionDeVentas no puede ser nulo";
+		assert Utils.allNotNull(isbn, titulo, autor, fechaPublicacion, estimacionDeVentas) : "Los campos no pueden ser nulos";
 		assert numeroDePaginas > 0 : String.format("El numero de paginas debe ser positivo y es %d", numeroDePaginas);
 		assert precio > 0 : String.format("El precio debe ser positivo y es %.2f", precio);
 		assert estimacionDeVentas > 0 : String.format("La estimacion de ventas debe ser positiva y es %d", estimacionDeVentas);
