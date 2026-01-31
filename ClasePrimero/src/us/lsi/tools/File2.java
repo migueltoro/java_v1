@@ -28,7 +28,7 @@ import org.mozilla.universalchardet.UniversalDetector;
 
 public class File2 {
 	
-	public static String root = "C:/Users/migueltoro/git/java_v1/ClasePrimero/";
+	public static String root = "C:/Users/migueltoro/git/java_v1/ClasePrimero";
 	
 	public static String root_project() {
 		return new File("root/Empty.txt").getAbsolutePath().replace("root\\Empty.txt","");

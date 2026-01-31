@@ -29,7 +29,8 @@ public class EspacioAereo {
         			"aeropuertos/aeropuertos.csv");
 	    }
 	    
-	    public static EspacioAereo of(String root) {    	
+	    public static EspacioAereo of(String root) {    
+	    	System.out.println(root+"/"+"aeropuertos/aerolineas.csv");
 	    	return EspacioAereo.of(root+"/"+"aeropuertos/aerolineas.csv",
 	    			root+"/"+"aeropuertos/vuelosProgramados.csv",
 	    			root+"/"+"aeropuertos/vuelos.csv",
