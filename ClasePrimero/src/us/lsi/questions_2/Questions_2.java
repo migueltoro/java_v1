@@ -1,8 +1,8 @@
-package us.lsi.questions;
+package us.lsi.questions_2;
 
 import java.io.IOException;
 
-public class Questions {
+public class Questions_2 {
 	
 	/**
 	 * Problema 1

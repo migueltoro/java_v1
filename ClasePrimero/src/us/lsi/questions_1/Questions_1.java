@@ -1,7 +1,7 @@
-package us.lsi.ejercicios_b1;
+package us.lsi.questions_1;
 
 
-public class EjerciciosB1 {
+public class Questions_1 {
 	
 //	-----------------------------------------------------------------------------
 //	1) NÚMEROS Y EXPRESIONEs
