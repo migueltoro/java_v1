@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import us.lsi.coordenadas.Coordenadas3D;
+import us.lsi.tools.Preconditions;
 
 public record Marca(LocalTime time, Coordenadas3D coordenadas) {
 	
@@ -27,7 +28,7 @@ public record Marca(LocalTime time, Coordenadas3D coordenadas) {
 	}
 	
 	public Marca {
-		assert time != null || coordenadas != null : "Marca no puede ser null";
+		Preconditions.checkArgument(time != null || coordenadas != null, "Marca no puede ser null");
 	}
 
 	@Override

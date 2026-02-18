@@ -3,6 +3,8 @@ package us.lsi.tipos_agregados;
 import java.util.ArrayList;
 import java.util.List;
 
+import us.lsi.tools.Preconditions;
+
 public abstract class AgregadoLineal<E> {
 
 	protected List<E> elements;
@@ -14,7 +16,7 @@ public abstract class AgregadoLineal<E> {
 	abstract void add(E e);
 
 	public E remove() {
-		assert !this.elements.isEmpty();
+		Preconditions.checkArgument(!this.elements.isEmpty());
 		return this.elements.remove(0);
 	}
 

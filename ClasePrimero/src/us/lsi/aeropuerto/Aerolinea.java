@@ -1,5 +1,6 @@
 package us.lsi.aeropuerto;
 
+import us.lsi.tools.Preconditions;
 import us.lsi.tools.Utils;
 
 public record Aerolinea(String codigo, String nombre) {
@@ -17,7 +18,7 @@ public record Aerolinea(String codigo, String nombre) {
 	}
 	
 	public Aerolinea {
-		assert Utils.allNotNull(codigo, nombre) : "Los campos no pueden ser null";
+		Preconditions.checkArgument(Utils.allNotNull(codigo, nombre), "Los campos no pueden ser null");
 	}
 
 }

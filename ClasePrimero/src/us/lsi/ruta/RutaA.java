@@ -2,6 +2,8 @@ package us.lsi.ruta;
 
 import java.util.List;
 
+import us.lsi.tools.Preconditions;
+
 public abstract class RutaA implements Ruta {
 	
 	public static enum TipoImplementacion{Imperativa,Funcional}
@@ -20,7 +22,7 @@ public abstract class RutaA implements Ruta {
 	
 	protected RutaA(List<Marca> marcas) {
 		super();
-		assert marcas != null && marcas.size() > 1 : "Lista de marcas debe tener al menos dos marcas";
+		Preconditions.checkArgument(marcas != null && marcas.size() > 1, "Lista de marcas debe tener al menos dos marcas");
 		this.marcas = marcas;
 	}
 

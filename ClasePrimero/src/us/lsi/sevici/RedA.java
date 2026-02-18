@@ -3,6 +3,8 @@ package us.lsi.sevici;
 import java.util.Map;
 import java.util.Set;
 
+import us.lsi.tools.Preconditions;
+
 public abstract class RedA implements Red{
 	
 	public static enum TipoImplementacion{Imperativa,Funcional}
@@ -14,7 +16,8 @@ public abstract class RedA implements Red{
 
 	protected RedA(Set<Estacion> estaciones) {
 		super();
-		assert estaciones != null && estaciones.size() > 0 : "Lista de estaciones debe tener al menos una estacion";
+		Preconditions.checkArgument(estaciones != null && estaciones.size() > 0,
+				"Lista de estaciones debe tener al menos una estacion");
 		this.estaciones = estaciones;
 		this.indices = null;
 	}

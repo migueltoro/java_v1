@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import us.lsi.tools.Preconditions;
 import us.lsi.tools.Utils;
 
 public record Prestamo(Integer nid, String dniCliente, Double cantidad, LocalDate fechaComienzo, Integer duracion,
@@ -28,9 +29,9 @@ public record Prestamo(Integer nid, String dniCliente, Double cantidad, LocalDat
 	}
 	
 	public Prestamo {
-		assert Utils.allNotNull(nid, dniCliente, cantidad, fechaComienzo, duracion, interes, dniEmpleado)
-				&& nid >= 0 && cantidad >= 0.0 && duracion >= 0 && interes >= 0.0
-				: "Los campos no pueden ser null y nid, cantidad, duracion e interes deben ser >= 0";
+		Preconditions.checkArgument(Utils.allNotNull(nid, dniCliente, cantidad, fechaComienzo, duracion, interes, dniEmpleado)
+				&& nid >= 0 && cantidad >= 0.0 && duracion >= 0 && interes >= 0.0,
+				"Los campos no pueden ser null y nid, cantidad, duracion e interes deben ser >= 0");
 	}
 
 	public LocalDate fechaVencimiento() {

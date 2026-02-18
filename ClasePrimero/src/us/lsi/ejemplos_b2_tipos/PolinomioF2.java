@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.apache.commons.lang3.math.Fraction;
 
+import us.lsi.tools.Preconditions;
+
 public record PolinomioF2(List<Fraction> coeficientes) implements Polinomio<Fraction> {
 	
 	public static  PolinomioF2 of(List<Fraction> coeficientes){
@@ -26,10 +28,10 @@ public record PolinomioF2(List<Fraction> coeficientes) implements Polinomio<Frac
     }
     
     public PolinomioF2 {
-		assert coeficientes != null : "Los coeficientes no pueden ser nulos";
-		assert coeficientes.stream().allMatch(x -> x != null) : "Los coeficientes no pueden contener nulos";
-		assert coeficientes.size() > 0 : "Los coeficientes no pueden estar vacíos";
-		assert coeficientes.get(0).getDenominator() != 0 : "El primer coeficiente no puede ser cero";
+    	Preconditions.checkArgument(coeficientes != null, "Los coeficientes no pueden ser nulos");
+    	Preconditions.checkArgument(coeficientes.stream().allMatch(x -> x != null), "Los coeficientes no pueden contener nulos");
+    	Preconditions.checkArgument(coeficientes.size() > 0, "Los coeficientes no pueden estar vacíos");
+    	Preconditions.checkArgument(coeficientes.get(0).getDenominator() != 0, "El primer coeficiente no puede ser cero");
     }
 
 	@Override

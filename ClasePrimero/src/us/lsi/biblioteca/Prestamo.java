@@ -3,6 +3,7 @@ package us.lsi.biblioteca;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import us.lsi.tools.Preconditions;
 import us.lsi.tools.Utils;
 
 public record Prestamo(Integer codigo, String isbn, Integer codigoEjemplar, String dni,
@@ -26,9 +27,10 @@ public record Prestamo(Integer codigo, String isbn, Integer codigoEjemplar, Stri
 	}
 	
 	public Prestamo {
-		assert Utils.allNotNull(isbn, codigoEjemplar, dni, fechaPrestamo, tipo) : "Los campos no pueden ser nulos";
-		assert codigo >= 0 : "El codigo debe ser positivo o cero";
-		assert codigoEjemplar >= 0 : "El codigo del ejemplar debe ser positivo o cero";
+		Preconditions.checkArgument(Utils.allNotNull(isbn, codigoEjemplar, dni, fechaPrestamo, tipo),
+				"Los campos no pueden ser nulos");
+		Preconditions.checkArgument(codigo >= 0, "El codigo debe ser positivo o cero");
+		Preconditions.checkArgument(codigoEjemplar >= 0, "El codigo del ejemplar debe ser positivo o cero");
 	}
 	
 	public static Integer diasDePrestamo(TipoPrestamo tipo) {

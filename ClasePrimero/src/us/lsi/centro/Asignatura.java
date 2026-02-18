@@ -1,5 +1,6 @@
 package us.lsi.centro;
 
+import us.lsi.tools.Preconditions;
 import us.lsi.tools.Utils;
 
 public record Asignatura(Integer ida, String nombre, Integer creditos, Integer numMaxGrupos) {
@@ -17,8 +18,8 @@ public record Asignatura(Integer ida, String nombre, Integer creditos, Integer n
 	}
 	
 	public Asignatura {
-		assert Utils.allNotNull(ida, nombre, creditos, numMaxGrupos) && ida >= 0 && creditos > 0 && numMaxGrupos > 0
-				: "Los campos no pueden ser null y deben cumplir: ida >= 0, creditos > 0, numMaxGrupos > 0";
+		Preconditions.checkArgument(Utils.allNotNull(ida, nombre, creditos, numMaxGrupos) && ida >= 0 && creditos > 0 && numMaxGrupos > 0,
+				"Los campos no pueden ser null y deben cumplir: ida >= 0, creditos > 0, numMaxGrupos > 0");
 	}
 
 	public String toString() {

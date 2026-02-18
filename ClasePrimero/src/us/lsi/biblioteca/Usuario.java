@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 import us.lsi.ejemplos_b1_tipos.Direccion;
 import us.lsi.ejemplos_b1_tipos.Persona;
+import us.lsi.tools.Preconditions;
 
 public class Usuario extends Persona {
 
@@ -15,7 +16,7 @@ public class Usuario extends Persona {
 	private Usuario(String apellidos, String nombre, LocalDateTime fechaNacimiento,  String dni,
 			String telefono,Direccion direccion, LocalDate fechaAlta) {
 		super(apellidos, nombre, fechaNacimiento, dni, telefono,direccion);
-		assert fechaAlta != null : "La fecha de alta no puede ser nula";
+		Preconditions.checkArgument(fechaAlta != null, "La fecha de alta no puede ser nula");
 	    this.fechaAlta = fechaAlta;	
 	}
 

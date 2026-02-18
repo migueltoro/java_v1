@@ -9,6 +9,8 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.math.Fraction;
+
+import us.lsi.tools.Preconditions;
 import us.lsi.tools.Stream2;
 
 public record PolinomioF1(List<Fraction> coeficientes) implements Polinomio<Fraction> {
@@ -31,10 +33,10 @@ public record PolinomioF1(List<Fraction> coeficientes) implements Polinomio<Frac
     }
     
     public PolinomioF1 {
-		assert coeficientes != null : "Los coeficientes no pueden ser nulos";
-		assert coeficientes.stream().allMatch(x -> x != null) : "Los coeficientes no pueden contener nulos";
-		assert coeficientes.size() > 0 : "Los coeficientes no pueden estar vacíos";
-		assert coeficientes.get(0).getDenominator() != 0 : "El primer coeficiente no puede ser cero";
+    	Preconditions.checkArgument(coeficientes != null, "Los coeficientes no pueden ser nulos");
+    	Preconditions.checkArgument(coeficientes.stream().allMatch(x -> x != null), "Los coeficientes no pueden contener nulos");
+    	Preconditions.checkArgument(coeficientes.size() > 0, "Los coeficientes no pueden estar vacíos");
+    	Preconditions.checkArgument(coeficientes.get(0).getDenominator() != 0, "El primer coeficiente no puede ser cero");
     }
     
     @Override

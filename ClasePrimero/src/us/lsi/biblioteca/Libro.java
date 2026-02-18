@@ -4,6 +4,7 @@ package us.lsi.biblioteca;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import us.lsi.tools.Preconditions;
 import us.lsi.tools.Utils;
 
 public record Libro(String isbn, String titulo, String autor, Integer numeroDePaginas, Double precio,
@@ -29,13 +30,17 @@ public record Libro(String isbn, String titulo, String autor, Integer numeroDePa
 	}
 	
 	public Libro {
-		assert Utils.allNotNull(isbn, titulo, autor, fechaPublicacion, estimacionDeVentas) : "Los campos no pueden ser nulos";
-		assert numeroDePaginas > 0 : String.format("El numero de paginas debe ser positivo y es %d", numeroDePaginas);
-		assert precio > 0 : String.format("El precio debe ser positivo y es %.2f", precio);
-		assert estimacionDeVentas > 0 : String.format("La estimacion de ventas debe ser positiva y es %d", estimacionDeVentas);
+		Preconditions.checkArgument(Utils.allNotNull(isbn, titulo, autor, fechaPublicacion, estimacionDeVentas),
+				"Los campos no pueden ser nulos");
+		Preconditions.checkArgument(numeroDePaginas > 0,
+				String.format("El numero de paginas debe ser positivo y es %d", numeroDePaginas));
+		Preconditions.checkArgument(precio > 0,
+				String.format("El precio debe ser positivo y es %.2f", precio));
+		Preconditions.checkArgument(estimacionDeVentas > 0,
+				String.format("La estimacion de ventas debe ser positiva y es %d", estimacionDeVentas));
 		String isbn2 = isbn.replaceAll("-", "");
-		assert isbn2.length() == 10 || isbn2.length() == 13 :
-			String.format("El ISBN -- %s -- debe tener 10 o 13 caracteres y tiene %d, ", isbn2 ,isbn2.length());
+		Preconditions.checkArgument(isbn2.length() == 10 || isbn2.length() == 13,
+			String.format("El ISBN -- %s -- debe tener 10 o 13 caracteres y tiene %d, ", isbn2 ,isbn2.length()));
 	}
 
 	public Boolean isBestSeller() {

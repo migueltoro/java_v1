@@ -3,6 +3,8 @@ package us.lsi.fecha;
 
 import java.util.List;
 
+import us.lsi.tools.Preconditions;
+
 import java.util.ArrayList;
 
 public record FechaI(Integer año, Integer mes, Integer dia,Integer numDiaDesde1900) implements Fecha {
@@ -11,13 +13,13 @@ public record FechaI(Integer año, Integer mes, Integer dia,Integer numDiaDesde1
 	private static Integer hasta = 2100;
 	
 	public FechaI {
-		assert  año >= FechaI.desde && año < FechaI.hasta :
-				String.format("Años limitados entre %d y %d", 1900, 2100);
-		assert mes > 0 && mes <= 12: String.format("Meses limitados entre %d y %d", 1, 12);
-		assert dia > 0 && dia <= 31:
-				String.format("Dias limitados entre %d y %d", 1, 31);
-		assert numDiaDesde1900 > 0:
-				String.format("numDiaDesde1900 = %d", numDiaDesde1900);
+		Preconditions.checkArgument(año >= FechaI.desde && año < FechaI.hasta,
+				String.format("Años limitados entre %d y %d", 1900, 2100));
+		Preconditions.checkArgument(mes > 0 && mes <= 12, String.format("Meses limitados entre %d y %d", 1, 12));
+		Preconditions.checkArgument(dia > 0 && dia <= 31,
+				String.format("Dias limitados entre %d y %d", 1, 31));
+		Preconditions.checkArgument(numDiaDesde1900 > 0,
+				String.format("numDiaDesde1900 = %d", numDiaDesde1900));
 	}
 	
 	public static FechaI of(Integer año, Integer mes, Integer dia) {

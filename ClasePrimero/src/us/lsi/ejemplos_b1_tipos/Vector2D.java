@@ -1,5 +1,7 @@
 package us.lsi.ejemplos_b1_tipos;
 
+import us.lsi.tools.Preconditions;
+
 public record Vector2D(Double x,Double y) {
 
 	public static Vector2D baseX() {
@@ -23,12 +25,14 @@ public record Vector2D(Double x,Double y) {
 	}
 	
 	public static Vector2D ofGrados(Double modulo, Double angulo){
-		assert modulo > 0 : String.format("El m�dulo debe ser mayor o igual a cero y es %.2f",modulo);
+		Preconditions.checkArgument(modulo > 0, 
+				String.format("El m�dulo debe ser mayor o igual a cero y es %.2f",modulo));
 		return ofRadianes(modulo, Math.toRadians(angulo));
 	}
 	
 	public static Vector2D ofRadianes(Double modulo, Double angulo){
-		assert modulo >= 0: String.format("El m�dulo debe ser mayor o igual a cero y es %.2f",modulo);
+		Preconditions.checkArgument(modulo >= 0,
+				String.format("El m�dulo debe ser mayor o igual a cero y es %.2f",modulo));
 		return of(modulo*Math.cos(angulo),modulo*Math.sin(angulo));		
 	}
 	

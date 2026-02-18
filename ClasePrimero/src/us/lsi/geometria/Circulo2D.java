@@ -3,6 +3,7 @@ package us.lsi.geometria;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
+import us.lsi.tools.Preconditions;
 import us.lsi.tools.Ventana;
 
 public record Circulo2D(Punto2D centro,Double radio)  implements ObjetoGeometrico2D, ShapeDeObjeto{
@@ -13,8 +14,9 @@ public record Circulo2D(Punto2D centro,Double radio)  implements ObjetoGeometric
 	}
 	
 	public Circulo2D  {
-		assert radio >= 0 : String.format("El radio debe ser mayor o igual a cero y es %.2f", radio);
-		assert centro != null : "El centro no puede ser nulo";
+		Preconditions.checkArgument(radio >= 0,
+				String.format("El radio debe ser mayor o igual a cero y es %.2f", radio));
+		Preconditions.checkArgument(centro != null, "El centro no puede ser nulo");
 	}
 	
 	public Double area() {

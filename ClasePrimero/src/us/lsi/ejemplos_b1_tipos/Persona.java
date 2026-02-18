@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import us.lsi.tools.Preconditions;
+
 
 public class Persona implements Comparable<Persona> {
 	
@@ -71,10 +73,10 @@ public class Persona implements Comparable<Persona> {
 	protected Persona(String apellidos, String nombre, LocalDateTime fechaDeNacimiento, String dni, String telefono,
 			Direccion direccion) {
 		super();
-		assert  apellidos.strip().length() > 0: String.format("Los apellidos no pueden estar en blanco");
-		assert  nombre.strip().length() > 0: String.format("El nombre no puede estar en blanco");
-		assert  fechaDeNacimiento.isBefore(LocalDateTime.now()): String.format("La fecha debe estar en el pasado");
-		assert  Persona.checkDni(dni): String.format("El dni no es correcto");
+		Preconditions.checkArgument(apellidos.strip().length() > 0, String.format("Los apellidos no pueden estar en blanco"));
+		Preconditions.checkArgument(nombre.strip().length() > 0, String.format("El nombre no puede estar en blanco"));
+		Preconditions.checkArgument(fechaDeNacimiento.isBefore(LocalDateTime.now()), String.format("La fecha debe estar en el pasado"));
+		Preconditions.checkArgument(Persona.checkDni(dni), String.format("El dni no es correcto"));
 		this.apellidos = apellidos;
 		this.nombre = nombre;
 		this.fechaDeNacimiento = fechaDeNacimiento;

@@ -6,6 +6,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import us.lsi.tools.File2;
+import us.lsi.tools.Preconditions;
 
 public class Matriz1<E> extends MatrizA<E> {
 	
@@ -22,12 +23,12 @@ public class Matriz1<E> extends MatrizA<E> {
 //	    #===========================================================================
 	   
 	    public static <E> Matriz1<E> of(List<List<E>> datos) {
-	    	assert datos.size() > 0 : 
-	        		String.format("El número de filas tiene que ser mayor que cero");
-	        assert datos.stream().anyMatch(ln->ln.size()>0): 
-	        		String.format("El número de columnas tiene que ser mayor que cero en cada fila");
-	        assert datos.stream().anyMatch(ln->ln.size() == datos.get(0).size()): 
-	        		String.format("El número de columnas en cada fila tiene que tener el mismo");
+	    	Preconditions.checkArgument(datos.size() > 0,
+	        		String.format("El número de filas tiene que ser mayor que cero"));
+	    	Preconditions.checkArgument(datos.stream().anyMatch(ln->ln.size()>0), 
+	        		String.format("El número de columnas tiene que ser mayor que cero en cada fila"));
+	    	Preconditions.checkArgument(datos.stream().anyMatch(ln->ln.size() == datos.get(0).size()), 
+	        		String.format("El número de columnas en cada fila tiene que tener el mismo"));
 	        return new Matriz1<>(datos);
 	    }
 	    

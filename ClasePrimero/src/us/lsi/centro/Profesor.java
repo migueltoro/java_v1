@@ -6,6 +6,7 @@ import java.util.List;
 
 import us.lsi.ejemplos_b1_tipos.Direccion;
 import us.lsi.ejemplos_b1_tipos.Persona;
+import us.lsi.tools.Preconditions;
 
 public class Profesor extends Persona {
     
@@ -17,7 +18,7 @@ public class Profesor extends Persona {
     private Profesor(String apellidos, String nombre,  LocalDateTime fechaDeNacimiento, String dni, String telefono,
 			Direccion direccion,Titulo titulo) {
 		super(apellidos, nombre, fechaDeNacimiento, dni, telefono, direccion);
-		assert titulo != null : "El titulo no puede ser null";
+		Preconditions.checkArgument(titulo != null, "El titulo no puede ser null");
 		this.titulo = titulo;
 	}
 

@@ -1,5 +1,7 @@
 package us.lsi.centro;
 
+import us.lsi.tools.Preconditions;
+
 public record Grupo(Integer ida, Integer idg) {
 	
 	public static Grupo of(Integer ida, Integer idg) {
@@ -7,7 +9,7 @@ public record Grupo(Integer ida, Integer idg) {
 	}
 	
 	public Grupo {
-		assert ida != null && idg != null : "Los campos no pueden ser null";
+		Preconditions.checkArgument(ida != null && idg != null, "Los campos no pueden ser null");
 	}
 	
 	public String toString() {

@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 
+import us.lsi.tools.Preconditions;
 import us.lsi.tools.Utils;
 
 public record VueloProgramado(
@@ -51,9 +52,9 @@ public record VueloProgramado(
 	}
 	
 	public VueloProgramado {
-		assert Utils.allNotNull(codigoAerolinea, numero, codigoDestino, codigoOrigen, precio, numPlazas, duracion,
-				hora, diaSemana) && numPlazas >= 0 && precio >= 0.0
-				: "Los campos no pueden ser null y numPlazas y precio deben ser >= 0";
+		Preconditions.checkArgument(Utils.allNotNull(codigoAerolinea, numero, codigoDestino, codigoOrigen, precio, numPlazas, duracion,
+				hora, diaSemana) && numPlazas >= 0 && precio >= 0.0,
+				"Los campos no pueden ser null y numPlazas y precio deben ser >= 0");
 	}
 
 	@Override

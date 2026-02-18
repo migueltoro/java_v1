@@ -1,6 +1,7 @@
 package us.lsi.sevici;
 
 import us.lsi.coordenadas.Coordenadas2D;
+import us.lsi.tools.Preconditions;
 
 public record Estacion(Integer numero,
 		String name,
@@ -22,10 +23,10 @@ public record Estacion(Integer numero,
 	}
 	
 	public Estacion {
-		assert numero >= 0: String.format("Numero %d", numero);
-		assert slots >= 0: String.format("Slots %d", slots);
-		assert empty_slots >= 0: String.format("Empty_Slots %d", empty_slots);
-		assert free_bikes >= 0: String.format("Free_Bikes %d", free_bikes);
+		Preconditions.checkArgument(numero >= 0, String.format("Numero %d", numero));
+		Preconditions.checkArgument(slots >= 0, String.format("Slots %d", slots));
+		Preconditions.checkArgument(empty_slots >= 0, String.format("Empty_Slots %d", empty_slots));
+		Preconditions.checkArgument(free_bikes >= 0, String.format("Free_Bikes %d", free_bikes));
 	}
 
 	@Override

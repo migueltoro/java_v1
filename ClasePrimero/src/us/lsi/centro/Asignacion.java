@@ -1,5 +1,6 @@
 package us.lsi.centro;
 
+import us.lsi.tools.Preconditions;
 import us.lsi.tools.Utils;
 
 public record Asignacion(String dni, Integer ida, Integer idg) {
@@ -14,7 +15,7 @@ public record Asignacion(String dni, Integer ida, Integer idg) {
 	}
     
 	public Asignacion {
-		assert Utils.allNotNull(dni, ida, idg) : "Los campos no pueden ser null";
+		Preconditions.checkArgument(Utils.allNotNull(dni, ida, idg), "Los campos no pueden ser null");
 	}
     
     public Grupo grupo() {

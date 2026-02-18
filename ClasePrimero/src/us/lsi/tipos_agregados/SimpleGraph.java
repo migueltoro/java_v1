@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 import us.lsi.tools.Pair;
+import us.lsi.tools.Preconditions;
 
 
 public class SimpleGraph<V, E> implements Graph<V, E>{
@@ -57,9 +58,12 @@ public class SimpleGraph<V, E> implements Graph<V, E>{
 	}
 
 	public Boolean addEdge(V source, V target, E e) {
-		assert this.vertexSet.contains(source) : String.format("Vertice %s no esta en el grafo", source);
-		assert this.vertexSet.contains(target) : String.format("Vertice %s no esta en el grafo", target);
-		assert source != target : String.format("No se pueden añadir bucles %s - %s", source, target);
+		Preconditions.checkArgument(this.vertexSet.contains(source),
+				String.format("Vertice %s no esta en el grafo", source));
+		Preconditions.checkArgument(this.vertexSet.contains(target),
+				String.format("Vertice %s no esta en el grafo", target));
+		Preconditions.checkArgument(source != target, 
+				String.format("No se pueden añadir bucles %s - %s", source, target));
 		if(this.edgesDict.containsKey(Pair.of(source, target))) return false;
 		this.edgeSet.add(e);
 		this.edgesDict.put(Pair.of(source, target), e);

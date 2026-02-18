@@ -2,6 +2,8 @@ package us.lsi.ruta;
 
 import java.time.temporal.ChronoUnit;
 
+import us.lsi.tools.Preconditions;
+
 public record Intervalo(Marca principio, Marca fin) {
 	
 	public static enum Type {Llano, Ascendente, Descendente}
@@ -11,7 +13,7 @@ public record Intervalo(Marca principio, Marca fin) {
 	}
 	
 	public Intervalo {
-		assert principio.time().isBefore(fin.time()):"Marca principio debe ser anterior a marca fin";
+		Preconditions.checkArgument(principio.time().isBefore(fin.time()),"Marca principio debe ser anterior a marca fin");
 	}
 
 	@Override

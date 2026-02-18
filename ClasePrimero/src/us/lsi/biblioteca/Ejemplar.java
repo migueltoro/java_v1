@@ -3,6 +3,7 @@ package us.lsi.biblioteca;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import us.lsi.tools.Preconditions;
 import us.lsi.tools.Utils;
 
 public record Ejemplar(String isbn, Integer codigo, LocalDate fechaDeAdquisicion) {
@@ -20,6 +21,7 @@ public record Ejemplar(String isbn, Integer codigo, LocalDate fechaDeAdquisicion
 	}
 	
 	public Ejemplar {
-		assert Utils.allNotNull(isbn, codigo, fechaDeAdquisicion) && codigo >= 0 : "Los campos no pueden ser null y codigo debe ser >= 0";
+		Preconditions.checkArgument(Utils.allNotNull(isbn, codigo, fechaDeAdquisicion) && codigo >= 0 ,
+				"Los campos no pueden ser null y codigo debe ser >= 0");
 	}
 }
